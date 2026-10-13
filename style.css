@@ -55,3 +55,158 @@ footer p{margin:5px 0 8px}
 footer small{letter-spacing:.13em;text-transform:uppercase;font-size:9px}
 @media(min-width:600px){.hero{padding-top:44px}.container{width:min(100% - 40px,720px)}}
 @media(max-width:380px){.topbar{padding:14px}.brand{font-size:14px}.brand-mark{width:35px;height:35px}.dashboard-head{align-items:flex-start;flex-direction:column}}
+
+/* Minimal ruang peribadi */
+#dashboard-section {
+  padding-top: 12px;
+}
+
+.dashboard-head {
+  align-items: flex-start;
+  margin: 28px 0 22px;
+}
+
+.dashboard-head h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(36px, 8vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+  margin: 10px 0;
+}
+
+.dashboard-head p {
+  max-width: 290px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.count-card {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+
+.count-icon {
+  display: none;
+}
+
+.count-card strong {
+  font-size: 23px;
+  font-weight: 600;
+}
+
+.count-card span:last-child {
+  font-size: 13px;
+}
+
+.prayer-list {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.sender-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  padding: 19px 4px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sender-row:hover {
+  background: #ffffff70;
+}
+
+.sender-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sender-name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.sender-hint {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.sender-arrow {
+  color: var(--sage);
+  font-size: 21px;
+}
+
+.prayer-back {
+  margin: 0 0 18px;
+}
+
+.prayer-detail {
+  padding: 24px 20px;
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+.detail-sender {
+  margin: 0 0 5px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.detail-date {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.prayer-detail hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 20px 0;
+}
+
+.prayer-detail .prayer-text {
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.empty-state {
+  margin-top: 16px;
+  border-radius: 14px;
+  padding: 28px 18px;
+  line-height: 1.8;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+
+@media (max-width: 380px) {
+  .dashboard-head {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .outline-button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+
