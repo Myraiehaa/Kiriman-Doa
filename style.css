@@ -1,0 +1,57 @@
+:root{--cream:#f7f3e9;--paper:#fffdf8;--sage:#526c58;--sage-light:#e8eee5;--ink:#26362c;--muted:#778077;--gold:#b4975a;--line:#e8e1d2;--danger:#9c3f38}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.55}
+button,input,select,textarea{font:inherit}
+.topbar{max-width:1050px;margin:auto;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:700;letter-spacing:.01em}
+.brand-mark{width:40px;height:40px;display:grid;place-items:center;background:var(--sage);color:#fff;border-radius:50%;font-size:24px}
+.brand small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.04em}
+.text-button{border:0;background:transparent;color:var(--sage);font-weight:700;padding:10px 4px;cursor:pointer}
+.container{width:min(100% - 28px,720px);margin:0 auto 30px}
+.hero{text-align:center;padding:32px 18px 30px}
+.eyebrow{font-size:11px;letter-spacing:.19em;color:var(--gold);font-weight:700}
+.crescent{font-size:37px;color:var(--gold);margin:15px 0 5px}
+h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:500;line-height:1.2}
+h1{font-size:clamp(38px,8vw,56px);margin:0;color:var(--sage);letter-spacing:-.03em}
+h1 em{font-weight:500;color:var(--gold)}
+.hero-copy{max-width:480px;margin:18px auto;color:#69756b;font-size:15px}
+.hero-rule{display:flex;align-items:center;gap:10px;max-width:180px;margin:22px auto 0;color:var(--gold)}
+.hero-rule:before,.hero-rule:after{content:"";height:1px;background:#d9c9a7;flex:1}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:clamp(20px,5vw,34px);box-shadow:0 12px 34px #463b1b08;margin:0 0 22px}
+.section-heading{display:flex;gap:14px;align-items:flex-start;margin-bottom:25px}
+.step{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:50%;background:var(--sage-light);color:var(--sage);font-weight:700;font-size:12px}
+h2{font-size:27px;margin:0 0 5px}
+.section-heading p,.dashboard-head p{margin:0;color:var(--muted);font-size:13px}
+form{display:flex;flex-direction:column}
+label{font-size:13px;font-weight:700;margin:0 0 7px}
+input,select,textarea{width:100%;border:1px solid #dedccc;background:#fffefa;border-radius:12px;padding:13px 14px;color:var(--ink);outline:none;margin-bottom:18px;min-height:48px}
+textarea{resize:vertical;min-height:130px}
+input:focus,select:focus,textarea:focus{border-color:var(--sage);box-shadow:0 0 0 3px #526c5817}
+.privacy-note{margin:-7px 0 17px;color:var(--muted);font-size:12px}
+.primary-button{border:0;background:var(--sage);color:white;padding:14px 17px;border-radius:12px;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:50px}
+.primary-button:disabled{opacity:.6;cursor:wait}
+.status{font-size:13px;margin-top:14px;color:var(--sage);overflow-wrap:anywhere}
+.status.error{color:var(--danger)}
+.back-button{margin-top:14px}
+.hidden{display:none!important}
+.dashboard-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:20px 0}
+.dashboard-head h2{margin:8px 0}
+.left{text-align:left}
+.outline-button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 13px;color:var(--sage);font-weight:700;cursor:pointer;white-space:nowrap}
+.count-card{display:flex;gap:14px;align-items:center;background:var(--sage-light);border-radius:16px;padding:18px 20px;margin-bottom:18px}
+.count-icon{font-size:27px;color:var(--gold)}
+.count-card strong{display:block;font-size:26px;line-height:1.2}
+.count-card span:last-child{font-size:12px;color:var(--muted)}
+.prayer-list{display:grid;gap:12px}
+.prayer-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;overflow-wrap:anywhere}
+.prayer-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:12px}
+.prayer-meta strong{color:var(--sage);font-size:13px}
+.prayer-text{white-space:pre-wrap;margin:0;font-size:14px;line-height:1.8}
+.empty-state{text-align:center;padding:35px 18px;background:var(--paper);border:1px dashed var(--line);border-radius:16px;color:var(--muted)}
+.empty-state span{display:block;color:var(--gold);font-size:28px;margin-bottom:8px}
+footer{text-align:center;color:var(--muted);padding:25px 16px 35px;font-size:12px}
+footer>span{color:var(--gold);font-size:23px}
+footer p{margin:5px 0 8px}
+footer small{letter-spacing:.13em;text-transform:uppercase;font-size:9px}
+@media(min-width:600px){.hero{padding-top:44px}.container{width:min(100% - 40px,720px)}}
+@media(max-width:380px){.topbar{padding:14px}.brand{font-size:14px}.brand-mark{width:35px;height:35px}.dashboard-head{align-items:flex-start;flex-direction:column}}
