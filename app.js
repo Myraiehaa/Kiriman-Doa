@@ -17,10 +17,14 @@ let currentFilter = "all";
 let publicStatusCache = [];
 let publicStatusLoaded = false;
 
+/* GENERAL */
+
 function showSection(id) {
-  ["send-section", "login-section", "dashboard-section"].forEach((sectionId) => {
-    $(sectionId).classList.toggle("hidden", sectionId !== id);
-  });
+  ["send-section", "login-section", "dashboard-section"].forEach(
+    (sectionId) => {
+      $(sectionId).classList.toggle("hidden", sectionId !== id);
+    }
+  );
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -33,7 +37,9 @@ function status(id, message, isError = false) {
 
 function safeText(tag, className, value) {
   const node = document.createElement(tag);
+
   if (className) node.className = className;
+
   node.textContent = value ?? "";
   return node;
 }
@@ -42,7 +48,10 @@ function formatDate(value) {
   if (!value) return "Date unavailable";
 
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+  if (Number.isNaN(date.getTime())) {
+    return "Date unavailable";
+  }
 
   return date.toLocaleString("en-MY", {
     day: "numeric",
@@ -55,6 +64,7 @@ function formatDate(value) {
 
 function setBusy(form, busy) {
   const button = form.querySelector('button[type="submit"]');
+
   if (button) button.disabled = busy;
 }
 
@@ -69,7 +79,7 @@ $("back-to-form").addEventListener("click", () => {
   showSection("send-section");
 });
 
-/* RECIPIENT OPTIONS */
+/* LOAD RECIPIENTS */
 
 async function loadRecipients() {
   const select = $("recipient");
@@ -81,7 +91,11 @@ async function loadRecipients() {
 
   if (error) {
     console.error("Load recipients:", error);
-    status("send-status", "Couldn't load names. Please refresh.", true);
+    status(
+      "send-status",
+      "Couldn't load names. Please refresh.",
+      true
+    );
     return;
   }
 
@@ -100,40 +114,40 @@ $("prayer-form").addEventListener("submit", async (event) => {
   const form = event.currentTarget;
   const sender_name = $("sender").value.trim();
   const prayer = $("prayer").value.trim();
-  const recipientValue = $("recipient").value;
-  const recipient_id = Number(recipientValue);
+  const recipient_id = $("recipient").value;
 
-  if (
-    !sender_name ||
-    !prayer ||
-    !recipientValue ||
-    !Number.isSafeInteger(recipient_id) ||
-    recipient_id <= 0
-  ) {
+  if (!sender_name || !prayer || !recipient_id) {
     status("send-status", "Please fill in every field.", true);
     return;
   }
 
   setBusy(form, true);
-  status("send-status", "Sending...");
+  status("send-status", "Sending your prayer...");
 
   try {
     const { error } = await supabase
       .from("prayers")
-      .insert({ sender_name, prayer, recipient_id });
+      .insert({
+        sender_name,
+        prayer,
+        recipient_id
+      });
 
     if (error) throw error;
 
     form.reset();
-    status("send-status", "");
-    window.alert("Prayer sent.");
+    status("send-status", "Your prayer has been sent.");
 
     if (publicStatusLoaded) {
       await loadPublicStatus();
     }
   } catch (error) {
     console.error("Send prayer:", error);
-    status("send-status", "Couldn't send your prayer. Try again.", true);
+    status(
+      "send-status",
+      "Couldn't send your prayer. Please try again.",
+      true
+    );
   } finally {
     setBusy(form, false);
   }
@@ -160,7 +174,11 @@ $("login-form").addEventListener("submit", async (event) => {
     await renderDashboard();
   } catch (error) {
     console.error("Login:", error);
-    status("login-status", "Incorrect email or password.", true);
+    status(
+      "login-status",
+      "Incorrect email or password. Please try again.",
+      true
+    );
   } finally {
     setBusy(form, false);
   }
@@ -185,15 +203,19 @@ $("logout-button").addEventListener("click", async () => {
 
 $("prayer-tabs").addEventListener("click", (event) => {
   const tab = event.target.closest("[data-filter]");
+
   if (!tab) return;
 
   currentFilter = tab.dataset.filter;
 
-  $("prayer-tabs").querySelectorAll("[data-filter]").forEach((button) => {
-    const active = button === tab;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
+  $("prayer-tabs")
+    .querySelectorAll("[data-filter]")
+    .forEach((button) => {
+      const active = button === tab;
+
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
 
   renderPrayerList();
 });
@@ -251,11 +273,17 @@ function renderPrayerList() {
       safeText(
         "small",
         "sender-hint",
-        `${formatDate(prayer.created_at)} · ${prayer.is_read ? "Read" : "Unread"}`
+        `${formatDate(prayer.created_at)} · ${
+          prayer.is_read ? "Read" : "Unread"
+        }`
       )
     );
 
-    button.append(info, safeText("span", "sender-arrow", "→"));
+    button.append(
+      info,
+      safeText("span", "sender-arrow", "→")
+    );
+
     button.addEventListener("click", () => openPrayer(prayer));
 
     list.append(button);
@@ -270,7 +298,7 @@ function openPrayer(prayer) {
 
   const back = document.createElement("button");
   back.type = "button";
-  back.className = "text-button prayer-back";
+  back.className = "prayer-back";
   back.textContent = "← Back to prayers";
   back.addEventListener("click", renderPrayerList);
 
@@ -278,12 +306,19 @@ function openPrayer(prayer) {
   card.className = "prayer-card prayer-detail";
 
   const sender = safeText("h3", "detail-sender", prayer.sender_name);
-  const date = safeText("time", "detail-date", formatDate(prayer.created_at));
+  const date = safeText(
+    "time",
+    "detail-date",
+    formatDate(prayer.created_at)
+  );
+
   const readStatus = safeText(
     "p",
     "detail-read-status",
     prayer.is_read
-      ? `Read${prayer.read_at ? ` · ${formatDate(prayer.read_at)}` : ""}`
+      ? `Read${
+          prayer.read_at ? ` · ${formatDate(prayer.read_at)}` : ""
+        }`
       : "Unread"
   );
 
@@ -293,7 +328,7 @@ function openPrayer(prayer) {
   const readButton = document.createElement("button");
   readButton.type = "button";
   readButton.className = "primary-button";
-  readButton.textContent = prayer.is_read ? "Read" : "Mark as read";
+  readButton.textContent = prayer.is_read ? "Already read" : "Mark as read";
   readButton.disabled = Boolean(prayer.is_read);
 
   readButton.addEventListener("click", async () => {
@@ -313,10 +348,15 @@ function openPrayer(prayer) {
 
     if (error || !data?.length) {
       console.error("Update read status:", error);
+
       readButton.disabled = false;
       readButton.textContent = "Try again";
 
-      status("dashboard-status", "Couldn't update status. Try again.", true);
+      status(
+        "dashboard-status",
+        "Couldn't update status. Check your access policies and try again.",
+        true
+      );
       return;
     }
 
@@ -363,7 +403,13 @@ async function renderDashboard() {
 
   if (accountError || !account) {
     console.error("Recipient account:", accountError);
-    status("login-status", "This account isn't linked to a recipient yet.", true);
+
+    status(
+      "login-status",
+      "This account isn't linked to a recipient yet.",
+      true
+    );
+
     showSection("login-section");
     return;
   }
@@ -371,39 +417,52 @@ async function renderDashboard() {
   $("welcome-title").textContent =
     `Hi, ${account.recipients?.display_name ?? "there"}`;
 
-  $("dashboard-subtitle").textContent = "Prayers sent just for you.";
+  $("dashboard-subtitle").textContent =
+    "Prayers sent just for you.";
 
   showSection("dashboard-section");
   status("dashboard-status", "Loading prayers...");
 
   const { data, error } = await supabase
     .from("prayers")
-    .select("id, recipient_id, sender_name, prayer, created_at, is_read, read_at")
+    .select(
+      "id, recipient_id, sender_name, prayer, created_at, is_read, read_at"
+    )
     .eq("recipient_id", account.recipient_id)
     .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Load prayers:", error);
+
     $("prayer-count").textContent = "—";
-    status("dashboard-status", "Couldn't load prayers. Please refresh.", true);
+
+    status(
+      "dashboard-status",
+      "Couldn't load prayers. Please refresh.",
+      true
+    );
     return;
   }
 
   currentPrayers = data ?? [];
   currentFilter = "all";
+
   $("prayer-count").textContent = String(currentPrayers.length);
 
-  $("prayer-tabs").querySelectorAll("[data-filter]").forEach((tab) => {
-    const active = tab.dataset.filter === "all";
-    tab.classList.toggle("active", active);
-    tab.setAttribute("aria-pressed", String(active));
-  });
+  $("prayer-tabs")
+    .querySelectorAll("[data-filter]")
+    .forEach((tab) => {
+      const active = tab.dataset.filter === "all";
+
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-pressed", String(active));
+    });
 
   status("dashboard-status", "");
   renderPrayerList();
 }
 
-/* PUBLIC STATUS: METADATA ONLY */
+/* PUBLIC PRAYER STATUS: METADATA ONLY */
 
 $("load-public-status").addEventListener("click", loadPublicStatus);
 
@@ -414,15 +473,19 @@ async function loadPublicStatus() {
   status("public-status-message", "Loading...");
 
   try {
-    const { data, error } = await supabase.rpc("get_public_prayer_status");
+    const { data, error } = await supabase.rpc(
+      "get_public_prayer_status"
+    );
 
     if (error) throw error;
 
     publicStatusCache = data ?? [];
     publicStatusLoaded = true;
+
     renderPublicStatus();
   } catch (error) {
     console.error("Public status:", error);
+
     $("public-status-list").replaceChildren();
 
     status(
@@ -437,6 +500,7 @@ async function loadPublicStatus() {
 
 function renderPublicStatus() {
   const list = $("public-status-list");
+
   const query = $("public-status-search")
     .value.trim()
     .toLocaleLowerCase("en-MY");
@@ -477,7 +541,11 @@ function renderPublicStatus() {
 
     if (item.is_read && item.read_at) {
       card.append(
-        safeText("p", "public-status-read-time", `Read on ${formatDate(item.read_at)}`)
+        safeText(
+          "p",
+          "public-status-read-time",
+          `Read on ${formatDate(item.read_at)}`
+        )
       );
     }
 
@@ -486,7 +554,9 @@ function renderPublicStatus() {
 }
 
 $("public-status-search").addEventListener("input", () => {
-  if (publicStatusLoaded) renderPublicStatus();
+  if (publicStatusLoaded) {
+    renderPublicStatus();
+  }
 });
 
 /* INITIALISE */
@@ -499,7 +569,9 @@ async function init() {
     error
   } = await supabase.auth.getSession();
 
-  if (error) console.error("Get session:", error);
+  if (error) {
+    console.error("Get session:", error);
+  }
 
   if (session) {
     await renderDashboard();
