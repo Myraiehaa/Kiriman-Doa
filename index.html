@@ -1,278 +1,211 @@
 
 <!doctype html>
-<html lang="ms">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f7f3e9">
-  <title>Kiriman Doa Umrah</title>
+  <meta name="description" content="A little space for prayers to be sent along to Tanah Suci.">
+  <title>Kiriman Doa</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <header class="topbar">
-    <a class="brand" href="#">
+    <a class="brand" href="#" aria-label="Kiriman Doa home">
       <span class="brand-mark">☾</span>
-      <span>
+      <span class="brand-copy">
         Kiriman Doa
-        <small>Perjalanan ke Tanah Suci</small>
+        <small>A little prayer, a lot of love.</small>
       </span>
     </a>
 
     <button id="nav-login" class="text-button" type="button">
-      Ruang penerima
+      My space
     </button>
   </header>
 
   <main class="container">
-
-    <!-- HERO -->
     <section class="hero">
       <div class="eyebrow">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-      <div class="crescent">☾</div>
+      <div class="crescent" aria-hidden="true">☾</div>
 
-      <h1>
-        Kiriman Doa<br>
-        <em>ke Tanah Suci</em>
-      </h1>
+      <h1>Kiriman Doa<br><em>to Tanah Suci</em></h1>
 
       <p class="hero-copy">
-        Ada doa yang nak dititipkan? Tulis dekat sini.
-        Insya-Allah, doa awak akan dibawa bersama ke Tanah Suci.
+        Leave a little prayer here. We'll bring it along to Tanah Suci.
       </p>
 
       <div class="hero-rule"><span>✦</span></div>
     </section>
 
-    <!-- BORANG KIRIMAN DOA DAN STATUS AWAM -->
+    <!-- HOME: SEND A PRAYER + PUBLIC STATUS -->
     <section id="send-section" class="panel">
-
       <div class="section-heading">
         <span class="step">01</span>
         <div>
-          <h2>Titipkan doa</h2>
-          <p>Isi maklumat dekat bawah untuk kirim doa.</p>
+          <h2>Send a prayer</h2>
+          <p>A little note for someone heading to Tanah Suci.</p>
         </div>
       </div>
 
       <form id="prayer-form">
-        <label for="sender">Nama awak</label>
+        <label for="sender">Your name</label>
         <input
           id="sender"
           name="sender"
           type="text"
           maxlength="80"
           autocomplete="name"
-          placeholder=""
+          placeholder=" "
           required
         >
 
-        <label for="recipient">Nak kirim doa untuk siapa?</label>
+        <label for="recipient">Send to</label>
         <select id="recipient" name="recipient" required>
-          <option value="">Pilih nama</option>
+          <option value="">Choose a name</option>
         </select>
 
-        <label for="prayer">Kiriman doa</label>
+        <label for="prayer">Your prayer</label>
         <textarea
           id="prayer"
           name="prayer"
           rows="6"
           maxlength="3000"
-          placeholder="Tulis doa atau pesanan awak dekat sini..."
+          placeholder="Write your prayer here..."
           required
         ></textarea>
 
         <p class="privacy-note">
-          Isi doa hanya boleh dibaca oleh penerima yang dipilih.
+          Your prayer is only for the person you choose.
         </p>
 
         <button class="primary-button" type="submit">
-          Hantar kiriman doa
+          Send
         </button>
       </form>
 
-      <div
-        id="send-status"
-        class="status"
-        role="status"
-        aria-live="polite"
-      ></div>
+      <div id="send-status" class="status" role="status" aria-live="polite"></div>
 
-      <!-- STATUS KIRIMAN AWAM -->
+      <!-- PUBLIC STATUS: HOME PAGE ONLY -->
       <section id="public-status-section" class="public-status-section">
-
         <div class="section-heading">
           <span class="step">02</span>
           <div>
-            <h2>Semak status doa</h2>
-            <p>
-              Dah kirim doa? Cari nama untuk tengok status bacaan.
-            </p>
+            <h2>Prayer Status</h2>
+            <p>Check if your prayer has been read.</p>
           </div>
         </div>
 
-        <label for="public-status-search">Cari nama</label>
+        <label for="public-status-search">Search by name</label>
         <input
           id="public-status-search"
           type="search"
-          placeholder="Taip nama pengirim atau penerima..."
+          placeholder="Search sender or recipient..."
           autocomplete="off"
         >
 
-        <button
-          id="load-public-status"
-          class="primary-button"
-          type="button"
-        >
-          Semak status
+        <button id="load-public-status" class="secondary-button" type="button">
+          Search
         </button>
 
-        <div
-          id="public-status-list"
-          class="public-status-list"
-        ></div>
-
-        <div
-          id="public-status-message"
-          class="status"
-          role="status"
-          aria-live="polite"
-        ></div>
+        <div id="public-status-list" class="public-status-list"></div>
+        <div id="public-status-message" class="status" role="status" aria-live="polite"></div>
       </section>
     </section>
 
-    <!-- LOGIN PENERIMA -->
+    <!-- LOGIN -->
     <section id="login-section" class="panel hidden">
       <div class="section-heading">
-        <span class="step">03</span>
+        <span class="step">01</span>
         <div>
-          <h2>Ruang penerima</h2>
-          <p>Log masuk untuk baca doa yang orang kirim untuk awak.</p>
+          <h2>Welcome back</h2>
+          <p>Log in to read your prayers.</p>
         </div>
       </div>
 
       <form id="login-form">
-        <label for="email">E-mel</label>
+        <label for="email">Email</label>
         <input
           id="email"
           type="email"
           autocomplete="username"
-          placeholder=""
+          placeholder=" "
           required
         >
 
-        <label for="password">Kata laluan</label>
+        <label for="password">Password</label>
         <input
           id="password"
           type="password"
           autocomplete="current-password"
-          placeholder=""
+          placeholder=" "
           required
         >
 
         <button class="primary-button" type="submit">
-          Log masuk
+          Log in
         </button>
       </form>
 
-      <div
-        id="login-status"
-        class="status"
-        role="status"
-        aria-live="polite"
-      ></div>
+      <div id="login-status" class="status" role="status" aria-live="polite"></div>
 
-      <button
-        id="back-to-form"
-        class="text-button back-button"
-        type="button"
-      >
-        ← Kembali ke halaman utama
+      <button id="back-to-form" class="text-button back-button" type="button">
+        Back to home
       </button>
     </section>
 
-    <!-- DASHBOARD PENERIMA -->
+    <!-- PRIVATE RECIPIENT DASHBOARD -->
     <section id="dashboard-section" class="hidden">
-
       <div class="dashboard-head">
         <div>
-          <div class="eyebrow left">RUANG PERIBADI</div>
-          <h2 id="welcome-title">Kiriman untuk awak</h2>
-          <p id="dashboard-subtitle">
-            Semua doa yang ditujukan kepada awak.
-          </p>
+          <div class="eyebrow left">MY SPACE</div>
+          <h2 id="welcome-title">My prayers</h2>
+          <p id="dashboard-subtitle">Prayers sent just for you.</p>
         </div>
 
-        <button
-          id="logout-button"
-          class="outline-button"
-          type="button"
-        >
-          Log keluar
+        <button id="logout-button" class="outline-button" type="button">
+          Log out
         </button>
       </div>
 
       <div class="count-card">
         <div>
           <strong id="prayer-count">0</strong>
-          <span>kiriman doa diterima</span>
+          <span>prayers received</span>
         </div>
       </div>
 
-      <!-- FILTER STATUS BACAAN -->
-      <div id="prayer-tabs" class="prayer-tabs">
-        <button
-          type="button"
-          class="prayer-tab active"
-          data-filter="all"
-          aria-pressed="true"
-        >
-          Semua
+      <div id="prayer-tabs" class="prayer-tabs" aria-label="Filter prayers">
+        <button type="button" class="prayer-tab active" data-filter="all" aria-pressed="true">
+          All
         </button>
-
-        <button
-          type="button"
-          class="prayer-tab"
-          data-filter="unread"
-          aria-pressed="false"
-        >
-          Belum dibaca
+        <button type="button" class="prayer-tab" data-filter="unread" aria-pressed="false">
+          Unread
         </button>
-
-        <button
-          type="button"
-          class="prayer-tab"
-          data-filter="read"
-          aria-pressed="false"
-        >
-          Dah dibaca
+        <button type="button" class="prayer-tab" data-filter="read" aria-pressed="false">
+          Read
         </button>
       </div>
 
-      <!-- SENARAI PENGIRIM -->
       <div id="prayer-list" class="prayer-list"></div>
-
-      <div
-        id="dashboard-status"
-        class="status"
-        role="status"
-        aria-live="polite"
-      ></div>
+      <div id="dashboard-status" class="status" role="status" aria-live="polite"></div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-      <span>☾</span>
-      <p>Semoga setiap doa yang dititipkan membawa kebaikan buat semua.</p>
-      <small>Kiriman Doa Umrah</small>
+      <span aria-hidden="true">☾</span>
+      <p>May every prayer carry a little goodness.</p>
+      <small>Kiriman Doa</small>
     </footer>
-
   </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
 
   <script type="module" src="app.js"></script>
 </body>
