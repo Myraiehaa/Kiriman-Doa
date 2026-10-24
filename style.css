@@ -20,7 +20,7 @@ body {
   background: var(--cream);
   color: var(--ink);
   font-family: "DM Sans", sans-serif;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 button,
@@ -50,34 +50,39 @@ button {
   gap: 10px;
   color: var(--ink);
   text-decoration: none;
-  font-weight: 700;
-  letter-spacing: .01em;
+  font-weight: 600;
+  letter-spacing: -.02em;
 }
 
 .brand-mark {
-  width: 40px;
-  height: 40px;
+  width: 39px;
+  height: 39px;
   display: grid;
   place-items: center;
   background: var(--sage);
   color: white;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 23px;
+}
+
+.brand-copy {
+  display: block;
 }
 
 .brand small {
   display: block;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--muted);
-  letter-spacing: .04em;
+  letter-spacing: .01em;
 }
 
 .text-button {
   border: 0;
   background: transparent;
   color: var(--sage);
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   padding: 10px 4px;
   cursor: pointer;
 }
@@ -89,20 +94,20 @@ button {
 
 .hero {
   text-align: center;
-  padding: 32px 18px 30px;
+  padding: 36px 18px 34px;
 }
 
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: .19em;
+  font-size: 10px;
+  letter-spacing: .17em;
   color: var(--gold);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .crescent {
-  font-size: 37px;
+  font-size: 34px;
   color: var(--gold);
-  margin: 15px 0 5px;
+  margin: 15px 0 7px;
 }
 
 h1,
@@ -113,10 +118,10 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(38px, 8vw, 56px);
+  font-size: clamp(38px, 8vw, 55px);
   margin: 0;
   color: var(--sage);
-  letter-spacing: -.03em;
+  letter-spacing: -.035em;
 }
 
 h1 em {
@@ -125,18 +130,19 @@ h1 em {
 }
 
 .hero-copy {
-  max-width: 480px;
-  margin: 18px auto;
-  color: #69756b;
-  font-size: 15px;
+  max-width: 390px;
+  margin: 17px auto;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.8;
 }
 
 .hero-rule {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 180px;
-  margin: 22px auto 0;
+  max-width: 150px;
+  margin: 23px auto 0;
   color: var(--gold);
 }
 
@@ -151,34 +157,35 @@ h1 em {
 .panel {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: clamp(20px, 5vw, 34px);
-  box-shadow: 0 12px 34px #463b1b08;
-  margin: 0 0 22px;
+  border-radius: 20px;
+  padding: clamp(20px, 5vw, 32px);
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px #463b1b06;
 }
 
 .section-heading {
   display: flex;
-  gap: 14px;
+  gap: 13px;
   align-items: flex-start;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 }
 
 .step {
   display: grid;
   place-items: center;
-  flex: 0 0 38px;
-  height: 38px;
+  flex: 0 0 34px;
+  height: 34px;
   border-radius: 50%;
   background: var(--sage-light);
   color: var(--sage);
-  font-weight: 700;
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 h2 {
-  font-size: 27px;
+  font-size: 26px;
   margin: 0 0 5px;
+  letter-spacing: -.02em;
 }
 
 .section-heading p,
@@ -186,6 +193,7 @@ h2 {
   margin: 0;
   color: var(--muted);
   font-size: 13px;
+  line-height: 1.7;
 }
 
 form {
@@ -194,8 +202,8 @@ form {
 }
 
 label {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   margin: 0 0 7px;
 }
 
@@ -205,12 +213,13 @@ textarea {
   width: 100%;
   border: 1px solid #dedccc;
   background: #fffefa;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 13px 14px;
   color: var(--ink);
   outline: none;
   margin-bottom: 18px;
-  min-height: 48px;
+  min-height: 47px;
+  font-size: 14px;
 }
 
 textarea {
@@ -222,54 +231,68 @@ input:focus,
 select:focus,
 textarea:focus {
   border-color: var(--sage);
-  box-shadow: 0 0 0 3px #526c5817;
+  box-shadow: 0 0 0 3px #526c5812;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a3a79f;
 }
 
 .privacy-note {
   margin: -7px 0 17px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.primary-button,
+.secondary-button {
+  width: 100%;
+  border-radius: 10px;
+  padding: 13px 16px;
+  min-height: 48px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s ease, opacity .2s ease;
 }
 
 .primary-button {
-  border: 0;
+  border: 1px solid var(--sage);
   background: var(--sage);
   color: white;
-  padding: 14px 17px;
-  border-radius: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  min-height: 50px;
-  text-align: center;
-  transition: opacity .2s ease, background .2s ease;
 }
 
 .primary-button:hover {
   background: #435b49;
 }
 
-.primary-button:disabled {
+.secondary-button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--sage);
+}
+
+.secondary-button:hover {
+  background: var(--sage-light);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
   opacity: .6;
   cursor: wait;
 }
 
 .status {
-  font-size: 13px;
-  margin-top: 14px;
+  font-size: 12px;
+  margin-top: 13px;
   color: var(--sage);
   overflow-wrap: anywhere;
 }
 
 .status.error {
   color: var(--danger);
-}
-
-.back-button {
-  margin-top: 14px;
 }
 
 .hidden {
@@ -279,7 +302,7 @@ textarea:focus {
 /* Public status */
 
 .public-status-section {
-  margin-top: 34px;
+  margin-top: 32px;
   padding-top: 27px;
   border-top: 1px solid var(--line);
 }
@@ -289,16 +312,11 @@ textarea:focus {
 }
 
 .public-status-section input {
-  margin-bottom: 12px;
-}
-
-.public-status-section .primary-button {
-  width: 100%;
+  margin-bottom: 11px;
 }
 
 .public-status-list {
   display: grid;
-  gap: 0;
   margin-top: 18px;
 }
 
@@ -311,7 +329,8 @@ textarea:focus {
 }
 
 .public-status-sender {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--ink);
 }
 
@@ -319,8 +338,8 @@ textarea:focus {
 .public-status-date,
 .public-status-read-time {
   margin: 0;
-  font-size: 12px;
   color: var(--muted);
+  font-size: 11px;
 }
 
 .public-read-badge,
@@ -328,9 +347,9 @@ textarea:focus {
   display: inline-block;
   width: fit-content;
   margin-top: 5px;
-  padding: 5px 9px;
-  border-radius: 6px;
-  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 10px;
   font-weight: 600;
 }
 
@@ -347,31 +366,29 @@ textarea:focus {
 /* Recipient dashboard */
 
 #dashboard-section {
-  padding-top: 12px;
+  padding-top: 10px;
 }
 
 .dashboard-head {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
-  margin: 28px 0 22px;
+  gap: 14px;
+  margin: 25px 0 23px;
 }
 
 .dashboard-head h2 {
   font-family: "DM Sans", sans-serif;
-  font-size: clamp(30px, 7vw, 42px);
+  font-size: clamp(29px, 7vw, 39px);
   font-weight: 600;
   letter-spacing: -.05em;
-  line-height: 1.1;
-  margin: 10px 0;
+  line-height: 1.15;
+  margin: 9px 0;
   overflow-wrap: anywhere;
 }
 
 .dashboard-head p {
-  max-width: 290px;
-  font-size: 14px;
-  line-height: 1.7;
+  max-width: 300px;
 }
 
 .left {
@@ -380,45 +397,49 @@ textarea:focus {
 
 .outline-button {
   border: 1px solid var(--line);
-  background: var(--paper);
-  border-radius: 10px;
-  padding: 10px 13px;
+  background: transparent;
+  border-radius: 9px;
+  padding: 9px 12px;
   color: var(--sage);
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
 }
 
+.outline-button:hover {
+  background: var(--sage-light);
+}
+
 .count-card {
   display: flex;
-  gap: 14px;
   align-items: center;
   background: transparent;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 16px;
-  margin-bottom: 25px;
+  border-radius: 12px;
+  padding: 15px 17px;
+  margin-bottom: 23px;
 }
 
 .count-card strong {
   display: block;
-  font-size: 23px;
+  font-size: 24px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .count-card span {
-  font-size: 13px;
   color: var(--muted);
+  font-size: 12px;
 }
 
 /* Filter tabs */
 
 .prayer-tabs {
   display: flex;
-  gap: 8px;
+  gap: 7px;
   overflow-x: auto;
-  margin: 0 0 20px;
+  margin: 0 0 19px;
   padding-bottom: 4px;
 }
 
@@ -426,11 +447,11 @@ textarea:focus {
   flex: 0 0 auto;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 10px 15px;
+  padding: 9px 15px;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -443,7 +464,6 @@ textarea:focus {
 
 .prayer-list {
   display: grid;
-  gap: 0;
   border-top: 1px solid var(--line);
 }
 
@@ -452,9 +472,9 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   text-align: left;
-  padding: 19px 4px;
+  padding: 18px 3px;
   background: transparent;
   border: 0;
   border-bottom: 1px solid var(--line);
@@ -470,45 +490,45 @@ textarea:focus {
 .sender-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
 }
 
 .sender-name {
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: -.02em;
+  letter-spacing: -.01em;
   overflow-wrap: anywhere;
 }
 
 .sender-hint {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
 }
 
 .sender-arrow {
   color: var(--sage);
-  font-size: 21px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
 /* Prayer detail */
 
 .prayer-back {
-  margin: 0 0 18px;
+  margin: 0 0 17px;
 }
 
 .prayer-detail {
-  padding: 24px 20px;
-  border-radius: 14px;
+  padding: 23px 19px;
+  border-radius: 13px;
   box-shadow: none;
 }
 
 .detail-sender {
   margin: 0 0 5px;
   font-family: "DM Sans", sans-serif;
-  font-size: 25px;
+  font-size: 23px;
   font-weight: 600;
   letter-spacing: -.03em;
   overflow-wrap: anywhere;
@@ -517,29 +537,30 @@ textarea:focus {
 .detail-date {
   display: block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .detail-read-status {
   margin: 12px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .prayer-detail hr {
   border: 0;
   border-top: 1px solid var(--line);
-  margin: 20px 0;
+  margin: 19px 0;
 }
 
 .prayer-detail .prayer-text {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .prayer-detail .primary-button {
-  width: 100%;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 .prayer-detail .primary-button:disabled {
@@ -549,24 +570,25 @@ textarea:focus {
 
 .empty-state {
   text-align: center;
-  padding: 30px 18px;
-  background: var(--paper);
+  padding: 29px 17px;
+  background: transparent;
   border: 1px dashed var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
   color: var(--muted);
-  margin-top: 16px;
+  margin-top: 15px;
   line-height: 1.8;
 }
 
 .empty-state strong {
   display: block;
   color: var(--ink);
-  margin-bottom: 5px;
+  margin-bottom: 4px;
+  font-size: 13px;
 }
 
 .empty-state p {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 /* Footer */
@@ -575,12 +597,12 @@ footer {
   text-align: center;
   color: var(--muted);
   padding: 25px 16px 35px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 footer > span {
   color: var(--gold);
-  font-size: 23px;
+  font-size: 22px;
 }
 
 footer p {
@@ -588,7 +610,7 @@ footer p {
 }
 
 footer small {
-  letter-spacing: .13em;
+  letter-spacing: .12em;
   text-transform: uppercase;
   font-size: 9px;
 }
@@ -628,10 +650,9 @@ button:focus-visible {
 
   .outline-button {
     padding: 8px 10px;
-    font-size: 12px;
   }
 
   .panel {
-    border-radius: 18px;
+    border-radius: 16px;
   }
 }
