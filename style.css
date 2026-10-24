@@ -4,7 +4,6 @@
   --surface: #FFFEFA;
   --surface-pink: #F0E9DC;
   --rose: #C9B89B;
-  --rose-light: #E9DFCE;
   --maroon: #70434B;
   --maroon-dark: #54313A;
   --sage: #34483B;
@@ -22,9 +21,7 @@
   --font-heading: "Manrope", sans-serif;
 
   --radius-sm: 12px;
-  --radius-md: 20px;
   --radius-lg: 28px;
-
   --shadow-soft: 0 12px 35px rgba(63, 52, 39, 0.045);
 }
 
@@ -128,8 +125,7 @@ a {
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease,
-    transform 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .nav-login:hover,
@@ -144,7 +140,7 @@ a {
   font-family: Arial, sans-serif;
 }
 
-/* PAGE */
+/* PAGE WIDTH */
 
 .page-section {
   width: min(1120px, calc(100% - 64px));
@@ -155,6 +151,7 @@ a {
 
 .hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   min-height: 365px;
   margin-top: 18px;
@@ -189,11 +186,16 @@ a {
   background: var(--maroon);
 }
 
+.hero-label,
+.hero h1,
+.hero-description {
+  position: relative;
+  z-index: 2;
+}
+
 .hero h1,
 .auth-card h1,
 .dashboard-intro h1 {
-  position: relative;
-  z-index: 1;
   margin: 24px 0 15px;
   font-family: var(--font-heading);
   font-size: clamp(40px, 5vw, 66px);
@@ -207,8 +209,6 @@ a {
 }
 
 .hero-description {
-  position: relative;
-  z-index: 1;
   max-width: 430px;
   margin: 20px 0 0;
   color: #686D65;
@@ -217,47 +217,116 @@ a {
   line-height: 1.9;
 }
 
-/* GEOMETRIC ISLAMIC-INSPIRED DETAIL */
+/* CSS-ONLY QURAN ILLUSTRATION */
 
-.hero-decoration {
+.quran-illustration {
   position: absolute;
-  right: 8%;
-  bottom: 34px;
+  z-index: 1;
+  right: 7%;
+  bottom: 35px;
+  width: 150px;
+  height: 170px;
   display: grid;
   place-items: center;
-  width: 125px;
-  height: 125px;
-  border: 1px solid rgba(112, 67, 75, 0.18);
-  border-radius: 50%;
-  opacity: 0.65;
+  pointer-events: none;
 }
 
-.islamic-star {
+.quran-book {
   position: relative;
-  width: 66px;
-  height: 66px;
-  border: 1.5px solid var(--maroon);
-  transform: rotate(45deg);
+  width: 102px;
+  height: 132px;
+  transform: rotate(-8deg);
+  filter: drop-shadow(9px 12px 8px rgba(48, 39, 29, 0.12));
 }
 
-.islamic-star::before,
-.islamic-star::after {
+.quran-cover {
   position: absolute;
+  inset: 0 7px 7px 0;
+  padding: 7px;
+  border: 2px solid #A78351;
+  border-radius: 5px 10px 8px 5px;
+  background: linear-gradient(
+    135deg,
+    #80505A 0%,
+    #603943 55%,
+    #4B2D35 100%
+  );
+  box-shadow:
+    inset 3px 0 rgba(255, 255, 255, 0.08),
+    inset -3px 0 rgba(30, 20, 20, 0.12);
+}
+
+.quran-border {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 12px 5px;
+  border: 1px solid #C9AC79;
+  border-radius: 3px 6px 5px 3px;
+}
+
+.quran-ornament {
+  color: #D9BD87;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.quran-title-lines {
+  position: relative;
+  width: 33px;
+  height: 21px;
+  border-top: 1px solid #D9BD87;
+  border-bottom: 1px solid #D9BD87;
+}
+
+.quran-title-lines::after {
+  position: absolute;
+  top: 9px;
+  right: 5px;
+  left: 5px;
   content: "";
-  inset: 0;
-  border: 1.5px solid var(--maroon);
+  border-top: 1px solid #D9BD87;
 }
 
-.islamic-star::before {
-  transform: rotate(45deg);
+.bottom-ornament {
+  transform: rotate(180deg);
 }
 
-.islamic-star::after {
-  inset: 12px;
-  transform: rotate(22.5deg);
+.quran-pages {
+  position: absolute;
+  z-index: -1;
+  top: 5px;
+  right: 0;
+  width: 13px;
+  height: 118px;
+  border-radius: 0 5px 5px 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    #F7F0E1 0,
+    #F7F0E1 2px,
+    #D7C9B0 3px,
+    #F7F0E1 4px
+  );
+  transform: skewY(3deg);
 }
 
-/* SEND PRAYER FORM */
+.quran-book-shadow {
+  position: absolute;
+  z-index: -2;
+  right: -7px;
+  bottom: -7px;
+  width: 92px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(65, 45, 35, 0.15);
+  filter: blur(5px);
+}
+
+/* SEND FORM */
 
 .form-panel {
   width: min(820px, 100%);
@@ -432,7 +501,7 @@ a {
   color: var(--danger);
 }
 
-/* PUBLIC STATUS */
+/* PUBLIC PRAYER STATUS */
 
 .public-status-section {
   margin: 82px 0 88px;
@@ -527,7 +596,6 @@ a {
   font-family: var(--font-heading);
   font-size: 17px;
   font-weight: 800;
-  letter-spacing: -0.4px;
 }
 
 .public-status-recipient {
@@ -601,18 +669,6 @@ a {
   border-radius: var(--radius-lg);
   background: var(--surface);
   box-shadow: var(--shadow-soft);
-}
-
-.auth-ornament {
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  margin-bottom: 27px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  color: var(--maroon);
-  font-size: 30px;
 }
 
 .auth-card h1 {
@@ -747,8 +803,6 @@ a {
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
 .filter-tab.active {
@@ -777,13 +831,11 @@ a {
   color: var(--text);
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease,
-    background 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .sender-row:hover {
   border-color: var(--rose);
-  background: #FFFCF6;
   transform: translateY(-1px);
 }
 
@@ -799,7 +851,6 @@ a {
   font-family: var(--font-heading);
   font-size: 17px;
   font-weight: 800;
-  letter-spacing: -0.4px;
 }
 
 .sender-hint {
@@ -979,13 +1030,13 @@ a {
 
   .hero h1 {
     margin-top: 27px;
-    font-size: clamp(39px, 10vw, 53px);
-    letter-spacing: -2.5px;
+    font-size: clamp(36px, 9vw, 48px);
+    letter-spacing: -2px;
     line-height: 1.16;
   }
 
   .hero-description {
-    max-width: 290px;
+    max-width: 100%;
     font-size: 14px;
     line-height: 1.9;
   }
@@ -994,17 +1045,17 @@ a {
     display: none;
   }
 
-  .hero-decoration {
-    right: -12px;
-    bottom: 10px;
-    width: 95px;
-    height: 95px;
-    opacity: 0.4;
+  .quran-illustration {
+    right: 0;
+    bottom: 12px;
+    width: 105px;
+    height: 125px;
+    opacity: 0.95;
   }
 
-  .islamic-star {
-    width: 49px;
-    height: 49px;
+  .quran-book {
+    transform: scale(0.78) rotate(-8deg);
+    transform-origin: center;
   }
 
   .form-panel {
@@ -1214,7 +1265,7 @@ a {
   }
 
   .hero h1 {
-    font-size: 37px;
+    font-size: 35px;
   }
 
   .dashboard-intro {
