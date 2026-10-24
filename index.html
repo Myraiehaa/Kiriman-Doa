@@ -1,212 +1,257 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f3e9">
-  <meta name="description" content="A little space for prayers to be sent along to Tanah Suci.">
-  <title>Kiriman Doa</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FAF5F0">
+  <meta name="description" content="A little prayer, a lot of love. Send your prayers to Tanah Suci.">
+
+  <title>Kiriman Doa — A Little Prayer, A Lot of Love</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
 </head>
 
 <body>
-  <header class="topbar">
+  <header class="site-header">
     <a class="brand" href="#" aria-label="Kiriman Doa home">
-      <span class="brand-mark">☾</span>
-      <span class="brand-copy">
-        Kiriman Doa
-        <small>A little prayer, a lot of love.</small>
-      </span>
+      <span class="brand-mark">K.</span>
+      <span class="brand-name">kiriman doa<span class="brand-period">.</span></span>
     </a>
 
-    <button id="nav-login" class="text-button" type="button">
-      My space
+    <button id="nav-login" class="nav-login" type="button">
+      My space <span aria-hidden="true">↗</span>
     </button>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="eyebrow">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-      <div class="crescent" aria-hidden="true">☾</div>
+  <main>
+    <!-- SEND PRAYER / HOME -->
+    <section id="send-section" class="page-section">
+      <div class="hero">
+        <div class="hero-label">
+          <span class="label-line"></span>
+          A LITTLE PRAYER, A LOT OF LOVE
+        </div>
 
-      <h1>Kiriman Doa<br><em>to Tanah Suci</em></h1>
+        <h1>
+          Kiriman Doa<br>
+          <span class="hero-highlight">to Tanah Suci.</span>
+        </h1>
 
-      <p class="hero-copy">
-        Leave a little prayer here. We'll bring it along to Tanah Suci.
-      </p>
+        <p class="hero-description">
+          Leave a little prayer here.<br class="desktop-break">
+          We'll bring it along to Tanah Suci.
+        </p>
 
-      <div class="hero-rule"><span>✦</span></div>
-    </section>
-
-    <!-- HOME: SEND A PRAYER + PUBLIC STATUS -->
-    <section id="send-section" class="panel">
-      <div class="section-heading">
-        <span class="step">01</span>
-        <div>
-          <h2>Send a prayer</h2>
-          <p>A little note for someone heading to Tanah Suci.</p>
+        <div class="hero-decoration" aria-hidden="true">
+          <span>♡</span>
         </div>
       </div>
 
-      <form id="prayer-form">
-        <label for="sender">Your name</label>
-        <input
-          id="sender"
-          name="sender"
-          type="text"
-          maxlength="80"
-          autocomplete="name"
-          placeholder=" "
-          required
-        >
-
-        <label for="recipient">Send to</label>
-        <select id="recipient" name="recipient" required>
-          <option value="">Choose a name</option>
-        </select>
-
-        <label for="prayer">Your prayer</label>
-        <textarea
-          id="prayer"
-          name="prayer"
-          rows="6"
-          maxlength="3000"
-          placeholder="Write your prayer here..."
-          required
-        ></textarea>
-
-        <p class="privacy-note">
-          Your prayer is only for the person you choose.
-        </p>
-
-        <button class="primary-button" type="submit">
-          Send
-        </button>
-      </form>
-
-      <div id="send-status" class="status" role="status" aria-live="polite"></div>
-
-      <!-- PUBLIC STATUS: HOME PAGE ONLY -->
-      <section id="public-status-section" class="public-status-section">
-        <div class="section-heading">
-          <span class="step">02</span>
-          <div>
-            <h2>Prayer Status</h2>
-            <p>Check if your prayer has been read.</p>
+      <div class="content-grid">
+        <section class="form-panel">
+          <div class="section-heading">
+            <span class="eyebrow">YOUR WORDS MATTER</span>
+            <h2>Send a prayer<span class="heading-period">.</span></h2>
+            <p>A few words from your heart can mean everything.</p>
           </div>
+
+          <form id="prayer-form" class="prayer-form">
+            <div class="field-group">
+              <label for="sender">Your name</label>
+              <input
+                id="sender"
+                name="sender"
+                type="text"
+                maxlength="100"
+                placeholder="How should we call you?"
+                autocomplete="name"
+                required
+              >
+            </div>
+
+            <div class="field-group">
+              <label for="recipient">Send to</label>
+              <div class="select-wrap">
+                <select id="recipient" name="recipient" required>
+                  <option value="">Loading names...</option>
+                </select>
+                <span class="select-arrow" aria-hidden="true">⌄</span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="prayer">Your prayer</label>
+              <textarea
+                id="prayer"
+                name="prayer"
+                rows="7"
+                maxlength="10000"
+                placeholder="Write your prayer here..."
+                required
+              ></textarea>
+              <div class="field-note">Write from the heart. Every prayer matters.</div>
+            </div>
+
+            <button class="primary-button submit-button" type="submit">
+              <span>Send prayer</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+
+            <p id="send-status" class="status-message" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <aside class="note-panel">
+          <div class="note-symbol" aria-hidden="true">✳</div>
+          <span class="eyebrow">A NOTE FROM THE HEART</span>
+          <h3>Some feelings are best expressed through a prayer.</h3>
+          <p>
+            A wish, a hope, a quiet prayer for someone you love.
+            Leave it here, and let it be carried with sincerity.
+          </p>
+          <div class="note-signature">With love, always.</div>
+        </aside>
+      </div>
+
+      <!-- PUBLIC PRAYER STATUS -->
+      <section class="public-status-section">
+        <div class="section-heading status-heading">
+          <span class="eyebrow">A LITTLE UPDATE</span>
+          <h2>Prayer status<span class="heading-period">.</span></h2>
+          <p>Check whether your prayer has been read.</p>
         </div>
 
-        <label for="public-status-search">Search by name</label>
-        <input
-          id="public-status-search"
-          type="search"
-          placeholder="Search sender or recipient..."
-          autocomplete="off"
-        >
+        <div class="status-search">
+          <div class="search-input-wrap">
+            <span aria-hidden="true">⌕</span>
+            <input
+              id="public-status-search"
+              type="search"
+              placeholder="Search sender or recipient..."
+              aria-label="Search sender or recipient"
+            >
+          </div>
 
-        <button id="load-public-status" class="secondary-button" type="button">
-          Search
-        </button>
+          <button id="load-public-status" class="secondary-button" type="button">
+            Check status
+          </button>
+        </div>
+
+        <p id="public-status-message" class="status-message" role="status" aria-live="polite">
+          Search for a name or check the latest status.
+        </p>
 
         <div id="public-status-list" class="public-status-list"></div>
-        <div id="public-status-message" class="status" role="status" aria-live="polite"></div>
+
+        <p class="privacy-note">
+          Prayer messages remain private to their intended recipients.
+        </p>
       </section>
     </section>
 
     <!-- LOGIN -->
-    <section id="login-section" class="panel hidden">
-      <div class="section-heading">
-        <span class="step">01</span>
-        <div>
-          <h2>Welcome back</h2>
-          <p>Log in to read your prayers.</p>
-        </div>
-      </div>
-
-      <form id="login-form">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          autocomplete="username"
-          placeholder=" "
-          required
-        >
-
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          placeholder=" "
-          required
-        >
-
-        <button class="primary-button" type="submit">
-          Log in
-        </button>
-      </form>
-
-      <div id="login-status" class="status" role="status" aria-live="polite"></div>
-
-      <button id="back-to-form" class="text-button back-button" type="button">
-        Back to home
+    <section id="login-section" class="page-section auth-section hidden">
+      <button id="back-to-form" class="back-button" type="button">
+        <span aria-hidden="true">←</span> Back to home
       </button>
+
+      <div class="auth-card">
+        <div class="auth-mark">K.</div>
+        <span class="eyebrow">YOUR PERSONAL SPACE</span>
+        <h1>Welcome back<span class="heading-period">.</span></h1>
+        <p class="auth-description">Log in to read the prayers sent just for you.</p>
+
+        <form id="login-form" class="prayer-form">
+          <div class="field-group">
+            <label for="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="you@example.com"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button class="primary-button submit-button" type="submit">
+            <span>Log in</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+
+          <p id="login-status" class="status-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </section>
 
-    <!-- PRIVATE RECIPIENT DASHBOARD -->
-    <section id="dashboard-section" class="hidden">
-      <div class="dashboard-head">
+    <!-- RECIPIENT DASHBOARD -->
+    <section id="dashboard-section" class="page-section dashboard-section hidden">
+      <div class="dashboard-topbar">
         <div>
-          <div class="eyebrow left">MY SPACE</div>
-          <h2 id="welcome-title">My prayers</h2>
+          <span class="eyebrow">YOUR PERSONAL SPACE</span>
+          <p class="dashboard-brand">kiriman doa<span class="brand-period">.</span></p>
+        </div>
+
+        <button id="logout-button" class="secondary-button logout-button" type="button">
+          Log out <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+
+      <div class="dashboard-intro">
+        <div class="dashboard-intro-copy">
+          <span class="eyebrow">MADE WITH LOVE</span>
+          <h1 id="welcome-title">Your prayers.</h1>
           <p id="dashboard-subtitle">Prayers sent just for you.</p>
         </div>
 
-        <button id="logout-button" class="outline-button" type="button">
-          Log out
-        </button>
-      </div>
-
-      <div class="count-card">
-        <div>
-          <strong id="prayer-count">0</strong>
-          <span>prayers received</span>
+        <div class="prayer-count-card">
+          <span class="count-number" id="prayer-count">0</span>
+          <span class="count-label">prayers received</span>
         </div>
       </div>
 
-      <div id="prayer-tabs" class="prayer-tabs" aria-label="Filter prayers">
-        <button type="button" class="prayer-tab active" data-filter="all" aria-pressed="true">
-          All
-        </button>
-        <button type="button" class="prayer-tab" data-filter="unread" aria-pressed="false">
-          Unread
-        </button>
-        <button type="button" class="prayer-tab" data-filter="read" aria-pressed="false">
-          Read
-        </button>
+      <div class="dashboard-divider"></div>
+
+      <div class="list-heading">
+        <div>
+          <span class="eyebrow">YOUR COLLECTION</span>
+          <h2>All your prayers<span class="heading-period">.</span></h2>
+        </div>
       </div>
 
-      <div id="prayer-list" class="prayer-list"></div>
-      <div id="dashboard-status" class="status" role="status" aria-live="polite"></div>
-    </section>
+      <div id="prayer-tabs" class="prayer-tabs" role="group" aria-label="Filter prayers">
+        <button type="button" data-filter="all" class="filter-tab active" aria-pressed="true">All</button>
+        <button type="button" data-filter="unread" class="filter-tab" aria-pressed="false">Unread</button>
+        <button type="button" data-filter="read" class="filter-tab" aria-pressed="false">Read</button>
+      </div>
 
-    <footer>
-      <span aria-hidden="true">☾</span>
-      <p>May every prayer carry a little goodness.</p>
-      <small>Kiriman Doa</small>
-    </footer>
+      <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
+      <div id="prayer-list" class="prayer-list"></div>
+    </section>
   </main>
 
-  <script type="module" src="app.js"></script>
-</body>
-</html>
-
-  <script type="module" src="app.js"></script>
+  <footer class="site-footer">
+    <a class="footer-brand" href="#">kiriman doa<span class="brand-period">.</span></a>
+    <p>May every prayer carry a little goodness.</p>
+    <span class="footer-heart" aria-hidden="true">♡</span>
+  </footer>
 </body>
 </html>
