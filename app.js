@@ -17,13 +17,19 @@ let currentFilter = "all";
 let publicStatusCache = [];
 let publicStatusLoaded = false;
 
-/* GENERAL */
+/* NAVIGATION */
 
 function showSection(id) {
   ["send-section", "login-section", "dashboard-section"].forEach(
     (sectionId) => {
       $(sectionId).classList.toggle("hidden", sectionId !== id);
     }
+  );
+
+  // Hide the public header only when the recipient dashboard is open.
+  $("site-header").classList.toggle(
+    "hidden",
+    id === "dashboard-section"
   );
 
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -68,7 +74,7 @@ function setBusy(form, busy) {
   if (button) button.disabled = busy;
 }
 
-/* NAVIGATION */
+/* HEADER NAVIGATION */
 
 $("nav-login").addEventListener("click", () => {
   status("login-status", "");
@@ -191,9 +197,19 @@ $("login-form").addEventListener("submit", async (event) => {
 /* LOG OUT */
 
 $("logout-button").addEventListener("click", async () => {
-  const { error } = await supabase.auth.signOut();
+  const button = $("logout-button");
+  button.disabled = true;
 
-  if (error) {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    currentPrayers = [];
+    currentFilter = "all";
+
+    showSection("send-section");
+  } catch (error) {
     console.error("Log out:", error);
 
     status(
@@ -201,12 +217,9 @@ $("logout-button").addEventListener("click", async () => {
       "Couldn't log out. Please try again.",
       true
     );
-
-    return;
+  } finally {
+    button.disabled = false;
   }
-
-  currentPrayers = [];
-  showSection("send-section");
 });
 
 /* FILTER TABS */
@@ -476,7 +489,7 @@ async function renderDashboard() {
 }
 
 /* PUBLIC PRAYER STATUS
-   This calls the metadata-only RPC, not a public table query.
+   The RPC returns metadata only, not prayer text.
 */
 
 $("load-public-status").addEventListener("click", loadPublicStatus);
@@ -598,6 +611,11 @@ async function init() {
   supabase.auth.onAuthStateChange((event, session) => {
     if (event === "SIGNED_IN" && session) {
       renderDashboard();
+    }
+
+    if (event === "SIGNED_OUT") {
+      currentPrayers = [];
+      showSection("send-section");
     }
   });
 }
