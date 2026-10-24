@@ -18,7 +18,8 @@
 </head>
 
 <body>
-  <header class="site-header">
+  <!-- PUBLIC HEADER -->
+  <header id="site-header" class="site-header">
     <a class="brand" href="#" aria-label="Kiriman Doa home">
       <span class="brand-name">kiriman doa<span class="brand-period">.</span></span>
     </a>
@@ -47,11 +48,23 @@
           We'll carry them with us to Tanah Suci.
         </p>
 
-        <div class="hero-decoration" aria-hidden="true">
-          <div class="islamic-star"></div>
+        <!-- Quran illustration made entirely with CSS -->
+        <div class="quran-illustration" aria-hidden="true">
+          <div class="quran-book">
+            <div class="quran-cover">
+              <div class="quran-border">
+                <span class="quran-ornament">۞</span>
+                <div class="quran-title-lines"></div>
+                <span class="quran-ornament bottom-ornament">۞</span>
+              </div>
+            </div>
+            <div class="quran-pages"></div>
+            <div class="quran-book-shadow"></div>
+          </div>
         </div>
       </section>
 
+      <!-- SEND FORM -->
       <section class="form-panel">
         <div class="section-heading">
           <span class="eyebrow">YOUR WORDS MATTER</span>
@@ -93,9 +106,7 @@
               placeholder="Write your prayer here..."
               required
             ></textarea>
-            <div class="field-note">
-              Take your time. Write from the heart.
-            </div>
+            <div class="field-note">Take your time. Write from the heart.</div>
           </div>
 
           <button class="primary-button submit-button" type="submit">
@@ -150,8 +161,6 @@
       </button>
 
       <div class="auth-card">
-        <div class="auth-ornament" aria-hidden="true">۞</div>
-
         <span class="eyebrow">YOUR PERSONAL SPACE</span>
         <h1>Welcome back<span class="heading-period">.</span></h1>
         <p class="auth-description">
@@ -193,7 +202,7 @@
       </div>
     </section>
 
-    <!-- RECIPIENT DASHBOARD -->
+    <!-- PRIVATE RECIPIENT DASHBOARD -->
     <section id="dashboard-section" class="page-section dashboard-section hidden">
       <div class="dashboard-topbar">
         <div>
