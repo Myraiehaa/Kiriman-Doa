@@ -30,8 +30,10 @@
   </header>
 
   <main>
-    <!-- HOME AND SEND PRAYER -->
+    <!-- HOME -->
     <section id="send-section" class="page-section">
+
+      <!-- HERO -->
       <section class="hero">
         <div class="hero-label">
           <span class="label-line"></span>
@@ -48,7 +50,7 @@
           We'll carry them with us to Tanah Suci.
         </p>
 
-        <!-- Quran illustration made entirely with CSS -->
+        <!-- CSS-ONLY QURAN ILLUSTRATION -->
         <div class="quran-illustration" aria-hidden="true">
           <div class="quran-book">
             <div class="quran-cover">
@@ -64,7 +66,7 @@
         </div>
       </section>
 
-      <!-- SEND FORM -->
+      <!-- SEND PRAYER -->
       <section class="form-panel">
         <div class="section-heading">
           <span class="eyebrow">YOUR WORDS MATTER</span>
@@ -113,7 +115,12 @@
             <span>Send prayer</span>
           </button>
 
-          <p id="send-status" class="status-message" role="status" aria-live="polite"></p>
+          <p
+            id="send-status"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+          ></p>
         </form>
       </section>
 
@@ -136,14 +143,21 @@
             >
           </div>
 
-          <button id="load-public-status" class="secondary-button" type="button">
+          <button
+            id="load-public-status"
+            class="secondary-button"
+            type="button"
+          >
             Check status
           </button>
         </div>
 
-        <p id="public-status-message" class="status-message" role="status" aria-live="polite">
-          Check the latest prayer status here.
-        </p>
+        <p
+          id="public-status-message"
+          class="status-message"
+          role="status"
+          aria-live="polite"
+        >Check the latest prayer status here.</p>
 
         <div id="public-status-list" class="public-status-list"></div>
 
@@ -156,12 +170,14 @@
     <!-- LOGIN -->
     <section id="login-section" class="page-section auth-section hidden">
       <button id="back-to-form" class="back-button" type="button">
-       Back to home
+        Back to home
       </button>
 
       <div class="auth-card">
         <span class="eyebrow">YOUR PERSONAL SPACE</span>
+
         <h1>Welcome back<span class="heading-period">.</span></h1>
+
         <p class="auth-description">
           Log in to read the prayers sent just for you.
         </p>
@@ -195,21 +211,33 @@
             <span>Log in</span>
           </button>
 
-          <p id="login-status" class="status-message" role="status" aria-live="polite"></p>
+          <p
+            id="login-status"
+            class="status-message"
+            role="status"
+            aria-live="polite"
+          ></p>
         </form>
       </div>
     </section>
 
     <!-- PRIVATE RECIPIENT DASHBOARD -->
     <section id="dashboard-section" class="page-section dashboard-section hidden">
+
       <div class="dashboard-topbar">
         <div>
           <span class="eyebrow">YOUR PERSONAL SPACE</span>
-          <p class="dashboard-brand">kiriman doa<span class="brand-period">.</span></p>
+          <p class="dashboard-brand">
+            kiriman doa<span class="brand-period">.</span>
+          </p>
         </div>
 
-        <button id="logout-button" class="secondary-button logout-button" type="button">
-          Log out 
+        <button
+          id="logout-button"
+          class="secondary-button logout-button"
+          type="button"
+        >
+          Log out
         </button>
       </div>
 
@@ -235,20 +263,52 @@
         </div>
       </div>
 
-      <div id="prayer-tabs" class="prayer-tabs" role="group" aria-label="Filter prayers">
-        <button type="button" data-filter="all" class="filter-tab active" aria-pressed="true">All</button>
-        <button type="button" data-filter="unread" class="filter-tab" aria-pressed="false">Unread</button>
-        <button type="button" data-filter="read" class="filter-tab" aria-pressed="false">Read</button>
+      <div
+        id="prayer-tabs"
+        class="prayer-tabs"
+        role="group"
+        aria-label="Filter prayers"
+      >
+        <button
+          type="button"
+          data-filter="all"
+          class="filter-tab active"
+          aria-pressed="true"
+        >All</button>
+
+        <button
+          type="button"
+          data-filter="unread"
+          class="filter-tab"
+          aria-pressed="false"
+        >Unread</button>
+
+        <button
+          type="button"
+          data-filter="read"
+          class="filter-tab"
+          aria-pressed="false"
+        >Read</button>
       </div>
 
-      <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
+      <p
+        id="dashboard-status"
+        class="status-message"
+        role="status"
+        aria-live="polite"
+      ></p>
+
       <div id="prayer-list" class="prayer-list"></div>
     </section>
   </main>
 
+  <!-- FOOTER -->
   <footer class="site-footer">
-    <a class="footer-brand" href="#">kiriman doa<span class="brand-period">.</span></a>
+    <a class="footer-brand" href="#">
+      kiriman doa<span class="brand-period">.</span>
+    </a>
     <p>May every prayer be carried with sincerity.</p>
   </footer>
 </body>
 </html>
+
