@@ -91,11 +91,13 @@ async function loadRecipients() {
 
   if (error) {
     console.error("Load recipients:", error);
+
     status(
       "send-status",
       "Couldn't load names. Please refresh.",
       true
     );
+
     return;
   }
 
@@ -143,6 +145,7 @@ $("prayer-form").addEventListener("submit", async (event) => {
     }
   } catch (error) {
     console.error("Send prayer:", error);
+
     status(
       "send-status",
       "Couldn't send your prayer. Please try again.",
@@ -174,6 +177,7 @@ $("login-form").addEventListener("submit", async (event) => {
     await renderDashboard();
   } catch (error) {
     console.error("Login:", error);
+
     status(
       "login-status",
       "Incorrect email or password. Please try again.",
@@ -191,7 +195,13 @@ $("logout-button").addEventListener("click", async () => {
 
   if (error) {
     console.error("Log out:", error);
-    status("dashboard-status", "Couldn't log out. Try again.", true);
+
+    status(
+      "dashboard-status",
+      "Couldn't log out. Please try again.",
+      true
+    );
+
     return;
   }
 
@@ -306,6 +316,7 @@ function openPrayer(prayer) {
   card.className = "prayer-card prayer-detail";
 
   const sender = safeText("h3", "detail-sender", prayer.sender_name);
+
   const date = safeText(
     "time",
     "detail-date",
@@ -354,9 +365,10 @@ function openPrayer(prayer) {
 
       status(
         "dashboard-status",
-        "Couldn't update status. Check your access policies and try again.",
+        "Couldn't update status. Please check access policies.",
         true
       );
+
       return;
     }
 
@@ -441,6 +453,7 @@ async function renderDashboard() {
       "Couldn't load prayers. Please refresh.",
       true
     );
+
     return;
   }
 
@@ -462,7 +475,9 @@ async function renderDashboard() {
   renderPrayerList();
 }
 
-/* PUBLIC PRAYER STATUS: METADATA ONLY */
+/* PUBLIC PRAYER STATUS
+   This calls the metadata-only RPC, not a public table query.
+*/
 
 $("load-public-status").addEventListener("click", loadPublicStatus);
 
@@ -519,6 +534,7 @@ function renderPublicStatus() {
       "public-status-message",
       query ? "No matching names found." : "No prayers to show yet."
     );
+
     return;
   }
 
