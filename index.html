@@ -42,21 +42,21 @@
       </h1>
 
       <p class="hero-copy">
-        Ada doa yang ingin dititipkan? Tuliskan di sini,
-        InSya-Allah kami bawa bersama dalam perjalanan Umrah.
+        Ada doa yang nak dititipkan? Tulis dekat sini.
+        Insya-Allah, doa awak akan dibawa bersama ke Tanah Suci.
       </p>
 
       <div class="hero-rule"><span>✦</span></div>
     </section>
 
-    <!-- BORANG KIRIMAN DOA -->
+    <!-- BORANG KIRIMAN DOA DAN STATUS AWAM -->
     <section id="send-section" class="panel">
+
       <div class="section-heading">
         <span class="step">01</span>
-
         <div>
           <h2>Titipkan doa</h2>
-          <p>Isi maklumat di bawah untuk menghantar kiriman.</p>
+          <p>Isi maklumat dekat bawah untuk kirim doa.</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@
           required
         >
 
-        <label for="recipient">Nak titipkan doa kepada siapa?</label>
+        <label for="recipient">Nak kirim doa untuk siapa?</label>
         <select id="recipient" name="recipient" required>
           <option value="">Pilih nama</option>
         </select>
@@ -83,16 +83,16 @@
           name="prayer"
           rows="6"
           maxlength="3000"
-          placeholder="Tuliskan doa atau pesanan awak di sini…"
+          placeholder="Tulis doa atau pesanan awak dekat sini..."
           required
         ></textarea>
 
         <p class="privacy-note">
-          Kiriman ini hanya boleh dibaca oleh penerima yang dipilih.
+          Isi doa hanya boleh dibaca oleh penerima yang dipilih.
         </p>
 
         <button class="primary-button" type="submit">
-          Hantar kiriman doa <span>↗</span>
+          Hantar kiriman doa
         </button>
       </form>
 
@@ -102,16 +102,57 @@
         role="status"
         aria-live="polite"
       ></div>
+
+      <!-- STATUS KIRIMAN AWAM -->
+      <section id="public-status-section" class="public-status-section">
+
+        <div class="section-heading">
+          <span class="step">02</span>
+          <div>
+            <h2>Semak status doa</h2>
+            <p>
+              Dah kirim doa? Cari nama untuk tengok status bacaan.
+            </p>
+          </div>
+        </div>
+
+        <label for="public-status-search">Cari nama</label>
+        <input
+          id="public-status-search"
+          type="search"
+          placeholder="Taip nama pengirim atau penerima..."
+          autocomplete="off"
+        >
+
+        <button
+          id="load-public-status"
+          class="primary-button"
+          type="button"
+        >
+          Semak status
+        </button>
+
+        <div
+          id="public-status-list"
+          class="public-status-list"
+        ></div>
+
+        <div
+          id="public-status-message"
+          class="status"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </section>
     </section>
 
     <!-- LOGIN PENERIMA -->
     <section id="login-section" class="panel hidden">
       <div class="section-heading">
-        <span class="step">02</span>
-
+        <span class="step">03</span>
         <div>
           <h2>Ruang penerima</h2>
-          <p>Doa-doa yang menanti untuk dibacakan di Tanah Suci.</p>
+          <p>Log masuk untuk baca doa yang orang kirim untuk awak.</p>
         </div>
       </div>
 
@@ -135,7 +176,7 @@
         >
 
         <button class="primary-button" type="submit">
-          Log masuk <span>↗</span>
+          Log masuk
         </button>
       </form>
 
@@ -151,7 +192,7 @@
         class="text-button back-button"
         type="button"
       >
-        ← Kembali ke borang kiriman doa
+        ← Kembali ke halaman utama
       </button>
     </section>
 
@@ -176,7 +217,6 @@
         </button>
       </div>
 
-      <!-- JUMLAH KIRIMAN -->
       <div class="count-card">
         <div>
           <strong id="prayer-count">0</strong>
@@ -184,7 +224,7 @@
         </div>
       </div>
 
-      <!-- TAB STATUS BACAAN -->
+      <!-- FILTER STATUS BACAAN -->
       <div id="prayer-tabs" class="prayer-tabs">
         <button
           type="button"
@@ -214,7 +254,7 @@
         </button>
       </div>
 
-      <!-- SENARAI NAMA PENGIRIM -->
+      <!-- SENARAI PENGIRIM -->
       <div id="prayer-list" class="prayer-list"></div>
 
       <div
@@ -225,49 +265,10 @@
       ></div>
     </section>
 
-    <!-- STATUS KIRIMAN AWAM -->
-    <section id="public-status-section" class="panel">
-      <div class="section-heading">
-        <span class="step">03</span>
-
-        <div>
-          <h2>Status kiriman</h2>
-          <p>
-            Semak sama ada doa yang dititipkan sudah dibaca oleh penerima.
-          </p>
-        </div>
-      </div>
-
-      <p class="privacy-note">
-        Bahagian ini memaparkan nama pengirim, penerima, tarikh dan status
-        bacaan sahaja. Isi doa tidak dipaparkan.
-      </p>
-
-      <button
-        id="load-public-status"
-        class="primary-button"
-        type="button"
-      >
-        Semak status kiriman
-      </button>
-
-      <div
-        id="public-status-list"
-        class="public-status-list"
-      ></div>
-
-      <div
-        id="public-status-message"
-        class="status"
-        role="status"
-        aria-live="polite"
-      ></div>
-    </section>
-
     <!-- FOOTER -->
     <footer>
       <span>☾</span>
-      <p>Semoga setiap doa yang dititipkan menjadi kebaikan buat semua.</p>
+      <p>Semoga setiap doa yang dititipkan membawa kebaikan buat semua.</p>
       <small>Kiriman Doa Umrah</small>
     </footer>
 
