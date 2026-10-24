@@ -210,3 +210,102 @@ button:focus-visible {
   }
 }
 
+/* Prayer status tabs */
+.prayer-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+  padding-bottom: 4px;
+}
+
+.prayer-tab {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 15px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prayer-tab.active {
+  background: var(--sage);
+  border-color: var(--sage);
+  color: white;
+}
+
+/* Prayer detail */
+.detail-read-status {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.prayer-detail .primary-button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.prayer-detail .primary-button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+/* Public status list */
+.public-status-list {
+  display: grid;
+  gap: 0;
+  margin-top: 18px;
+}
+
+.public-status-card {
+  display: grid;
+  gap: 5px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.public-status-sender {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.public-status-recipient,
+.public-status-date,
+.public-status-read-time {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.public-read-badge,
+.public-unread-badge {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 5px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.public-read-badge {
+  background: var(--sage-light);
+  color: var(--sage);
+}
+
+.public-unread-badge {
+  background: #f4ead6;
+  color: #80652e;
+}
+
+#load-public-status:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+
