@@ -12,46 +12,35 @@ const supabase = createClient(
 
 const $ = (id) => document.getElementById(id);
 
-const sections = [
-  "send-section",
-  "login-section",
-  "dashboard-section"
-];
-
 let currentPrayers = [];
-let currentRecipientName = "";
 let currentFilter = "all";
-let currentPrayerView = "list";
+let publicStatusCache = [];
+let publicStatusLoaded = false;
 
 function showSection(id) {
-  sections.forEach((section) => {
-    $(section).classList.toggle("hidden", section !== id);
-  });
+  ["send-section", "login-section", "dashboard-section"].forEach(
+    (sectionId) => {
+      $(sectionId).classList.toggle("hidden", sectionId !== id);
+    }
+  );
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function status(id, message, isError = false) {
-  const node = $(id);
-  node.textContent = message;
-  node.classList.toggle("error", isError);
-}
-
-function setBusy(form, busy) {
-  const button = form.querySelector('button[type="submit"]');
-  if (button) button.disabled = busy;
+  const element = $(id);
+  element.textContent = message;
+  element.classList.toggle("error", isError);
 }
 
 function safeText(tag, className, value) {
-  const node = document.createElement(tag);
-
-  if (className) node.className = className;
-
-  node.textContent = value ?? "";
-  return node;
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = value ?? "";
+  return element;
 }
 
-function formatDate(value, includeTime = true) {
+function formatDate(value) {
   if (!value) return "Tarikh tidak tersedia";
 
   const date = new Date(value);
@@ -64,10 +53,14 @@ function formatDate(value, includeTime = true) {
     day: "numeric",
     month: "short",
     year: "numeric",
-    ...(includeTime
-      ? { hour: "2-digit", minute: "2-digit" }
-      : {})
+    hour: "2-digit",
+    minute: "2-digit"
   });
+}
+
+function setBusy(form, busy) {
+  const button = form.querySelector('button[type="submit"]');
+  if (button) button.disabled = busy;
 }
 
 /* NAVIGATION */
@@ -81,7 +74,7 @@ $("back-to-form").addEventListener("click", () => {
   showSection("send-section");
 });
 
-/* LOAD RECIPIENTS */
+/* RECIPIENTS */
 
 async function loadRecipients() {
   const select = $("recipient");
@@ -92,10 +85,10 @@ async function loadRecipients() {
     .order("display_name");
 
   if (error) {
-    console.error("Load recipients:", error);
+    console.error(error);
     status(
       "send-status",
-      "Tak dapat memuatkan senarai penerima.",
+      "Tak dapat muatkan senarai nama. Cuba refresh halaman.",
       true
     );
     return;
@@ -104,9 +97,7 @@ async function loadRecipients() {
   select.replaceChildren(new Option("Pilih nama", ""));
 
   for (const recipient of data ?? []) {
-    select.add(
-      new Option(recipient.display_name, recipient.id)
-    );
+    select.add(new Option(recipient.display_name, recipient.id));
   }
 }
 
@@ -128,37 +119,31 @@ $("prayer-form").addEventListener("submit", async (event) => {
     !Number.isSafeInteger(recipient_id) ||
     recipient_id <= 0
   ) {
-    status(
-      "send-status",
-      "Sila lengkapkan semua ruangan.",
-      true
-    );
+    status("send-status", "Lengkapkan semua ruangan dulu ya.", true);
     return;
   }
 
   setBusy(form, true);
-  status("send-status", "Sedang menghantar doa…");
+  status("send-status", "Sedang hantar doa…");
 
   try {
     const { error } = await supabase
       .from("prayers")
-      .insert({
-        sender_name,
-        prayer,
-        recipient_id
-      });
+      .insert({ sender_name, prayer, recipient_id });
 
     if (error) throw error;
 
     form.reset();
     status("send-status", "");
 
-    // Popup ringkas tanpa emoji.
     window.alert("Doa dah selamat dihantar.");
 
+    // Refresh status if the public list has already been opened.
+    if (publicStatusLoaded) {
+      await loadPublicStatus();
+    }
   } catch (error) {
-    console.error("Send prayer:", error);
-
+    console.error(error);
     status(
       "send-status",
       "Doa tak berjaya dihantar. Cuba sekali lagi.",
@@ -175,7 +160,6 @@ $("login-form").addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const form = event.currentTarget;
-
   setBusy(form, true);
   status("login-status", "Sedang log masuk…");
 
@@ -189,10 +173,8 @@ $("login-form").addEventListener("submit", async (event) => {
 
     status("login-status", "");
     await renderDashboard();
-
   } catch (error) {
-    console.error("Login:", error);
-
+    console.error(error);
     status(
       "login-status",
       "Tak dapat log masuk. Semak e-mel dan kata laluan.",
@@ -209,44 +191,38 @@ $("logout-button").addEventListener("click", async () => {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    console.error("Logout:", error);
-    status("dashboard-status", "Tak dapat log keluar.", true);
+    status("dashboard-status", "Tak dapat log keluar. Cuba lagi.", true);
     return;
   }
 
   currentPrayers = [];
-  currentPrayerView = "list";
   showSection("send-section");
 });
 
-/* FILTER TABS */
+/* PRAYER FILTERS */
 
 $("prayer-tabs").addEventListener("click", (event) => {
-  const button = event.target.closest("[data-filter]");
+  const tab = event.target.closest("[data-filter]");
+  if (!tab) return;
 
-  if (!button) return;
+  currentFilter = tab.dataset.filter;
 
-  currentFilter = button.dataset.filter;
-
-  $("prayer-tabs")
-    .querySelectorAll("[data-filter]")
-    .forEach((tab) => {
-      const active = tab === button;
-
-      tab.classList.toggle("active", active);
-      tab.setAttribute("aria-pressed", String(active));
-    });
+  $("prayer-tabs").querySelectorAll("[data-filter]").forEach((button) => {
+    const active = button === tab;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
 
   renderPrayerList();
 });
 
 function getFilteredPrayers() {
   if (currentFilter === "unread") {
-    return currentPrayers.filter((prayer) => !prayer.is_read);
+    return currentPrayers.filter((item) => !item.is_read);
   }
 
   if (currentFilter === "read") {
-    return currentPrayers.filter((prayer) => prayer.is_read);
+    return currentPrayers.filter((item) => item.is_read);
   }
 
   return currentPrayers;
@@ -257,7 +233,6 @@ function getFilteredPrayers() {
 function renderPrayerList() {
   const list = $("prayer-list");
   list.replaceChildren();
-  currentPrayerView = "list";
 
   const prayers = getFilteredPrayers();
 
@@ -267,18 +242,14 @@ function renderPrayerList() {
 
     const message =
       currentFilter === "unread"
-        ? "Tiada doa yang belum dibaca."
+        ? "Semua doa dah dibaca."
         : currentFilter === "read"
-          ? "Belum ada doa yang ditandakan sebagai dibaca."
+          ? "Belum ada doa yang ditandakan dah dibaca."
           : "Belum ada kiriman doa.";
 
     empty.append(
       safeText("strong", "", message),
-      safeText(
-        "p",
-        "",
-        "Kiriman doa akan muncul di sini apabila diterima."
-      )
+      safeText("p", "", "Bila ada kiriman baru, nama pengirim akan muncul dekat sini.")
     );
 
     list.append(empty);
@@ -287,81 +258,50 @@ function renderPrayerList() {
 
   for (const prayer of prayers) {
     const button = document.createElement("button");
-
     button.type = "button";
     button.className = "sender-row";
 
     const info = document.createElement("span");
     info.className = "sender-info";
 
-    const sender = safeText(
-      "strong",
-      "sender-name",
-      prayer.sender_name
+    info.append(
+      safeText("strong", "sender-name", prayer.sender_name),
+      safeText(
+        "small",
+        "sender-hint",
+        `${formatDate(prayer.created_at)} · ${
+          prayer.is_read ? "Dah dibaca" : "Belum dibaca"
+        }`
+      )
     );
 
-    const hint = safeText(
-      "small",
-      "sender-hint",
-      `${formatDate(prayer.created_at)} · ${
-        prayer.is_read ? "Dah dibaca" : "Belum dibaca"
-      }`
+    button.append(
+      info,
+      safeText("span", "sender-arrow", "→")
     );
 
-    info.append(sender, hint);
-
-    const arrow = safeText("span", "sender-arrow", "→");
-
-    button.append(info, arrow);
-
-    button.addEventListener("click", () => {
-      openPrayer(prayer);
-    });
-
+    button.addEventListener("click", () => openPrayer(prayer));
     list.append(button);
   }
 }
 
-/* OPEN A PRAYER */
+/* PRAYER DETAILS */
 
 function openPrayer(prayer) {
   const list = $("prayer-list");
-
   list.replaceChildren();
-  currentPrayerView = "detail";
 
   const back = document.createElement("button");
   back.type = "button";
   back.className = "text-button prayer-back";
   back.textContent = "← Kembali ke senarai";
-
-  back.addEventListener("click", () => {
-    renderPrayerList();
-  });
+  back.addEventListener("click", renderPrayerList);
 
   const card = document.createElement("article");
   card.className = "prayer-card prayer-detail";
 
-  const sender = safeText(
-    "h3",
-    "detail-sender",
-    prayer.sender_name
-  );
-
-  const date = safeText(
-    "time",
-    "detail-date",
-    formatDate(prayer.created_at)
-  );
-
-  const divider = document.createElement("hr");
-
-  const text = safeText(
-    "p",
-    "prayer-text",
-    prayer.prayer
-  );
-
+  const heading = safeText("h3", "detail-sender", prayer.sender_name);
+  const date = safeText("time", "detail-date", formatDate(prayer.created_at));
   const readStatus = safeText(
     "p",
     "detail-read-status",
@@ -369,30 +309,26 @@ function openPrayer(prayer) {
       ? `Dah dibaca${prayer.read_at ? ` · ${formatDate(prayer.read_at)}` : ""}`
       : "Belum dibaca"
   );
+  const divider = document.createElement("hr");
+  const text = safeText("p", "prayer-text", prayer.prayer);
 
-  const readButton = document.createElement("button");
-  readButton.type = "button";
-  readButton.className = "primary-button";
-
-  readButton.textContent = prayer.is_read
-    ? "Doa sudah dibaca"
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "primary-button";
+  button.textContent = prayer.is_read
+    ? "Dah dibaca"
     : "Tandakan sebagai dah dibaca";
+  button.disabled = Boolean(prayer.is_read);
 
-  readButton.disabled = Boolean(prayer.is_read);
-
-  readButton.addEventListener("click", async () => {
-    if (prayer.is_read) return;
-
-    readButton.disabled = true;
-    readButton.textContent = "Menyimpan status…";
-
-    const readAt = new Date().toISOString();
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    button.textContent = "Menyimpan…";
 
     const { data, error } = await supabase
       .from("prayers")
       .update({
         is_read: true,
-        read_at: readAt
+        read_at: new Date().toISOString()
       })
       .eq("id", prayer.id)
       .eq("recipient_id", prayer.recipient_id)
@@ -400,52 +336,38 @@ function openPrayer(prayer) {
       .select("id, is_read, read_at");
 
     if (error || !data?.length) {
-      console.error("Update read status:", error);
-
-      readButton.disabled = false;
-      readButton.textContent = "Cuba tandakan sekali lagi";
-
+      console.error(error);
+      button.disabled = false;
+      button.textContent = "Cuba sekali lagi";
       status(
         "dashboard-status",
-        "Status tak berjaya disimpan. Semak polisi RLS dan cuba lagi.",
+        "Status tak berjaya dikemas kini. Cuba lagi.",
         true
       );
       return;
     }
 
-    prayer.is_read = true;
-    prayer.read_at = data[0].read_at;
-
-    const savedPrayer = currentPrayers.find(
+    const saved = currentPrayers.find(
       (item) => String(item.id) === String(prayer.id)
     );
 
-    if (savedPrayer) {
-      savedPrayer.is_read = true;
-      savedPrayer.read_at = data[0].read_at;
+    if (saved) {
+      saved.is_read = true;
+      saved.read_at = data[0].read_at;
     }
 
-    $("prayer-count").textContent = String(currentPrayers.length);
+    status("dashboard-status", "Status bacaan dah dikemas kini.");
+    renderPrayerList();
 
-    status("dashboard-status", "Status bacaan berjaya dikemas kini.");
-
-    openPrayer(savedPrayer ?? prayer);
+    // Reopen the selected prayer so the recipient sees the updated status.
+    if (saved) openPrayer(saved);
   });
 
-  card.append(
-    sender,
-    date,
-    readStatus,
-    divider,
-    text,
-    document.createElement("br"),
-    readButton
-  );
-
+  card.append(heading, date, readStatus, divider, text, button);
   list.append(back, card);
 }
 
-/* LOAD RECIPIENT DASHBOARD */
+/* RECIPIENT DASHBOARD */
 
 async function renderDashboard() {
   const {
@@ -465,72 +387,57 @@ async function renderDashboard() {
     .maybeSingle();
 
   if (accountError || !account) {
-    console.error("Recipient account:", accountError);
-
+    console.error(accountError);
     status(
       "login-status",
-      "Akaun ini belum dipautkan kepada penerima.",
+      "Akaun ini belum dipautkan kepada nama penerima.",
       true
     );
-
     showSection("login-section");
     return;
   }
 
-  const recipientId = account.recipient_id;
-  currentRecipientName =
-    account.recipients?.display_name ?? "Penerima";
-
   $("welcome-title").textContent =
-    `Assalamualaikum, ${currentRecipientName}`;
+    `Assalamualaikum, ${account.recipients?.display_name ?? "awak"}`;
 
   $("dashboard-subtitle").textContent =
-    "Doa-doa yang orang kirim untuk dibacakan di Tanah Suci.";
+    "Jom baca doa yang orang titipkan untuk awak.";
 
   showSection("dashboard-section");
-  status("dashboard-status", "Memuatkan kiriman…");
+  status("dashboard-status", "Memuatkan doa…");
 
-  const { data: prayers, error } = await supabase
+  const { data, error } = await supabase
     .from("prayers")
     .select("id, recipient_id, sender_name, prayer, created_at, is_read, read_at")
-    .eq("recipient_id", recipientId)
+    .eq("recipient_id", account.recipient_id)
     .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Load prayers:", error);
-
+    console.error(error);
     $("prayer-count").textContent = "—";
-
     status(
       "dashboard-status",
-      "Tak dapat memuatkan doa. Semak polisi RLS database.",
+      "Tak dapat muatkan doa. Cuba refresh halaman.",
       true
     );
     return;
   }
 
-  currentPrayers = prayers ?? [];
+  currentPrayers = data ?? [];
   currentFilter = "all";
-
   $("prayer-count").textContent = String(currentPrayers.length);
 
-  $("prayer-tabs")
-    .querySelectorAll("[data-filter]")
-    .forEach((tab) => {
-      const active = tab.dataset.filter === "all";
-
-      tab.classList.toggle("active", active);
-      tab.setAttribute("aria-pressed", String(active));
-    });
+  $("prayer-tabs").querySelectorAll("[data-filter]").forEach((tab) => {
+    const active = tab.dataset.filter === "all";
+    tab.classList.toggle("active", active);
+    tab.setAttribute("aria-pressed", String(active));
+  });
 
   status("dashboard-status", "");
   renderPrayerList();
 }
 
-/* PUBLIC STATUS
-   Calls the metadata-only Supabase RPC function.
-   Never fetches prayer text for the public section.
-*/
+/* PUBLIC STATUS SEARCH */
 
 $("load-public-status").addEventListener("click", loadPublicStatus);
 
@@ -539,9 +446,7 @@ async function loadPublicStatus() {
   const list = $("public-status-list");
 
   button.disabled = true;
-  list.replaceChildren();
-
-  status("public-status-message", "Memuatkan status kiriman…");
+  status("public-status-message", "Memuatkan status…");
 
   try {
     const { data, error } = await supabase.rpc(
@@ -550,73 +455,85 @@ async function loadPublicStatus() {
 
     if (error) throw error;
 
-    if (!data?.length) {
-      status(
-        "public-status-message",
-        "Belum ada status kiriman untuk dipaparkan."
-      );
-      return;
-    }
-
-    for (const item of data) {
-      const card = document.createElement("article");
-      card.className = "public-status-card";
-
-      const sender = safeText(
-        "strong",
-        "public-status-sender",
-        item.sender_name
-      );
-
-      const recipient = safeText(
-        "p",
-        "public-status-recipient",
-        `Penerima: ${item.recipient_name}`
-      );
-
-      const date = safeText(
-        "time",
-        "public-status-date",
-        formatDate(item.created_at)
-      );
-
-      const readStatus = safeText(
-        "span",
-        item.is_read
-          ? "public-read-badge"
-          : "public-unread-badge",
-        item.is_read ? "Dah dibaca" : "Belum dibaca"
-      );
-
-      card.append(sender, recipient, date, readStatus);
-
-      if (item.is_read && item.read_at) {
-        card.append(
-          safeText(
-            "p",
-            "public-status-read-time",
-            `Dibaca pada ${formatDate(item.read_at)}`
-          )
-        );
-      }
-
-      list.append(card);
-    }
-
-    status("public-status-message", "");
-
+    publicStatusCache = data ?? [];
+    publicStatusLoaded = true;
+    renderPublicStatus();
   } catch (error) {
-    console.error("Public prayer status:", error);
-
+    console.error("Public status:", error);
+    list.replaceChildren();
     status(
       "public-status-message",
-      "Status tak dapat dimuatkan. Semak fungsi database dan akses RPC.",
+      "Tak dapat muatkan status sekarang. Cuba lagi nanti.",
       true
     );
   } finally {
     button.disabled = false;
   }
 }
+
+function renderPublicStatus() {
+  const list = $("public-status-list");
+  const query = $("public-status-search")
+    .value.trim()
+    .toLocaleLowerCase("ms-MY");
+
+  list.replaceChildren();
+
+  const results = publicStatusCache.filter((item) => {
+    const sender = (item.sender_name ?? "").toLocaleLowerCase("ms-MY");
+    const recipient = (item.recipient_name ?? "").toLocaleLowerCase("ms-MY");
+
+    return sender.includes(query) || recipient.includes(query);
+  });
+
+  if (!results.length) {
+    status(
+      "public-status-message",
+      query
+        ? "Tak jumpa nama tu. Cuba semak ejaan."
+        : "Belum ada status kiriman untuk dipaparkan."
+    );
+    return;
+  }
+
+  status("public-status-message", "");
+
+  for (const item of results) {
+    const card = document.createElement("article");
+    card.className = "public-status-card";
+
+    card.append(
+      safeText("strong", "public-status-sender", item.sender_name),
+      safeText(
+        "p",
+        "public-status-recipient",
+        `Untuk: ${item.recipient_name}`
+      ),
+      safeText("time", "public-status-date", formatDate(item.created_at)),
+      safeText(
+        "span",
+        item.is_read ? "public-read-badge" : "public-unread-badge",
+        item.is_read ? "Dah dibaca" : "Belum dibaca"
+      )
+    );
+
+    if (item.is_read && item.read_at) {
+      card.append(
+        safeText(
+          "p",
+          "public-status-read-time",
+          `Dibaca pada ${formatDate(item.read_at)}`
+        )
+      );
+    }
+
+    list.append(card);
+  }
+}
+
+$("public-status-search").addEventListener("input", () => {
+  if (publicStatusLoaded) renderPublicStatus();
+});
 
 /* INITIALISE */
 
@@ -628,9 +545,7 @@ async function init() {
     error
   } = await supabase.auth.getSession();
 
-  if (error) {
-    console.error("Get session:", error);
-  }
+  if (error) console.error(error);
 
   if (session) {
     await renderDashboard();
@@ -638,8 +553,8 @@ async function init() {
     showSection("send-section");
   }
 
-  supabase.auth.onAuthStateChange((event, sessionNow) => {
-    if (event === "SIGNED_IN" && sessionNow) {
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_IN" && session) {
       renderDashboard();
     }
   });
