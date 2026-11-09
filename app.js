@@ -52,11 +52,11 @@ const translations = {
 
         heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN IMAN",
         heroTitle: "Kiriman Doa<br><span>ke Tanah Suci.</span>",
-        heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Tanah Suci.",
+        heroDescription: "Kirimkan doa anda di sini. Insya-Allah, doa ini akan dibaca Tanah Suci.",
 
         sendEyebrow: "KIRIMAN ANDA",
         sendTitle: "Kirimkan doa<span>.</span>",
-        sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.",
+        sendDescription: "Tuliskan doa yang ingin dibacakan di Tanah Suci.",
 
         yourName: "Nama anda",
         sendTo: "Kirim kepada",
@@ -76,7 +76,7 @@ const translations = {
 
         loginEyebrow: "RUANG PERIBADI ANDA",
         loginTitle: "Selamat kembali<span>.</span>",
-        loginDescription: "Log masuk untuk membaca doa yang dikirimkan khas buat anda.",
+        loginDescription: "Log masuk untuk membaca doa yang dikirimkan kepada anda.",
         loginAs: "Log masuk sebagai",
         password: "Kata laluan",
         loginButton: "Log masuk",
@@ -85,7 +85,7 @@ const translations = {
         logout: "Log keluar",
 
         prayerCollection: "KOLEKSI DOA ANDA",
-        dashboardDescription: "Doa yang telah dikirimkan khas buat anda.",
+        dashboardDescription: "Doa yang telah dikirimkan kepada anda.",
         prayersReceived: "Doa diterima",
 
         yourCollection: "KOLEKSI ANDA",
@@ -179,11 +179,11 @@ const translations = {
 
         heroLabel: "A JOURNEY OF FAITH",
         heroTitle: "Dua' Requests<br><span>to Makkah.</span>",
-        heroDescription: "Leave your Dua' here. InSya-Allah, it will be carried to the Holy Land.",
+        heroDescription: "Leave your Dua' here. InSya-Allah, it will be carried to the Haramain.",
 
         sendEyebrow: "YOUR MESSAGE",
         sendTitle: "Send a Dua'<span>.</span>",
-        sendDescription: "Write a Dua' you would like to be carried and recited in the Holy Land.",
+        sendDescription: "Write a Dua' you would like to be carried and recited in the Haramain.",
 
         yourName: "Your name",
         sendTo: "Send to",
@@ -203,7 +203,7 @@ const translations = {
 
         loginEyebrow: "YOUR PERSONAL SPACE",
         loginTitle: "Welcome back<span>.</span>",
-        loginDescription: "Log in to read the Dua' sent especially for you.",
+        loginDescription: "Log in to read the Dua' sent for you.",
         loginAs: "Log in as",
         password: "Password",
         loginButton: "Login",
@@ -212,7 +212,7 @@ const translations = {
         logout: "Log out",
 
         prayerCollection: "YOUR DUA' COLLECTION",
-        dashboardDescription: "Dua' sent especially for you.",
+        dashboardDescription: "Dua' sent for you.",
         prayersReceived: "Dua' received",
 
         yourCollection: "YOUR COLLECTION",
