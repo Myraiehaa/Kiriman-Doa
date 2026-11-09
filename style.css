@@ -1,29 +1,45 @@
+/* =========================
+   1. THEME COLOURS
+========================= */
 
 :root {
   --bg: #F8F5ED;
   --surface: #FFFEFA;
-  --surface-pink: #F0E9DC;
-  --rose: #C9B89B;
-  --maroon: #70434B;
-  --maroon-dark: #54313A;
-  --sage: #34483B;
+  --surface-soft: #F0E9DC;
   --text: #303B33;
   --muted: #77796F;
   --border: #E5DED1;
-  --white: #FFFFFF;
+  --maroon: #70434B;
+  --maroon-dark: #54313A;
+  --gold: #C9B89B;
   --success-bg: #E5ECE2;
   --success-text: #365640;
   --unread-bg: #F1E5D9;
-  --unread-text: #70434B;
   --danger: #A63F48;
 
   --font-body: "DM Sans", sans-serif;
   --font-heading: "Manrope", sans-serif;
-
-  --radius-sm: 12px;
-  --radius-lg: 28px;
-  --shadow-soft: 0 12px 35px rgba(63, 52, 39, 0.045);
 }
+
+body[data-theme="dark"] {
+  --bg: #171516;
+  --surface: #242022;
+  --surface-soft: #30272A;
+  --text: #F3EEE9;
+  --muted: #B4AAA5;
+  --border: #44383B;
+  --maroon: #B77B86;
+  --maroon-dark: #98616C;
+  --gold: #B89B76;
+  --success-bg: #26392D;
+  --success-text: #B8D6BD;
+  --unread-bg: #3C2B2D;
+  --danger: #F08B91;
+}
+
+/* =========================
+   2. GENERAL
+========================= */
 
 * {
   box-sizing: border-box;
@@ -31,7 +47,6 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -39,10 +54,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  transition: background 0.25s, color 0.25s;
 }
 
 button,
@@ -53,21 +67,12 @@ textarea {
 }
 
 button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 3px solid rgba(112, 67, 75, 0.25);
-  outline-offset: 3px;
+  cursor: pointer;
 }
 
 button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
-  opacity: 0.65;
 }
 
 a {
@@ -79,24 +84,29 @@ a {
   display: none !important;
 }
 
-/* HEADER */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* =========================
+   3. HEADER
+========================= */
 
 .site-header {
   width: min(1120px, calc(100% - 64px));
-  min-height: 88px;
-  margin: 0 auto;
+  min-height: 85px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 15px;
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-}
-
-.brand-name,
+.brand,
 .footer-brand {
   font-family: var(--font-heading);
   font-size: 21px;
@@ -104,196 +114,181 @@ a {
   letter-spacing: -1px;
 }
 
-.brand-period,
-.heading-period {
+.brand span,
+.footer-brand span,
+.dashboard-brand span {
   color: var(--maroon);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.language-switch {
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: var(--surface);
+}
+
+.language-button {
+  min-width: 37px;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.language-button.active {
+  background: var(--maroon);
+  color: white;
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 19px;
 }
 
 .nav-login,
 .secondary-button,
 .back-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 17px;
+  min-height: 42px;
+  padding: 9px 17px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 30px;
   background: var(--surface);
   color: var(--text);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .nav-login:hover,
-.secondary-button:hover {
-  border-color: var(--rose);
-  background: var(--surface-pink);
+.secondary-button:hover,
+.back-button:hover {
+  border-color: var(--gold);
+  background: var(--surface-soft);
 }
 
-.nav-login span,
-.secondary-button span {
-  color: var(--maroon);
-  font-family: Arial, sans-serif;
-}
-
-/* PAGE WIDTH */
+/* =========================
+   4. PAGE LAYOUT
+========================= */
 
 .page-section {
   width: min(1120px, calc(100% - 64px));
-  margin: 0 auto;
+  margin: auto;
 }
 
-/* HERO */
+/* =========================
+   5. HERO
+========================= */
 
 .hero {
   position: relative;
-  isolation: isolate;
   overflow: hidden;
   min-height: 365px;
-  margin-top: 18px;
-  padding: 66px 68px 60px;
-  border: 1px solid rgba(112, 67, 75, 0.09);
-  border-radius: var(--radius-lg);
-  background:
-    radial-gradient(
-      ellipse at 92% 12%,
-      rgba(201, 184, 155, 0.2),
-      transparent 36%
-    ),
-    linear-gradient(125deg, #FFFCF6 0%, #F1EBDD 100%);
+  margin-top: 15px;
+  padding: 65px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: linear-gradient(
+    125deg,
+    var(--surface),
+    var(--surface-soft)
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 570px;
 }
 
 .hero-label,
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   color: var(--maroon);
   font-size: 10px;
-  line-height: 1.5;
   font-weight: 800;
-  letter-spacing: 1.8px;
+  letter-spacing: 1.7px;
 }
 
-.label-line {
-  width: 25px;
-  height: 2px;
-  border-radius: 5px;
-  background: var(--maroon);
-}
-
-.hero-label,
-.hero h1,
-.hero-description {
-  position: relative;
-  z-index: 2;
-}
-
-.hero h1,
-.auth-card h1,
-.dashboard-intro h1 {
-  margin: 24px 0 15px;
+.hero h1 {
+  margin: 25px 0 15px;
   font-family: var(--font-heading);
-  font-size: clamp(40px, 5vw, 66px);
+  font-size: clamp(40px, 5vw, 65px);
   font-weight: 800;
-  letter-spacing: -3.5px;
-  line-height: 1.12;
+  letter-spacing: -3px;
+  line-height: 1.15;
 }
 
-.hero-highlight {
+.hero h1 span {
   color: var(--maroon);
 }
 
 .hero-description {
-  max-width: 430px;
-  margin: 20px 0 0;
-  color: #686D65;
-  font-size: 17px;
-  font-weight: 500;
+  max-width: 440px;
+  color: var(--muted);
+  font-size: 16px;
   line-height: 1.9;
 }
 
-/* CSS-ONLY QURAN ILLUSTRATION */
+/* Quran illustration */
 
 .quran-illustration {
   position: absolute;
-  z-index: 1;
-  right: 7%;
+  right: 9%;
   bottom: 35px;
-  width: 150px;
-  height: 170px;
+  width: 145px;
+  height: 165px;
   display: grid;
   place-items: center;
-  pointer-events: none;
 }
 
 .quran-book {
   position: relative;
-  width: 102px;
-  height: 132px;
+  width: 100px;
+  height: 130px;
   transform: rotate(-8deg);
-  filter: drop-shadow(9px 12px 8px rgba(48, 39, 29, 0.12));
+  filter: drop-shadow(8px 10px 8px rgba(0, 0, 0, 0.15));
 }
 
 .quran-cover {
   position: absolute;
   inset: 0 7px 7px 0;
   padding: 7px;
-  border: 2px solid #A78351;
+  border: 2px solid #B89B76;
   border-radius: 5px 10px 8px 5px;
-  background: linear-gradient(
-    135deg,
-    #80505A 0%,
-    #603943 55%,
-    #4B2D35 100%
-  );
-  box-shadow:
-    inset 3px 0 rgba(255, 255, 255, 0.08),
-    inset -3px 0 rgba(30, 20, 20, 0.12);
+  background: linear-gradient(135deg, #80505A, #4B2D35);
 }
 
 .quran-border {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
   height: 100%;
   padding: 12px 5px;
-  border: 1px solid #C9AC79;
-  border-radius: 3px 6px 5px 3px;
-}
-
-.quran-ornament {
+  border: 1px solid #D9BD87;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   color: #D9BD87;
-  font-size: 25px;
-  line-height: 1;
+  font-size: 22px;
 }
 
-.quran-title-lines {
-  position: relative;
-  width: 33px;
-  height: 21px;
+.quran-lines {
+  width: 35px;
+  height: 20px;
   border-top: 1px solid #D9BD87;
   border-bottom: 1px solid #D9BD87;
-}
-
-.quran-title-lines::after {
-  position: absolute;
-  top: 9px;
-  right: 5px;
-  left: 5px;
-  content: "";
-  border-top: 1px solid #D9BD87;
-}
-
-.bottom-ornament {
-  transform: rotate(180deg);
 }
 
 .quran-pages {
@@ -302,8 +297,7 @@ a {
   top: 5px;
   right: 0;
   width: 13px;
-  height: 118px;
-  border-radius: 0 5px 5px 0;
+  height: 117px;
   background: repeating-linear-gradient(
     to bottom,
     #F7F0E1 0,
@@ -311,186 +305,137 @@ a {
     #D7C9B0 3px,
     #F7F0E1 4px
   );
-  transform: skewY(3deg);
 }
 
-.quran-book-shadow {
-  position: absolute;
-  z-index: -2;
-  right: -7px;
-  bottom: -7px;
-  width: 92px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(65, 45, 35, 0.15);
-  filter: blur(5px);
-}
-
-/* SEND FORM */
+/* =========================
+   6. FORM PANEL
+========================= */
 
 .form-panel {
   width: min(820px, 100%);
   margin: 28px auto 0;
   padding: 38px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 26px;
   background: var(--surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.035);
 }
 
 .section-heading h2,
 .list-heading h2 {
-  margin: 8px 0 5px;
+  margin: 8px 0;
   font-family: var(--font-heading);
-  font-size: clamp(25px, 3vw, 34px);
+  font-size: 32px;
   font-weight: 800;
-  letter-spacing: -1.3px;
-  line-height: 1.25;
+  letter-spacing: -1.2px;
 }
 
-.section-heading > p {
-  margin: 9px 0 0;
+.section-heading h2 span,
+.list-heading h2 span {
+  color: var(--maroon);
+}
+
+.section-heading p {
+  margin: 8px 0 0;
   color: var(--muted);
   font-size: 14px;
-  line-height: 1.8;
 }
 
 .prayer-form {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  margin-top: 29px;
+  gap: 21px;
+  margin-top: 28px;
 }
 
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  min-width: 0;
+  gap: 8px;
 }
 
 .field-group label {
-  color: var(--text);
   font-size: 13px;
   font-weight: 800;
 }
 
 .field-group input,
 .field-group select,
-.field-group textarea {
+.field-group textarea,
+.status-search input {
   width: 100%;
-  min-width: 0;
-  border: 1px solid #E5DED5;
-  border-radius: var(--radius-sm);
-  background: #FFFDFA;
-  color: var(--text);
-  font-size: 15px;
-  font-weight: 500;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.field-group input,
-.field-group select {
-  min-height: 53px;
+  min-height: 52px;
   padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
 }
 
 .field-group textarea {
   min-height: 175px;
-  padding: 15px;
-  line-height: 1.9;
   resize: vertical;
+  line-height: 1.9;
 }
 
 .field-group input::placeholder,
 .field-group textarea::placeholder,
-.search-input-wrap input::placeholder {
-  color: #929187;
-  font-weight: 400;
+.status-search input::placeholder {
+  color: var(--muted);
 }
 
-.field-group input:focus,
-.field-group select:focus,
-.field-group textarea:focus {
-  border-color: var(--rose);
-  background: var(--white);
-  box-shadow: 0 0 0 4px rgba(201, 184, 155, 0.18);
-  outline: none;
-}
-
-.select-wrap {
-  position: relative;
-}
-
-.select-wrap select {
-  appearance: none;
-  padding-right: 45px;
-  cursor: pointer;
-}
-
-.select-arrow {
-  position: absolute;
-  top: 50%;
-  right: 17px;
-  color: var(--maroon);
-  font-size: 20px;
-  pointer-events: none;
-  transform: translateY(-55%);
-}
-
-.field-note {
-  margin-top: -3px;
+.field-group small {
   color: var(--muted);
   font-size: 11px;
 }
 
-/* BUTTONS */
+/* =========================
+   7. BUTTONS
+========================= */
 
 .primary-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  min-height: 54px;
-  padding: 14px 20px;
-  border: 1px solid var(--maroon);
-  border-radius: 14px;
+  width: 100%;
+  min-height: 53px;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 13px;
   background: var(--maroon);
-  color: var(--white);
+  color: white;
   font-size: 14px;
   font-weight: 800;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .primary-button:hover:not(:disabled) {
   background: var(--maroon-dark);
-  box-shadow: 0 8px 20px rgba(84, 49, 58, 0.14);
   transform: translateY(-1px);
 }
 
-.submit-button {
-  width: 100%;
-  justify-content: space-between;
-  padding-right: 20px;
-  padding-left: 22px;
-  margin-top: 1px;
+.secondary-button {
+  border-color: var(--maroon);
+  background: var(--maroon);
+  color: white;
 }
 
-.primary-button span:last-child {
-  font-size: 17px;
+.secondary-button:hover {
+  background: var(--maroon-dark);
+  color: white;
 }
 
-/* STATUS MESSAGES */
+.back-button {
+  margin-top: 10px;
+}
+
+/* =========================
+   8. STATUS MESSAGES
+========================= */
 
 .status-message {
-  min-height: 0;
-  margin: 9px 0 0;
+  margin: 10px 0;
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
-  line-height: 1.7;
 }
 
 .status-message:empty {
@@ -501,123 +446,75 @@ a {
   color: var(--danger);
 }
 
-/* PUBLIC PRAYER STATUS */
+/* =========================
+   9. PUBLIC STATUS
+========================= */
 
 .public-status-section {
-  margin: 82px 0 88px;
+  margin: 80px 0;
 }
 
-.status-heading {
+.centered {
   text-align: center;
-}
-
-.status-heading .eyebrow {
-  justify-content: center;
 }
 
 .status-search {
   display: flex;
   gap: 12px;
   max-width: 690px;
-  margin: 28px auto 0;
+  margin: 28px auto 15px;
 }
 
-.search-input-wrap {
-  display: flex;
-  align-items: center;
+.status-search input {
   flex: 1;
   min-width: 0;
-  min-height: 52px;
-  gap: 10px;
-  padding: 0 16px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--surface);
 }
 
-.search-input-wrap > span {
-  color: var(--maroon);
-  font-size: 25px;
-  line-height: 1;
-}
-
-.search-input-wrap input {
-  width: 100%;
-  min-width: 0;
-  padding: 10px 0;
-  border: 0;
-  background: transparent;
-  color: var(--text);
-  font-size: 14px;
-  outline: none;
-}
-
-.status-search .secondary-button {
-  min-height: 52px;
-  padding: 12px 20px;
-  border-color: var(--maroon);
-  background: var(--maroon);
-  color: var(--white);
-}
-
-.status-search .secondary-button:hover {
-  background: var(--maroon-dark);
-}
-
-.status-search .secondary-button span {
-  color: var(--white);
-}
-
-#public-status-message {
+.public-status-section > .status-message {
   max-width: 690px;
-  margin: 16px auto;
+  margin: 15px auto;
 }
 
 .public-status-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 13px;
   max-width: 850px;
-  margin: 0 auto;
+  margin: auto;
 }
 
 .public-status-card {
-  min-width: 0;
-  padding: 22px;
+  padding: 20px;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 17px;
   background: var(--surface);
 }
 
 .public-status-sender {
   display: block;
-  overflow-wrap: anywhere;
-  color: var(--text);
   font-family: var(--font-heading);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
-.public-status-recipient {
-  margin: 3px 0;
+.public-status-recipient,
+.public-status-date,
+.public-status-read-time {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .public-status-date {
   display: block;
-  margin: 12px 0;
-  color: var(--muted);
-  font-size: 11px;
+  margin: 10px 0;
 }
 
 .public-read-badge,
 .public-unread-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 26px;
-  padding: 4px 10px;
-  border-radius: 999px;
+  display: inline-block;
+  padding: 4px 11px;
+  border-radius: 30px;
   font-size: 11px;
   font-weight: 800;
 }
@@ -629,70 +526,59 @@ a {
 
 .public-unread-badge {
   background: var(--unread-bg);
-  color: var(--unread-text);
-}
-
-.public-status-read-time {
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-size: 11px;
+  color: var(--maroon);
 }
 
 .privacy-note {
-  margin: 25px 0 0;
+  margin-top: 25px;
   color: var(--muted);
   text-align: center;
   font-size: 11px;
 }
 
-/* LOGIN */
+/* =========================
+   10. LOGIN
+========================= */
 
 .auth-section {
   min-height: 70vh;
-  padding-top: 12px;
+  padding-top: 15px;
   padding-bottom: 80px;
 }
 
-.back-button {
-  padding-left: 14px;
-}
-
-.back-button span {
-  font-size: 17px;
-}
-
 .auth-card {
-  width: min(100%, 450px);
-  margin: 36px auto 0;
-  padding: 42px;
+  width: min(450px, 100%);
+  margin: 35px auto;
+  padding: 40px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 25px;
   background: var(--surface);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04);
 }
 
 .auth-card h1 {
-  margin: 16px 0 10px;
-  font-size: 37px;
-  letter-spacing: -1.8px;
+  margin: 15px 0 8px;
+  font-family: var(--font-heading);
+  font-size: 36px;
+  letter-spacing: -1.5px;
+}
+
+.auth-card h1 span {
+  color: var(--maroon);
 }
 
 .auth-description {
-  margin: 0;
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 13px;
 }
 
-.auth-card .prayer-form {
-  margin-top: 28px;
-}
-
-/* DASHBOARD */
+/* =========================
+   11. DASHBOARD
+========================= */
 
 .dashboard-section {
-  min-height: 70vh;
-  padding-top: 12px;
+  min-height: 75vh;
+  padding-top: 15px;
   padding-bottom: 80px;
 }
 
@@ -700,72 +586,56 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 26px;
+  padding-bottom: 25px;
   border-bottom: 1px solid var(--border);
 }
 
 .dashboard-brand {
-  margin: 5px 0 0;
+  margin: 5px 0;
   font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
-  letter-spacing: -0.8px;
-}
-
-.logout-button {
-  flex-shrink: 0;
 }
 
 .dashboard-intro {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 25px;
-  padding: 54px 0 40px;
+  gap: 20px;
+  padding: 50px 0 35px;
 }
 
 .dashboard-intro h1 {
-  margin: 14px 0 10px;
-  font-size: clamp(34px, 5vw, 51px);
-  letter-spacing: -2.3px;
-  overflow-wrap: anywhere;
-}
-
-.dashboard-intro-copy > p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-}
-
-.prayer-count-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 135px;
-  min-height: 125px;
-  padding: 15px;
-  border: 1px solid #DED3C0;
-  border-radius: 22px;
-  background: var(--surface-pink);
-  text-align: center;
-}
-
-.count-number {
-  color: var(--maroon);
+  margin: 12px 0;
   font-family: var(--font-heading);
-  font-size: 42px;
-  font-weight: 800;
-  line-height: 1.2;
+  font-size: clamp(32px, 5vw, 48px);
   letter-spacing: -2px;
 }
 
-.count-label {
-  margin-top: 6px;
+.dashboard-intro p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.prayer-count-card {
+  min-width: 125px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface-soft);
+  text-align: center;
+}
+
+.prayer-count-card strong {
+  display: block;
   color: var(--maroon);
-  font-size: 10px;
+  font-family: var(--font-heading);
+  font-size: 40px;
+}
+
+.prayer-count-card span {
+  color: var(--muted);
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -775,209 +645,160 @@ a {
 }
 
 .list-heading {
-  margin-top: 36px;
+  margin-top: 35px;
 }
 
 .list-heading h2 {
-  font-size: 29px;
+  font-size: 28px;
 }
 
 .prayer-tabs {
   display: flex;
-  gap: 8px;
-  margin: 22px 0 18px;
+  gap: 7px;
+  margin: 20px 0;
   padding: 5px;
   border: 1px solid var(--border);
-  border-radius: 14px;
-  background: #F0EADF;
+  border-radius: 13px;
+  background: var(--surface-soft);
 }
 
 .filter-tab {
   flex: 1;
-  min-height: 42px;
-  padding: 9px 14px;
+  min-height: 40px;
+  padding: 8px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 9px;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  cursor: pointer;
 }
 
 .filter-tab.active {
   background: var(--surface);
   color: var(--maroon);
-  box-shadow: 0 2px 8px rgba(63, 52, 39, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .prayer-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 15px;
 }
 
 .sender-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
   width: 100%;
-  padding: 20px 22px;
+  padding: 19px 21px;
   border: 1px solid var(--border);
-  border-radius: 17px;
+  border-radius: 16px;
   background: var(--surface);
   color: var(--text);
   text-align: left;
-  cursor: pointer;
-  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .sender-row:hover {
-  border-color: var(--rose);
-  transform: translateY(-1px);
+  border-color: var(--gold);
 }
 
 .sender-info {
   display: flex;
   flex-direction: column;
-  min-width: 0;
   gap: 5px;
 }
 
 .sender-name {
-  overflow-wrap: anywhere;
   font-family: var(--font-heading);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 800;
 }
 
 .sender-hint {
   color: var(--muted);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
 }
 
 .sender-arrow {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: var(--surface-pink);
   color: var(--maroon);
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .empty-state {
-  padding: 44px 22px;
-  border: 1px dashed #D9CFBE;
-  border-radius: 18px;
+  padding: 40px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 16px;
   text-align: center;
 }
 
-.empty-state strong {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 800;
-}
-
 .empty-state p {
-  margin: 7px 0 0;
   color: var(--muted);
   font-size: 13px;
 }
 
-/* PRAYER DETAILS */
+/* Prayer detail */
 
 .prayer-back {
-  align-self: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   padding: 8px 0;
   border: 0;
   background: transparent;
   color: var(--maroon);
-  font-size: 13px;
   font-weight: 800;
-  cursor: pointer;
 }
 
 .prayer-card {
-  min-width: 0;
-  padding: 30px;
+  padding: 28px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 23px;
   background: var(--surface);
-  box-shadow: var(--shadow-soft);
 }
 
 .detail-sender {
   margin: 0;
-  overflow-wrap: anywhere;
   font-family: var(--font-heading);
-  font-size: clamp(27px, 4vw, 36px);
-  font-weight: 800;
-  letter-spacing: -1.2px;
-  line-height: 1.3;
+  font-size: 30px;
 }
 
-.detail-date {
-  display: block;
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 500;
-}
-
+.detail-date,
 .detail-read-status {
-  margin: 15px 0 0;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12px;
 }
 
 .prayer-card hr {
-  height: 1px;
-  margin: 27px 0;
+  margin: 25px 0;
   border: 0;
-  background: var(--border);
+  border-top: 1px solid var(--border);
 }
 
 .prayer-text {
-  margin: 0;
-  color: #354139;
-  font-family: var(--font-body);
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.95;
-  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.9;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .prayer-detail .primary-button {
-  width: 100%;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
-/* FOOTER */
+/* =========================
+   12. FOOTER
+========================= */
 
 .site-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 7px;
-  padding: 32px 20px 28px;
+  padding: 30px 20px;
   border-top: 1px solid var(--border);
-  background: #F0E9DC;
+  background: var(--surface-soft);
   text-align: center;
-}
-
-.footer-ornament {
-  margin-bottom: 5px;
-  color: var(--maroon);
-  font-size: 25px;
 }
 
 .footer-brand {
@@ -987,285 +808,162 @@ a {
 .site-footer p {
   margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
-/* MOBILE */
+/* =========================
+   13. MOBILE
+========================= */
 
 @media (max-width: 760px) {
-  body {
-    font-size: 15px;
-  }
-
   .site-header,
   .page-section {
     width: calc(100% - 36px);
   }
 
   .site-header {
-    min-height: 74px;
+    min-height: 72px;
   }
 
-  .brand-name {
-    font-size: 18px;
+  .brand {
+    font-size: 17px;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .language-button {
+    min-width: 31px;
+    padding: 5px 7px;
+    font-size: 10px;
+  }
+
+  .icon-button {
+    width: 35px;
+    height: 35px;
   }
 
   .nav-login {
-    min-height: 40px;
-    padding: 8px 13px;
-    font-size: 12px;
+    min-height: 37px;
+    padding: 7px 10px;
+    font-size: 10px;
   }
 
   .hero {
     min-height: 340px;
-    margin-top: 9px;
-    padding: 43px 25px;
-    border-radius: 23px;
-  }
-
-  .hero-label {
-    font-size: 9px;
-    letter-spacing: 1.25px;
+    padding: 42px 23px;
+    border-radius: 22px;
   }
 
   .hero h1 {
-    margin-top: 27px;
-    font-size: clamp(36px, 9vw, 48px);
+    font-size: clamp(35px, 9vw, 47px);
     letter-spacing: -2px;
-    line-height: 1.16;
   }
 
   .hero-description {
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 1.9;
-  }
-
-  .desktop-break {
-    display: none;
+    max-width: 90%;
+    font-size: 13px;
   }
 
   .quran-illustration {
     right: 0;
-    bottom: 12px;
-    width: 105px;
-    height: 125px;
-    opacity: 0.95;
-  }
-
-  .quran-book {
-    transform: scale(0.78) rotate(-8deg);
-    transform-origin: center;
+    bottom: 5px;
+    transform: scale(0.75);
+    transform-origin: bottom right;
   }
 
   .form-panel {
     margin-top: 18px;
     padding: 25px 20px;
-    border-radius: 22px;
+    border-radius: 21px;
   }
 
-  .section-heading h2,
-  .list-heading h2 {
+  .section-heading h2 {
     font-size: 27px;
-    letter-spacing: -1px;
-  }
-
-  .section-heading > p {
-    font-size: 13px;
-  }
-
-  .prayer-form {
-    gap: 20px;
-    margin-top: 24px;
-  }
-
-  .field-group input,
-  .field-group select {
-    min-height: 51px;
-    font-size: 14px;
-  }
-
-  .field-group textarea {
-    min-height: 175px;
-    font-size: 15px;
-    line-height: 1.8;
   }
 
   .public-status-section {
-    margin: 62px 0;
+    margin: 60px 0;
   }
 
   .status-search {
     flex-direction: column;
-    gap: 10px;
-    margin-top: 22px;
-  }
-
-  .search-input-wrap {
-    min-height: 50px;
-  }
-
-  .status-search .secondary-button {
-    width: 100%;
-    min-height: 49px;
-  }
-
-  #public-status-message {
-    margin: 14px 0;
   }
 
   .public-status-list {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .public-status-card {
-    padding: 19px;
-  }
-
-  .auth-section,
-  .dashboard-section {
-    padding-top: 8px;
+    grid-template-columns: 1fr;
   }
 
   .auth-card {
-    margin-top: 25px;
-    padding: 28px 21px;
-    border-radius: 22px;
+    padding: 27px 21px;
   }
 
   .auth-card h1 {
-    font-size: 34px;
-    letter-spacing: -1.5px;
-  }
-
-  .dashboard-topbar {
-    padding-bottom: 20px;
-  }
-
-  .dashboard-brand {
-    font-size: 18px;
-  }
-
-  .logout-button {
-    min-height: 39px;
-    padding: 8px 12px;
-    font-size: 11px;
+    font-size: 31px;
   }
 
   .dashboard-intro {
     align-items: flex-start;
-    gap: 12px;
-    padding: 38px 0 28px;
+    gap: 10px;
+    padding: 35px 0 25px;
   }
 
   .dashboard-intro h1 {
-    margin-top: 13px;
-    font-size: clamp(30px, 8vw, 40px);
-    letter-spacing: -1.8px;
-  }
-
-  .dashboard-intro-copy > p {
-    font-size: 13px;
+    font-size: 30px;
   }
 
   .prayer-count-card {
-    width: 95px;
-    min-height: 100px;
+    min-width: 90px;
     padding: 12px 8px;
-    border-radius: 18px;
   }
 
-  .count-number {
-    font-size: 34px;
+  .prayer-count-card strong {
+    font-size: 32px;
   }
 
-  .count-label {
+  .prayer-count-card span {
     font-size: 9px;
   }
 
-  .list-heading {
-    margin-top: 28px;
-  }
-
-  .list-heading h2 {
-    font-size: 25px;
-  }
-
-  .prayer-tabs {
-    margin-top: 18px;
-  }
-
   .filter-tab {
-    min-height: 40px;
-    padding: 8px 5px;
-    font-size: 12px;
-  }
-
-  .sender-row {
-    padding: 17px 15px;
-    border-radius: 15px;
-  }
-
-  .sender-name {
-    font-size: 16px;
-  }
-
-  .sender-hint {
-    font-size: 11px;
-  }
-
-  .sender-arrow {
-    width: 32px;
-    height: 32px;
+    padding: 7px 3px;
+    font-size: 10px;
   }
 
   .prayer-card {
-    padding: 23px 19px;
-    border-radius: 22px;
-  }
-
-  .detail-sender {
-    font-size: 30px;
-    letter-spacing: -1px;
-  }
-
-  .detail-date {
-    font-size: 12px;
-    line-height: 1.8;
-  }
-
-  .prayer-card hr {
-    margin: 23px 0;
+    padding: 22px 18px;
   }
 
   .prayer-text {
-    font-size: 17px;
-    line-height: 1.9;
-  }
-
-  .site-footer {
-    padding: 27px 18px 24px;
-  }
-
-  .site-footer p {
-    font-size: 11px;
+    font-size: 16px;
   }
 }
 
 @media (max-width: 360px) {
   .site-header,
   .page-section {
-    width: calc(100% - 28px);
+    width: calc(100% - 26px);
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .header-actions {
+    gap: 4px;
+  }
+
+  .nav-login {
+    padding: 6px 8px;
   }
 
   .hero {
-    padding-right: 19px;
-    padding-left: 19px;
+    padding: 35px 18px;
   }
 
   .hero h1 {
-    font-size: 35px;
+    font-size: 33px;
   }
 
   .dashboard-intro {
@@ -1273,17 +971,11 @@ a {
   }
 
   .prayer-count-card {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10px;
     width: 100%;
-    min-height: auto;
-    padding: 12px 15px;
-    text-align: left;
-  }
-
-  .count-label {
-    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
   }
 }
 
@@ -1292,7 +984,6 @@ a {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+    transition: none !important;
   }
 }
