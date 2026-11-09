@@ -47,13 +47,13 @@ const translations = {
     ms: {
         mySpace: "Ruang saya",
 
-        heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN IMAN",
+        heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN MENYUCIKAN JIWA",
         heroTitle: "Kiriman Doa<br><span>ke Tanah Suci.</span>",
-        heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Tanah Suci.",
+        heroDescription: "Kirimkan doa anda di sini. Insya-Allah, doa ini akan dibacakan di Tanah Suci.",
 
-        sendEyebrow: "KIRIMAN ANDA",
+        sendEyebrow: "DOA ANDA",
         sendTitle: "Kirimkan doa<span>.</span>",
-        sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.",
+        sendDescription: "Tuliskan doa yang ingin dibacakan di Tanah Suci.",
 
         yourName: "Nama anda",
         sendTo: "Kirim kepada",
@@ -71,7 +71,7 @@ const translations = {
 
         backHome: "Kembali ke halaman utama",
 
-        loginEyebrow: "RUANG PERIBADI ANDA",
+        loginEyebrow: "RUANG PERIBADI",
         loginTitle: "Selamat kembali<span>.</span>",
         loginDescription: "Log masuk untuk membaca doa yang dikirimkan khas buat anda.",
         loginAs: "Log masuk sebagai",
@@ -152,33 +152,33 @@ const translations = {
     en: {
         mySpace: "My space",
 
-        heroLabel: "A PRAYER, A JOURNEY OF FAITH",
-        heroTitle: "Prayer Requests<br><span>to Makkah.</span>",
-        heroDescription: "Leave your prayers here. InSya-Allah, your prayers will be carried to Makkah.",
+        heroLabel: "A DUA', A JOURNEY OF FAITH",
+        heroTitle: "Dua' Requests<br><span>to Makkah.</span>",
+        heroDescription: "Write your Dua' here. InSya-Allah, your Dua' will be carried to The Haramain.",
 
-        sendEyebrow: "YOUR PRAYER",
+        sendEyebrow: "YOUR DUA'",
         sendTitle: "Send a prayer<span>.</span>",
-        sendDescription: "Write a prayer you would like to be carried and recited in Makkah.",
+        sendDescription: "Write a Dua' you would like to be carried and recited in The Haramain.",
 
         yourName: "Your name",
         sendTo: "Send to",
-        yourPrayer: "Your prayer",
+        yourPrayer: "Your Dua'",
         prayerNote: "Take your time. Write with sincerity.",
-        sendButton: "Send prayer",
+        sendButton: "Send Dua'",
 
-        statusEyebrow: "PRAYER UPDATES",
-        statusTitle: "Prayer status<span>.</span>",
-        statusDescription: "Check whether your prayer has been read.",
+        statusEyebrow: "DUA' UPDATES",
+        statusTitle: "Dua' status<span>.</span>",
+        statusDescription: "Check whether your Dua' has been read.",
         searchPlaceholder: "Search sender or recipient...",
         checkStatus: "Check status",
-        statusHint: "Check the latest prayer updates here.",
-        privacyNote: "Prayer messages can only be read by their intended recipients.",
+        statusHint: "Check the latest Dua' updates here.",
+        privacyNote: "Dua' messages can only be read by their intended recipients.",
 
         backHome: "Back to home",
 
         loginEyebrow: "YOUR PERSONAL SPACE",
         loginTitle: "Welcome back<span>.</span>",
-        loginDescription: "Log in to read the prayers sent especially for you.",
+        loginDescription: "Log in to read the Dua' sent especially for you.",
         loginAs: "Log in as",
         password: "Password",
         loginButton: "Login",
@@ -186,18 +186,18 @@ const translations = {
         personalSpace: "YOUR PERSONAL SPACE",
         logout: "Log out",
 
-        prayerCollection: "YOUR PRAYER COLLECTION",
-        dashboardDescription: "Prayers entrusted to us to be recited in the Makkah",
-        prayersReceived: "Prayers received",
+        prayerCollection: "YOUR DUA' COLLECTION",
+        dashboardDescription: "Dua' entrusted to us to be recited in the Makkah",
+        prayersReceived: "Dua' received",
 
         yourCollection: "YOUR COLLECTION",
-        allPrayers: "All prayers<span>.</span>",
+        allPrayers: "All Dua'<span>.</span>",
 
         all: "All",
         unread: "Unread",
         read: "Read",
 
-        footerText: "May every prayer be carried with sincerity.",
+        footerText: "May every Dua' be carried with sincerity.",
 
         chooseName: "Choose a name",
         loadingNames: "Loading names...",
@@ -205,27 +205,27 @@ const translations = {
 
         enterName: "Enter your name",
         enterPassword: "Enter your password",
-        writePrayer: "Write your prayer here...",
+        writePrayer: "Write your Dua' here...",
 
         loading: "Loading...",
         loadNamesError: "Couldn't load names. Please refresh.",
         fillFields: "Please fill in every field.",
 
-        sending: "Sending your prayer...",
-        sent: "Your prayer has been sent.",
-        sendError: "Couldn't send your prayer. Please try again.",
+        sending: "Sending your Dua'...",
+        sent: "Your Dua' has been sent.",
+        sendError: "Couldn't send your Dua'. Please try again.",
 
         loggingIn: "Logging in...",
         loginError: "Incorrect name or password. Please try again.",
         accountNotLinked: "This account isn't linked to a recipient yet.",
 
-        loadingPrayers: "Loading prayers...",
-        loadPrayersError: "Couldn't load prayers. Please refresh.",
+        loadingPrayers: "Loading Dua'...",
+        loadPrayersError: "Couldn't load Dua'. Please refresh.",
 
         caughtUp: "You're all caught up.",
-        noRead: "No read prayers yet.",
-        noPrayers: "No prayers yet.",
-        newPrayers: "New prayers will show up here.",
+        noRead: "No read Dua' yet.",
+        noPrayers: "No Dua' yet.",
+        newPrayers: "New Dua' will show up here.",
 
         markedRead: "Marked as read.",
         updateError: "Couldn't update status. Please check access policies.",
@@ -234,7 +234,7 @@ const translations = {
         tryAgain: "Try again",
         alreadyRead: "Already read",
         markRead: "Mark as read",
-        backPrayers: "Back to prayers",
+        backPrayers: "Back to Dua'",
 
         dateUnavailable: "Date unavailable",
         readLabel: "Read",
@@ -244,7 +244,7 @@ const translations = {
         readOn: "Read on",
 
         noMatch: "No matching names found.",
-        noPublicPrayers: "No prayers to show yet.",
+        noPublicPrayers: "No Dua' to show yet.",
         publicLoadError: "Couldn't load status. Please try again.",
         statusLoading: "Loading status...",
 
