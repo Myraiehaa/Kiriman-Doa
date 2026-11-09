@@ -256,6 +256,14 @@ const translations = {
     }
 };
 
+ms: {
+    statusInstruction: "Tekan semak status untuk melihat perkembangan doa."
+},
+
+en: {
+    statusInstruction: "Press check status to view your prayer updates."
+}
+
 const t = (key) =>
     translations[language][key] ||
     translations.en[key] ||
