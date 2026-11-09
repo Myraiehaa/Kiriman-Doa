@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Redaction+10&display=swap");
+
 /* =========================
    1. THEME COLOURS
 ========================= */
@@ -776,8 +778,10 @@ textarea:focus-visible {
 
 .prayer-text {
   color: var(--text);
-  font-size: 17px;
-  line-height: 1.9;
+  font-family: "Redaction 10", serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.8;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -936,7 +940,8 @@ textarea:focus-visible {
   }
 
   .prayer-text {
-    font-size: 16px;
+    font-size: 19px;
+    line-height: 1.8;
   }
 }
 
