@@ -1,4 +1,3 @@
-
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // ==========================================
@@ -255,14 +254,6 @@ const translations = {
         hi: "Hi"
     }
 };
-
-ms: {
-    statusInstruction: "Tekan semak status untuk melihat perkembangan doa."
-},
-
-en: {
-    statusInstruction: "Press check status to view your prayer updates."
-}
 
 const t = (key) =>
     translations[language][key] ||
