@@ -1,264 +1,667 @@
+
 <!DOCTYPE html>
 <html lang="ms">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#F8F5ED">
-  <meta name="description" content="Kiriman Doa Umrah - Kirimkan doa ke Tanah Suci.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Kiriman Doa</title>
+    <meta name="theme-color" content="#F8F5ED">
+    <meta name="description" content="Kiriman Doa Umrah - Kirimkan doa ke Tanah Suci.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Kiriman Doa</title>
 
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JAVASCRIPT -->
+    <script type="module" src="app.js"></script>
 </head>
 
 <body data-theme="light">
 
-  <!-- HEADER -->
-  <header id="site-header" class="site-header">
-    <a href="#" class="brand">
-      kiriman doa<span>.</span>
-    </a>
+    <!-- ================================== -->
+    <!-- HEADER -->
+    <!-- ================================== -->
 
-    <div class="header-actions">
-      <div class="language-switch">
-        <button type="button" data-language="ms" class="language-button active">BM</button>
-        <button type="button" data-language="en" class="language-button">EN</button>
-      </div>
+    <header id="site-header" class="site-header">
 
-      <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle theme">
-        <span id="theme-icon">☾</span>
-      </button>
+        <a href="#" class="brand">
+            kiriman doa<span>.</span>
+        </a>
 
-      <button id="nav-login" class="nav-login" type="button" data-i18n="mySpace">
-        My space
-      </button>
-    </div>
-  </header>
+        <div class="header-actions">
 
-  <main>
+            <!-- LANGUAGE -->
+            <div class="language-switch">
 
-    <!-- HOME -->
-    <section id="send-section" class="page-section">
+                <button
+                    type="button"
+                    data-language="ms"
+                    class="language-button active"
+                    aria-pressed="true"
+                >
+                    BM
+                </button>
 
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-content">
-          <span class="hero-label" data-i18n="heroLabel">
-            KIRIMAN DOA, SEBUAH PERJALANAN IMAN
-          </span>
+                <button
+                    type="button"
+                    data-language="en"
+                    class="language-button"
+                    aria-pressed="false"
+                >
+                    EN
+                </button>
 
-          <h1 data-i18n="heroTitle">
-            Kiriman Doa<br>
-            <span>ke Tanah Suci.</span>
-          </h1>
-
-          <p class="hero-description" data-i18n="heroDescription">
-            Titipkan doa anda di sini.
-            Insya-Allah, doa ini akan dibawa ke Tanah Suci.
-          </p>
-        </div>
-
-        <div class="quran-illustration" aria-hidden="true">
-          <div class="quran-book">
-            <div class="quran-cover">
-              <div class="quran-border">
-                <span>۞</span>
-                <div class="quran-lines"></div>
-                <span>۞</span>
-              </div>
             </div>
-            <div class="quran-pages"></div>
-          </div>
-        </div>
-      </section>
 
-      <!-- SEND PRAYER FORM -->
-      <section class="form-panel">
-        <div class="section-heading">
-          <span class="eyebrow" data-i18n="sendEyebrow">KIRIMAN ANDA</span>
-          <h2 data-i18n="sendTitle">Kirimkan doa<span>.</span></h2>
-          <p data-i18n="sendDescription">
-            Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.
-          </p>
-        </div>
-
-        <form id="prayer-form" class="prayer-form">
-
-          <div class="field-group">
-            <label for="sender" data-i18n="yourName">Nama anda</label>
-            <input
-              id="sender"
-              type="text"
-              maxlength="80"
-              placeholder="Masukkan nama anda"
-              required
+            <!-- THEME -->
+            <button
+                id="theme-toggle"
+                class="icon-button"
+                type="button"
+                aria-label="Toggle theme"
             >
-          </div>
+                <span id="theme-icon">☾</span>
+            </button>
 
-          <div class="field-group">
-            <label for="recipient" data-i18n="sendTo">Kirim kepada</label>
-            <select id="recipient" required>
-              <option value="">Sedang memuatkan nama...</option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="prayer" data-i18n="yourPrayer">Doa anda</label>
-            <textarea
-              id="prayer"
-              rows="7"
-              maxlength="3000"
-              placeholder="Tuliskan doa anda di sini..."
-              required
-            ></textarea>
-            <small data-i18n="prayerNote">Ambil masa anda. Tuliskan dengan ikhlas.</small>
-          </div>
-
-          <button class="primary-button" type="submit">
-            <span data-i18n="sendButton">Hantar doa</span>
-          </button>
-
-          <p id="send-status" class="status-message" role="status"></p>
-        </form>
-      </section>
-
-      <!-- PUBLIC PRAYER STATUS -->
-      <section class="public-status-section">
-        <div class="section-heading centered">
-          <span class="eyebrow" data-i18n="statusEyebrow">KEMAS KINI DOA</span>
-          <h2 data-i18n="statusTitle">Status doa<span>.</span></h2>
-          <p data-i18n="statusDescription">
-            Semak sama ada doa anda telah dibaca.
-          </p>
-        </div>
-
-        <div class="status-search">
-          <input
-            id="public-status-search"
-            type="search"
-            placeholder="Cari nama pengirim atau penerima..."
-            data-i18n-placeholder="searchPlaceholder"
-          >
-
-          <button id="load-public-status" class="secondary-button" type="button" data-i18n="checkStatus">
-            Semak status
-          </button>
-        </div>
-
-        <p id="public-status-message" class="status-message" role="status">
-          Tekan semak status untuk melihat perkembangan doa.
-        </p>
-
-        <div id="public-status-list" class="public-status-list"></div>
-
-        <p class="privacy-note" data-i18n="privacyNote">
-          Kandungan doa hanya boleh dibaca oleh penerima yang dituju.
-        </p>
-      </section>
-    </section>
-
-    <!-- LOGIN -->
-    <section id="login-section" class="page-section auth-section hidden">
-      <button id="back-to-form" class="back-button" type="button" data-i18n="backHome">
-        Kembali ke halaman utama
-      </button>
-
-      <div class="auth-card">
-        <span class="eyebrow" data-i18n="loginEyebrow">RUANG PERIBADI ANDA</span>
-
-        <h1 data-i18n="loginTitle">Selamat kembali<span>.</span></h1>
-
-        <p class="auth-description" data-i18n="loginDescription">
-          Log masuk untuk membaca doa yang dikirimkan khas buat anda.
-        </p>
-
-        <form id="login-form" class="prayer-form">
-
-          <div class="field-group">
-            <label for="login-recipient" data-i18n="loginAs">Log masuk sebagai</label>
-            <select id="login-recipient" required>
-              <option value="">Pilih nama anda</option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="password" data-i18n="password">Kata laluan</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Masukkan kata laluan"
-              autocomplete="current-password"
-              required
+            <!-- LOGIN -->
+            <button
+                id="nav-login"
+                class="nav-login"
+                type="button"
+                data-i18n="mySpace"
             >
-          </div>
+                Ruang saya
+            </button>
 
-          <button class="primary-button" type="submit">
-            <span data-i18n="loginButton">Log masuk</span>
-          </button>
-
-          <p id="login-status" class="status-message" role="status"></p>
-        </form>
-      </div>
-    </section>
-
-    <!-- RECIPIENT DASHBOARD -->
-    <section id="dashboard-section" class="page-section dashboard-section hidden">
-
-      <div class="dashboard-topbar">
-        <div>
-          <span class="eyebrow" data-i18n="personalSpace">RUANG PERIBADI</span>
-          <p class="dashboard-brand">kiriman doa<span>.</span></p>
         </div>
 
-        <button id="logout-button" class="secondary-button" type="button" data-i18n="logout">
-          Log keluar
-        </button>
-      </div>
+    </header>
 
-      <div class="dashboard-intro">
-        <div>
-          <span class="eyebrow" data-i18n="prayerCollection">KOLEKSI DOA ANDA</span>
-          <h1 id="welcome-title">Doa untuk anda.</h1>
-          <p id="dashboard-subtitle" data-i18n="dashboardDescription">
-            Doa yang telah dikirimkan khas buat anda.
-          </p>
-        </div>
 
-        <div class="prayer-count-card">
-          <strong id="prayer-count">0</strong>
-          <span data-i18n="prayersReceived">Doa diterima</span>
-        </div>
-      </div>
+    <main>
 
-      <div class="dashboard-divider"></div>
+        <!-- ================================== -->
+        <!-- HOME SECTION -->
+        <!-- ================================== -->
 
-      <div class="list-heading">
-        <span class="eyebrow" data-i18n="yourCollection">KOLEKSI ANDA</span>
-        <h2 data-i18n="allPrayers">Semua doa<span>.</span></h2>
-      </div>
+        <section id="send-section" class="page-section">
 
-      <div id="prayer-tabs" class="prayer-tabs">
-        <button type="button" data-filter="all" class="filter-tab active" data-i18n="all">Semua</button>
-        <button type="button" data-filter="unread" class="filter-tab" data-i18n="unread">Belum dibaca</button>
-        <button type="button" data-filter="read" class="filter-tab" data-i18n="read">Sudah dibaca</button>
-      </div>
 
-      <p id="dashboard-status" class="status-message" role="status"></p>
-      <div id="prayer-list" class="prayer-list"></div>
+            <!-- HERO SECTION -->
 
-    </section>
-  </main>
+            <section class="hero">
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <a href="#" class="footer-brand">kiriman doa<span>.</span></a>
-    <p data-i18n="footerText">Semoga setiap doa disampaikan dengan penuh keikhlasan.</p>
-  </footer>
+                <div class="hero-content">
+
+                    <span
+                        class="hero-label"
+                        data-i18n="heroLabel"
+                    >
+                        KIRIMAN DOA, SEBUAH PERJALANAN IMAN
+                    </span>
+
+                    <h1 data-i18n="heroTitle">
+                        Kiriman Doa<br>
+                        <span>ke Tanah Suci.</span>
+                    </h1>
+
+                    <p
+                        class="hero-description"
+                        data-i18n="heroDescription"
+                    >
+                        Titipkan doa anda di sini.
+                        Insya-Allah, doa ini akan dibawa ke Tanah Suci.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================== -->
+            <!-- SEND PRAYER FORM -->
+            <!-- ================================== -->
+
+            <section class="form-panel">
+
+                <div class="section-heading">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="sendEyebrow"
+                    >
+                        KIRIMAN ANDA
+                    </span>
+
+                    <h2 data-i18n="sendTitle">
+                        Kirimkan doa<span>.</span>
+                    </h2>
+
+                    <p data-i18n="sendDescription">
+                        Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.
+                    </p>
+
+                </div>
+
+
+                <form id="prayer-form" class="prayer-form">
+
+
+                    <!-- SENDER NAME -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="sender"
+                            data-i18n="yourName"
+                        >
+                            Nama anda
+                        </label>
+
+                        <input
+                            id="sender"
+                            name="sender"
+                            type="text"
+                            maxlength="80"
+                            placeholder="Masukkan nama anda"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- RECIPIENT -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="recipient"
+                            data-i18n="sendTo"
+                        >
+                            Kirim kepada
+                        </label>
+
+                        <select
+                            id="recipient"
+                            name="recipient"
+                            required
+                        >
+
+                            <option value="">
+                                Sedang memuatkan nama...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PRAYER MESSAGE -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="prayer"
+                            data-i18n="yourPrayer"
+                        >
+                            Doa anda
+                        </label>
+
+                        <textarea
+                            id="prayer"
+                            name="prayer"
+                            rows="7"
+                            maxlength="3000"
+                            placeholder="Tuliskan doa anda di sini..."
+                            required
+                        ></textarea>
+
+                        <small data-i18n="prayerNote">
+                            Ambil masa anda. Tuliskan dengan ikhlas.
+                        </small>
+
+                    </div>
+
+
+                    <!-- SEND BUTTON -->
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+
+                        <span data-i18n="sendButton">
+                            Hantar doa
+                        </span>
+
+                    </button>
+
+
+                    <!-- SEND STATUS -->
+
+                    <p
+                        id="send-status"
+                        class="status-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+            </section>
+
+
+            <!-- ================================== -->
+            <!-- PUBLIC PRAYER STATUS -->
+            <!-- ================================== -->
+
+            <section class="public-status-section">
+
+                <div class="section-heading centered">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="statusEyebrow"
+                    >
+                        KEMAS KINI DOA
+                    </span>
+
+                    <h2 data-i18n="statusTitle">
+                        Status doa<span>.</span>
+                    </h2>
+
+                    <p data-i18n="statusDescription">
+                        Semak sama ada doa anda telah dibaca.
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="status-search">
+
+                    <input
+                        id="public-status-search"
+                        type="search"
+                        placeholder="Cari nama pengirim atau penerima..."
+                        data-i18n-placeholder="searchPlaceholder"
+                    >
+
+                    <button
+                        id="load-public-status"
+                        class="secondary-button"
+                        type="button"
+                        data-i18n="checkStatus"
+                    >
+                        Semak status
+                    </button>
+
+                </div>
+
+
+                <!-- STATUS MESSAGE -->
+
+                <p
+                    id="public-status-message"
+                    class="status-message"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Tekan semak status untuk melihat perkembangan doa.
+                </p>
+
+
+                <!-- STATUS LIST -->
+
+                <div
+                    id="public-status-list"
+                    class="public-status-list"
+                ></div>
+
+
+                <!-- PRIVACY NOTE -->
+
+                <p
+                    class="privacy-note"
+                    data-i18n="privacyNote"
+                >
+                    Kandungan doa hanya boleh dibaca oleh penerima yang dituju.
+                </p>
+
+            </section>
+
+        </section>
+
+
+        <!-- ================================== -->
+        <!-- LOGIN SECTION -->
+        <!-- ================================== -->
+
+        <section
+            id="login-section"
+            class="page-section auth-section hidden"
+        >
+
+
+            <!-- BACK BUTTON -->
+
+            <button
+                id="back-to-form"
+                class="back-button"
+                type="button"
+                data-i18n="backHome"
+            >
+                Kembali ke halaman utama
+            </button>
+
+
+            <!-- LOGIN CARD -->
+
+            <div class="auth-card">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="loginEyebrow"
+                >
+                    RUANG PERIBADI ANDA
+                </span>
+
+
+                <h1 data-i18n="loginTitle">
+                    Selamat kembali<span>.</span>
+                </h1>
+
+
+                <p
+                    class="auth-description"
+                    data-i18n="loginDescription"
+                >
+                    Log masuk untuk membaca doa yang dikirimkan khas buat anda.
+                </p>
+
+
+                <form id="login-form" class="prayer-form">
+
+
+                    <!-- LOGIN AS -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="login-recipient"
+                            data-i18n="loginAs"
+                        >
+                            Log masuk sebagai
+                        </label>
+
+                        <select
+                            id="login-recipient"
+                            name="recipient"
+                            required
+                        >
+
+                            <option value="">
+                                Pilih nama anda
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="password"
+                            data-i18n="password"
+                        >
+                            Kata laluan
+                        </label>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Masukkan kata laluan"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+
+                        <span data-i18n="loginButton">
+                            Log masuk
+                        </span>
+
+                    </button>
+
+
+                    <!-- LOGIN STATUS -->
+
+                    <p
+                        id="login-status"
+                        class="status-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================== -->
+        <!-- RECIPIENT DASHBOARD -->
+        <!-- ================================== -->
+
+        <section
+            id="dashboard-section"
+            class="page-section dashboard-section hidden"
+        >
+
+
+            <!-- DASHBOARD HEADER -->
+
+            <div class="dashboard-topbar">
+
+                <div>
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="personalSpace"
+                    >
+                        RUANG PERIBADI
+                    </span>
+
+                    <p class="dashboard-brand">
+                        kiriman doa<span>.</span>
+                    </p>
+
+                </div>
+
+
+                <!-- LOGOUT -->
+
+                <button
+                    id="logout-button"
+                    class="secondary-button"
+                    type="button"
+                    data-i18n="logout"
+                >
+                    Log keluar
+                </button>
+
+            </div>
+
+
+            <!-- DASHBOARD INTRO -->
+
+            <div class="dashboard-intro">
+
+                <div>
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="prayerCollection"
+                    >
+                        KOLEKSI DOA ANDA
+                    </span>
+
+                    <h1 id="welcome-title">
+                        Doa untuk anda.
+                    </h1>
+
+                    <p
+                        id="dashboard-subtitle"
+                        data-i18n="dashboardDescription"
+                    >
+                        Doa yang telah dikirimkan khas buat anda.
+                    </p>
+
+                </div>
+
+
+                <!-- PRAYER COUNT -->
+
+                <div class="prayer-count-card">
+
+                    <strong id="prayer-count">
+                        0
+                    </strong>
+
+                    <span data-i18n="prayersReceived">
+                        Doa diterima
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-divider"></div>
+
+
+            <!-- PRAYER COLLECTION -->
+
+            <div class="list-heading">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="yourCollection"
+                >
+                    KOLEKSI ANDA
+                </span>
+
+                <h2 data-i18n="allPrayers">
+                    Semua doa<span>.</span>
+                </h2>
+
+            </div>
+
+
+            <!-- PRAYER FILTERS -->
+
+            <div
+                id="prayer-tabs"
+                class="prayer-tabs"
+            >
+
+                <button
+                    type="button"
+                    data-filter="all"
+                    class="filter-tab active"
+                    aria-pressed="true"
+                    data-i18n="all"
+                >
+                    Semua
+                </button>
+
+
+                <button
+                    type="button"
+                    data-filter="unread"
+                    class="filter-tab"
+                    aria-pressed="false"
+                    data-i18n="unread"
+                >
+                    Belum dibaca
+                </button>
+
+
+                <button
+                    type="button"
+                    data-filter="read"
+                    class="filter-tab"
+                    aria-pressed="false"
+                    data-i18n="read"
+                >
+                    Sudah dibaca
+                </button>
+
+            </div>
+
+
+            <!-- DASHBOARD STATUS -->
+
+            <p
+                id="dashboard-status"
+                class="status-message"
+                role="status"
+                aria-live="polite"
+            ></p>
+
+
+            <!-- PRAYER LIST -->
+
+            <div
+                id="prayer-list"
+                class="prayer-list"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================== -->
+    <!-- FOOTER -->
+    <!-- ================================== -->
+
+    <footer class="site-footer">
+
+        <a href="#" class="footer-brand">
+            kiriman doa<span>.</span>
+        </a>
+
+        <p data-i18n="footerText">
+            Semoga setiap doa disampaikan dengan penuh keikhlasan.
+        </p>
+
+    </footer>
 
 </body>
+
 </html>
+
