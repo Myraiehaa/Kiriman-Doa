@@ -49,12 +49,12 @@ const translations = {
         mySpace: "Ruang saya",
 
         heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN IMAN",
-        heroTitle: "Kiriman Doa<br><span>ke Makkah.</span>",
-        heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Makkah.",
+        heroTitle: "Kiriman Doa<br><span>ke Tanah Suci.</span>",
+        heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Tanah Suci.",
 
         sendEyebrow: "KIRIMAN ANDA",
         sendTitle: "Kirimkan doa<span>.</span>",
-        sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Makkah.",
+        sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.",
 
         yourName: "Nama anda",
         sendTo: "Kirim kepada",
@@ -155,7 +155,7 @@ const translations = {
 
         heroLabel: "A PRAYER, A JOURNEY OF FAITH",
         heroTitle: "Prayer Requests<br><span>to Makkah.</span>",
-        heroDescription: "Leave your prayers here. God willing, your prayers will be carried to Makkah.",
+        heroDescription: "Leave your prayers here. InSya-ALlah, your prayers will be carried to Makkah.",
 
         sendEyebrow: "YOUR PRAYER",
         sendTitle: "Send a prayer<span>.</span>",
