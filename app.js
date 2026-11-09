@@ -153,12 +153,12 @@ const translations = {
         mySpace: "My space",
 
         heroLabel: "A DUA', A JOURNEY OF FAITH",
-        heroTitle: "Dua' Requests<br><span>to Makkah.</span>",
-        heroDescription: "Write your Dua' here. InSya-Allah, your Dua' will be carried to The Haramain.",
+        heroTitle: "Dua' Requests<br><span>to Haramain.</span>",
+        heroDescription: "Write your Dua' here. InSya-Allah, your Dua' will be carried to Haramain.",
 
         sendEyebrow: "YOUR DUA'",
         sendTitle: "Send a prayer<span>.</span>",
-        sendDescription: "Write a Dua' you would like to be carried and recited in The Haramain.",
+        sendDescription: "Write a Dua' you would like to be carried and recited in Haramain.",
 
         yourName: "Your name",
         sendTo: "Send to",
@@ -187,7 +187,7 @@ const translations = {
         logout: "Log out",
 
         prayerCollection: "YOUR DUA' COLLECTION",
-        dashboardDescription: "Dua' entrusted to us to be recited in the Makkah",
+        dashboardDescription: "Dua' entrusted to us to be recited in the Haramain",
         prayersReceived: "Dua' received",
 
         yourCollection: "YOUR COLLECTION",
