@@ -1,654 +1,616 @@
-
 <!DOCTYPE html>
-<html lang="ms" data-theme="light">
+<html lang="ms">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiriman Doa Umrah</title>
 
+    <meta name="theme-color" content="#F8F5ED">
+    <meta name="description" content="Kiriman Doa Umrah - Kirimkan doa ke Tanah Suci.">
+
+    <title>Kiriman Doa</title>
+
+    <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <style>
-        :root {
-            --bg: #f8f5ed;
-            --surface: #fffdf8;
-            --text: #493c35;
-            --muted: #81766f;
-            --border: #e6ddcf;
-            --primary: #78434f;
-            --primary-hover: #633541;
-            --soft: #f0e8df;
-            --success: #47745b;
-            --danger: #a34b4b;
-            --shadow: 0 8px 30px rgba(70, 48, 40, 0.06);
-        }
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        [data-theme="dark"] {
-            --bg: #211d20;
-            --surface: #2d272b;
-            --text: #f3eae4;
-            --muted: #b9aaa2;
-            --border: #494047;
-            --primary: #bd8792;
-            --primary-hover: #d19ba6;
-            --soft: #393137;
-            --success: #8dbb9a;
-            --danger: #e28b8b;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-        }
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: "DM Sans", sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            transition: background 0.25s, color 0.25s;
-        }
-
-        button, input, textarea, select {
-            font: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .site-header {
-            width: 100%;
-            padding: 22px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .brand {
-            font-family: "Manrope", sans-serif;
-            font-size: 19px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .header-actions button,
-        .header-actions select {
-            background: var(--surface);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 9px 14px;
-            font-size: 13px;
-        }
-
-        .container {
-            width: min(850px, 90%);
-            margin: 0 auto;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 75px 0 45px;
-        }
-
-        .eyebrow {
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 14px;
-        }
-
-        h1, h2, h3 {
-            font-family: "Manrope", sans-serif;
-        }
-
-        .hero h1 {
-            font-size: clamp(30px, 5vw, 48px);
-            line-height: 1.25;
-            margin-bottom: 16px;
-        }
-
-        .hero h1 span {
-            color: var(--primary);
-        }
-
-        .hero p {
-            max-width: 600px;
-            margin: auto;
-            color: var(--muted);
-            line-height: 1.8;
-        }
-
-        .section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 32px;
-            margin-bottom: 28px;
-            box-shadow: var(--shadow);
-        }
-
-        .section-heading {
-            margin-bottom: 24px;
-        }
-
-        .section-heading h2 {
-            font-size: 25px;
-            margin-bottom: 8px;
-        }
-
-        .section-heading p {
-            color: var(--muted);
-            line-height: 1.7;
-            font-size: 14px;
-        }
-
-        .field {
-            margin-bottom: 19px;
-        }
-
-        .field label {
-            display: block;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 9px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 15px 17px;
-            border: 1px solid var(--border);
-            border-radius: 13px;
-            background: var(--bg);
-            color: var(--text);
-            outline: none;
-            transition: border 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--primary);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 150px;
-            line-height: 1.7;
-        }
-
-        input::placeholder, textarea::placeholder {
-            color: var(--muted);
-            opacity: 0.8;
-        }
-
-        .primary-btn {
-            border: none;
-            background: var(--primary);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 35px;
-            font-weight: 700;
-            transition: 0.2s;
-        }
-
-        .primary-btn:hover {
-            background: var(--primary-hover);
-        }
-
-        .primary-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .full-btn {
-            width: 100%;
-        }
-
-        .status-section {
-            padding-top: 35px;
-            padding-bottom: 20px;
-        }
-
-        .status-search {
-            display: flex;
-            gap: 14px;
-            margin: 22px 0 18px;
-        }
-
-        .status-search input {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .status-instruction {
-            color: var(--primary);
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 22px;
-        }
-
-        .privacy-note {
-            text-align: center;
-            color: var(--muted);
-            font-size: 13px;
-            margin: 20px 0 0;
-        }
-
-        .message {
-            font-size: 14px;
-            line-height: 1.6;
-            margin-top: 14px;
-        }
-
-        .message.success {
-            color: var(--success);
-        }
-
-        .message.error {
-            color: var(--danger);
-        }
-
-        .status-card, .prayer-card {
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 18px;
-            margin-top: 13px;
-            background: var(--bg);
-        }
-
-        .status-card p, .prayer-card p {
-            line-height: 1.7;
-        }
-
-        .status-meta, .prayer-meta {
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 8px;
-        }
-
-        .status-badge {
-            display: inline-block;
-            border-radius: 20px;
-            padding: 5px 11px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-top: 10px;
-            background: var(--soft);
-            color: var(--text);
-        }
-
-        .status-badge.read {
-            color: var(--success);
-        }
-
-        .status-badge.unread {
-            color: var(--primary);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .back-button {
-            border: none;
-            background: transparent;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .dashboard-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 24px;
-        }
-
-        .dashboard-top h2 {
-            font-size: 25px;
-            margin-bottom: 6px;
-        }
-
-        .dashboard-top p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .count-card {
-            background: var(--soft);
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 22px;
-        }
-
-        .count-card strong {
-            display: block;
-            font-family: "Manrope", sans-serif;
-            font-size: 28px;
-            color: var(--primary);
-        }
-
-        .count-card span {
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 9px;
-            margin-bottom: 18px;
-        }
-
-        .tab-btn {
-            padding: 9px 17px;
-            border: 1px solid var(--border);
-            border-radius: 25px;
-            background: var(--surface);
-            color: var(--text);
-            font-size: 13px;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .prayer-card .prayer-text {
-            white-space: pre-wrap;
-            margin-top: 12px;
-        }
-
-        .prayer-card button {
-            margin-top: 14px;
-            border: 1px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            border-radius: 25px;
-            padding: 8px 14px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .empty-message {
-            color: var(--muted);
-            text-align: center;
-            padding: 25px 10px;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 35px 15px;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        @media (max-width: 600px) {
-            .site-header {
-                padding: 17px 5%;
-            }
-
-            .brand {
-                font-size: 15px;
-            }
-
-            .header-actions {
-                gap: 6px;
-            }
-
-            .header-actions button,
-            .header-actions select {
-                padding: 8px 10px;
-                font-size: 11px;
-            }
-
-            .hero {
-                padding: 55px 0 35px;
-            }
-
-            .section {
-                padding: 23px 19px;
-                border-radius: 17px;
-            }
-
-            .status-search {
-                flex-direction: column;
-            }
-
-            .status-search button {
-                width: 100%;
-            }
-
-            .dashboard-top {
-                align-items: flex-start;
-            }
-        }
-    </style>
+    <!-- JAVASCRIPT -->
+    <script type="module" src="app.js"></script>
 </head>
 
-<body>
+<body data-theme="light">
 
-<header class="site-header">
-    <div class="brand">Kiriman Doa Umrah</div>
+    <!-- HEADER -->
+    <header id="site-header" class="site-header">
 
-    <div class="header-actions">
-        <select id="language-toggle" aria-label="Language">
-            <option value="ms">Malay</option>
-            <option value="en">English</option>
-        </select>
+        <a href="#" class="brand">
+            kiriman doa<span>.</span>
+        </a>
 
-        <button id="theme-toggle" type="button" aria-label="Toggle theme">
-            <span id="theme-icon">☾</span>
-        </button>
+        <div class="header-actions">
 
-        <button id="nav-login" type="button" data-i18n="mySpace">
-            My Space
-        </button>
-    </div>
-</header>
+            <!-- LANGUAGE -->
+            <div class="language-switch">
 
-<main class="container">
+                <button
+                    type="button"
+                    data-language="ms"
+                    class="language-button active"
+                    aria-pressed="true"
+                >
+                    BM
+                </button>
 
-    <!-- HOME / SEND PRAYER -->
-    <section id="send-section">
+                <button
+                    type="button"
+                    data-language="en"
+                    class="language-button"
+                    aria-pressed="false"
+                >
+                    EN
+                </button>
 
-        <div class="hero">
-            <div class="eyebrow" data-i18n="heroLabel">A little prayer, a lot of love</div>
-            <h1 data-i18n="heroTitle">
-                Kirimkan <span>Doa</span> ke Tanah Suci
-            </h1>
-            <p data-i18n="heroDescription">
-                Titipkan doa dan ingatan buat insan tersayang yang berada di Tanah Suci.
-            </p>
-        </div>
-
-        <div class="section">
-            <div class="section-heading">
-                <div class="eyebrow" data-i18n="sendEyebrow">Your prayer</div>
-                <h2 data-i18n="sendTitle">Kirim Doa</h2>
-                <p data-i18n="sendDescription">
-                    Tulis doa anda dan pilih penerima.
-                </p>
             </div>
 
-            <form id="prayer-form">
-                <div class="field">
-                    <label for="sender" data-i18n="yourName">Nama anda</label>
-                    <input
-                        type="text"
-                        id="sender"
-                        maxlength="100"
-                        required
-                        data-i18n-placeholder="namePlaceholder"
-                        placeholder="Masukkan nama anda"
+            <!-- THEME -->
+            <button
+                id="theme-toggle"
+                class="icon-button"
+                type="button"
+                aria-label="Toggle theme"
+            >
+                <span id="theme-icon">☾</span>
+            </button>
+
+            <!-- LOGIN -->
+            <button
+                id="nav-login"
+                class="nav-login"
+                type="button"
+                data-i18n="mySpace"
+            >
+                Ruang saya
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+        <!-- HOME SECTION -->
+        <section id="send-section" class="page-section">
+
+            <!-- HERO SECTION -->
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <span
+                        class="hero-label"
+                        data-i18n="heroLabel"
                     >
-                </div>
+                        KIRIMAN DOA, SEBUAH PERJALANAN IMAN
+                    </span>
 
-                <div class="field">
-                    <label for="recipient" data-i18n="sendTo">Kirim kepada</label>
-                    <select id="recipient" required>
-                        <option value="" data-i18n="chooseRecipient">Pilih penerima</option>
-                    </select>
-                </div>
+                    <h1 data-i18n="heroTitle">
+                        Kiriman Doa<br>
+                        <span>ke Tanah Suci.</span>
+                    </h1>
 
-                <div class="field">
-                    <label for="prayer" data-i18n="yourPrayer">Doa anda</label>
-                    <textarea
-                        id="prayer"
-                        maxlength="5000"
-                        required
-                        data-i18n-placeholder="prayerPlaceholder"
-                        placeholder="Tuliskan doa anda di sini..."
-                    ></textarea>
-                    <p class="message" data-i18n="prayerNote">
-                        Setiap doa akan disampaikan kepada penerima yang dipilih.
+                    <p
+                        class="hero-description"
+                        data-i18n="heroDescription"
+                    >
+                        Titipkan doa anda di sini.
+                        Insya-Allah, doa ini akan dibawa ke Tanah Suci.
                     </p>
+
                 </div>
 
-                <button class="primary-btn full-btn" id="send-button" type="submit" data-i18n="sendButton">
-                    Hantar Doa
-                </button>
+            </section>
 
-                <p id="send-status" class="message" role="status"></p>
-            </form>
-        </div>
 
-        <!-- PUBLIC PRAYER STATUS -->
-        <div class="section status-section">
-            <div class="section-heading">
-                <div class="eyebrow" data-i18n="statusEyebrow">Prayer updates</div>
-                <h2 data-i18n="statusTitle">Prayer Status</h2>
-                <p data-i18n="statusDescription">
-                    Check whether your prayer has been read.
+            <!-- SEND PRAYER FORM -->
+            <section class="form-panel">
+
+                <div class="section-heading">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="sendEyebrow"
+                    >
+                        KIRIMAN ANDA
+                    </span>
+
+                    <h2 data-i18n="sendTitle">
+                        Kirimkan doa<span>.</span>
+                    </h2>
+
+                    <p data-i18n="sendDescription">
+                        Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.
+                    </p>
+
+                </div>
+
+
+                <form id="prayer-form" class="prayer-form">
+
+                    <!-- SENDER NAME -->
+                    <div class="field-group">
+
+                        <label
+                            for="sender"
+                            data-i18n="yourName"
+                        >
+                            Nama anda
+                        </label>
+
+                        <input
+                            id="sender"
+                            name="sender"
+                            type="text"
+                            maxlength="80"
+                            placeholder="Masukkan nama anda"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- RECIPIENT -->
+                    <div class="field-group">
+
+                        <label
+                            for="recipient"
+                            data-i18n="sendTo"
+                        >
+                            Kirim kepada
+                        </label>
+
+                        <select
+                            id="recipient"
+                            name="recipient"
+                            required
+                        >
+
+                            <option value="">
+                                Sedang memuatkan nama...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PRAYER MESSAGE -->
+                    <div class="field-group">
+
+                        <label
+                            for="prayer"
+                            data-i18n="yourPrayer"
+                        >
+                            Doa anda
+                        </label>
+
+                        <textarea
+                            id="prayer"
+                            name="prayer"
+                            rows="7"
+                            maxlength="3000"
+                            placeholder="Tuliskan doa anda di sini..."
+                            required
+                        ></textarea>
+
+                        <small data-i18n="prayerNote">
+                            Ambil masa anda. Tuliskan dengan ikhlas.
+                        </small>
+
+                    </div>
+
+
+                    <!-- SEND BUTTON -->
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+
+                        <span data-i18n="sendButton">
+                            Hantar doa
+                        </span>
+
+                    </button>
+
+
+                    <!-- SEND STATUS -->
+                    <p
+                        id="send-status"
+                        class="status-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
+            </section>
+
+
+            <!-- PUBLIC PRAYER STATUS -->
+            <section class="public-status-section">
+
+                <div class="section-heading centered">
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="statusEyebrow"
+                    >
+                        KEMAS KINI DOA
+                    </span>
+
+                    <h2 data-i18n="statusTitle">
+                        Status doa<span>.</span>
+                    </h2>
+
+                    <p data-i18n="statusDescription">
+                        Semak sama ada doa anda telah dibaca.
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH -->
+                <div class="status-search">
+
+                    <input
+                        id="public-status-search"
+                        type="search"
+                        placeholder="Cari nama pengirim atau penerima..."
+                        data-i18n-placeholder="searchPlaceholder"
+                    >
+
+                    <button
+                        id="load-public-status"
+                        class="secondary-button"
+                        type="button"
+                        data-i18n="checkStatus"
+                    >
+                        Semak status
+                    </button>
+
+                </div>
+
+
+                <!-- STATUS MESSAGE -->
+                <p
+                    id="public-status-message"
+                    class="status-message"
+                    data-i18n="statusHint"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Tekan semak status untuk melihat perkembangan doa.
                 </p>
+
+
+                <!-- STATUS LIST -->
+                <div
+                    id="public-status-list"
+                    class="public-status-list"
+                ></div>
+
+
+                <!-- PRIVACY NOTE -->
+                <p
+                    class="privacy-note"
+                    data-i18n="privacyNote"
+                >
+                    Kandungan doa hanya boleh dibaca oleh penerima yang dituju.
+                </p>
+
+            </section>
+
+        </section>
+
+
+        <!-- LOGIN SECTION -->
+        <section
+            id="login-section"
+            class="page-section auth-section hidden"
+        >
+
+            <!-- BACK BUTTON -->
+            <button
+                id="back-to-form"
+                class="back-button"
+                type="button"
+                data-i18n="backHome"
+            >
+                Kembali ke halaman utama
+            </button>
+
+
+            <!-- LOGIN CARD -->
+            <div class="auth-card">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="loginEyebrow"
+                >
+                    RUANG PERIBADI ANDA
+                </span>
+
+
+                <h1 data-i18n="loginTitle">
+                    Selamat kembali<span>.</span>
+                </h1>
+
+
+                <p
+                    class="auth-description"
+                    data-i18n="loginDescription"
+                >
+                    Log masuk untuk membaca doa yang dikirimkan khas buat anda.
+                </p>
+
+
+                <form id="login-form" class="prayer-form">
+
+                    <!-- LOGIN AS -->
+                    <div class="field-group">
+
+                        <label
+                            for="login-recipient"
+                            data-i18n="loginAs"
+                        >
+                            Log masuk sebagai
+                        </label>
+
+                        <select
+                            id="login-recipient"
+                            name="recipient"
+                            required
+                        >
+
+                            <option value="">
+                                Pilih nama anda
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+                    <div class="field-group">
+
+                        <label
+                            for="password"
+                            data-i18n="password"
+                        >
+                            Kata laluan
+                        </label>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Masukkan kata laluan"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- LOGIN BUTTON -->
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+
+                        <span data-i18n="loginButton">
+                            Log masuk
+                        </span>
+
+                    </button>
+
+
+                    <!-- LOGIN STATUS -->
+                    <p
+                        id="login-status"
+                        class="status-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                </form>
+
             </div>
 
-            <div class="status-search">
-                <input
-                    type="text"
-                    id="public-status-search"
-                    data-i18n-placeholder="searchPlaceholder"
-                    placeholder="Search sender or recipient..."
-                >
+        </section>
 
-                <button class="primary-btn" id="load-public-status" type="button" data-i18n="checkStatus">
-                    Check status
+
+        <!-- RECIPIENT DASHBOARD -->
+        <section
+            id="dashboard-section"
+            class="page-section dashboard-section hidden"
+        >
+
+            <!-- DASHBOARD HEADER -->
+            <div class="dashboard-topbar">
+
+                <div>
+
+                    <span
+                        class="eyebrow"
+                        data-i18n="personalSpace"
+                    >
+                        RUANG PERIBADI
+                    </span>
+
+                    <p class="dashboard-brand">
+                        kiriman doa<span>.</span>
+                    </p>
+
+                </div>
+
+
+                <!-- LOGOUT -->
+                <button
+                    id="logout-button"
+                    class="secondary-button"
+                    type="button"
+                    data-i18n="logout"
+                >
+                    Log keluar
                 </button>
+
             </div>
 
-            <p class="status-instruction" data-i18n="statusInstruction">
-                Tekan semak status untuk melihat perkembangan doa.
-            </p>
 
-            <p id="public-status-message" class="message" role="status"></p>
-            <div id="public-status-list"></div>
+            <!-- DASHBOARD INTRO -->
+            <div class="dashboard-intro">
 
-            <p class="privacy-note" data-i18n="privacyNote">
-                Prayer messages can only be read by their intended recipients.
-            </p>
-        </div>
+                <div>
 
-    </section>
+                    <span
+                        class="eyebrow"
+                        data-i18n="prayerCollection"
+                    >
+                        KOLEKSI DOA ANDA
+                    </span>
 
-    <!-- LOGIN -->
-    <section id="login-section" class="section hidden">
-        <button class="back-button" id="back-to-form" type="button" data-i18n="backHome">
-            ← Back to home
-        </button>
+                    <h1 id="welcome-title">
+                        Doa untuk anda.
+                    </h1>
 
-        <div class="section-heading">
-            <div class="eyebrow" data-i18n="loginEyebrow">Recipient access</div>
-            <h2 data-i18n="loginTitle">Log Masuk</h2>
-            <p data-i18n="loginDescription">
-                Log masuk untuk melihat kiriman doa anda.
-            </p>
-        </div>
+                    <p
+                        id="dashboard-subtitle"
+                        data-i18n="dashboardDescription"
+                    >
+                        Doa yang telah dikirimkan khas buat anda.
+                    </p>
 
-        <form id="login-form">
-            <div class="field">
-                <label for="login-recipient" data-i18n="loginAs">Log masuk sebagai</label>
-                <select id="login-recipient" required>
-                    <option value="" data-i18n="chooseRecipient">Pilih penerima</option>
-                </select>
+                </div>
+
+
+                <!-- PRAYER COUNT -->
+                <div class="prayer-count-card">
+
+                    <strong id="prayer-count">
+                        0
+                    </strong>
+
+                    <span data-i18n="prayersReceived">
+                        Doa diterima
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="field">
-                <label for="password" data-i18n="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    required
-                    data-i18n-placeholder="passwordPlaceholder"
-                    placeholder="Masukkan password"
+
+            <div class="dashboard-divider"></div>
+
+
+            <!-- PRAYER COLLECTION -->
+            <div class="list-heading">
+
+                <span
+                    class="eyebrow"
+                    data-i18n="yourCollection"
                 >
+                    KOLEKSI ANDA
+                </span>
+
+                <h2 data-i18n="allPrayers">
+                    Semua doa<span>.</span>
+                </h2>
+
             </div>
 
-            <button class="primary-btn full-btn" id="login-button" type="submit" data-i18n="loginButton">
-                Log Masuk
-            </button>
 
-            <p id="login-status" class="message" role="status"></p>
-        </form>
-    </section>
+            <!-- PRAYER FILTERS -->
+            <div
+                id="prayer-tabs"
+                class="prayer-tabs"
+            >
 
-    <!-- DASHBOARD -->
-    <section id="dashboard-section" class="section hidden">
+                <button
+                    type="button"
+                    data-filter="all"
+                    class="filter-tab active"
+                    aria-pressed="true"
+                    data-i18n="all"
+                >
+                    Semua
+                </button>
 
-        <div class="dashboard-top">
-            <div>
-                <div class="eyebrow" data-i18n="personalSpace">Personal space</div>
-                <h2 id="welcome-title">Welcome</h2>
-                <p data-i18n="dashboardDescription">Your received prayers are here.</p>
+
+                <button
+                    type="button"
+                    data-filter="unread"
+                    class="filter-tab"
+                    aria-pressed="false"
+                    data-i18n="unread"
+                >
+                    Belum dibaca
+                </button>
+
+
+                <button
+                    type="button"
+                    data-filter="read"
+                    class="filter-tab"
+                    aria-pressed="false"
+                    data-i18n="read"
+                >
+                    Sudah dibaca
+                </button>
+
             </div>
 
-            <button class="primary-btn" id="logout-button" type="button" data-i18n="logout">
-                Log Keluar
-            </button>
-        </div>
 
-        <div class="count-card">
-            <strong id="prayer-count">0</strong>
-            <span data-i18n="prayersReceived">Prayers received</span>
-        </div>
+            <!-- DASHBOARD STATUS -->
+            <p
+                id="dashboard-status"
+                class="status-message"
+                role="status"
+                aria-live="polite"
+            ></p>
 
-        <div class="section-heading">
-            <h3 data-i18n="yourCollection">Your prayer collection</h3>
-        </div>
 
-        <div class="tabs" id="prayer-tabs">
-            <button class="tab-btn active" type="button" data-filter="all" data-i18n="all">All</button>
-            <button class="tab-btn" type="button" data-filter="unread" data-i18n="unread">Unread</button>
-            <button class="tab-btn" type="button" data-filter="read" data-i18n="read">Read</button>
-        </div>
+            <!-- PRAYER LIST -->
+            <div
+                id="prayer-list"
+                class="prayer-list"
+            ></div>
 
-        <p id="dashboard-status" class="message" role="status"></p>
-        <div id="prayer-list"></div>
-    </section>
+        </section>
 
-</main>
+    </main>
 
-<footer>
-    <p data-i18n="footerText">Made with love and prayers.</p>
-</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
+    <!-- FOOTER -->
+    <footer class="site-footer">
+
+        <a href="#" class="footer-brand">
+            kiriman doa<span>.</span>
+        </a>
+
+        <p data-i18n="footerText">
+            Semoga setiap doa disampaikan dengan penuh keikhlasan.
+        </p>
+
+    </footer>
 
 </body>
-</html>
 
+</html>
