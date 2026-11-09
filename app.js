@@ -153,7 +153,7 @@ const translations = {
         mySpace: "My space",
 
         heroLabel: "A DUA', A JOURNEY OF FAITH",
-        heroTitle: "Dua' Requests<br><span>to Haramain.</span>",
+        heroTitle: "Dua' Request<br><span>to Haramain.</span>",
         heroDescription: "Write your Dua' here. InSya-Allah, your Dua' will be carried to Haramain.",
 
         sendEyebrow: "YOUR DUA'",
