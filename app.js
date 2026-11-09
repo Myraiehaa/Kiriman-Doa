@@ -16,6 +16,7 @@ const supabase = createClient(
 
 const $ = (id) => document.getElementById(id);
 
+
 // ==========================================
 // 2. VARIABLES
 // ==========================================
@@ -26,10 +27,11 @@ let currentFilter = "all";
 let publicStatusCache = [];
 let publicStatusLoaded = false;
 
+let recipientCapacities = [];
+let currentRecipientId = null;
+
 let language = localStorage.getItem("kd-language") || "ms";
 let theme = localStorage.getItem("kd-theme") || "light";
-
-// Actual Supabase Auth emails
 
 const recipientEmails = {
     "1": "aini_noni94@yahoo.com.my",
@@ -37,6 +39,7 @@ const recipientEmails = {
     "3": "amierulamri99@gmail.com",
     "4": "amyratulj@gmail.com"
 };
+
 
 // ==========================================
 // 3. TRANSLATIONS
@@ -47,13 +50,13 @@ const translations = {
     ms: {
         mySpace: "Ruang saya",
 
-        heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN MENYUCIKAN JIWA",
+        heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN IMAN",
         heroTitle: "Kiriman Doa<br><span>ke Tanah Suci.</span>",
-        heroDescription: "Kirimkan doa anda di sini. Insya-Allah, doa ini akan dibacakan di Tanah Suci.",
+        heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Tanah Suci.",
 
-        sendEyebrow: "DOA ANDA",
+        sendEyebrow: "KIRIMAN ANDA",
         sendTitle: "Kirimkan doa<span>.</span>",
-        sendDescription: "Tuliskan doa yang ingin dibacakan di Tanah Suci.",
+        sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.",
 
         yourName: "Nama anda",
         sendTo: "Kirim kepada",
@@ -71,7 +74,7 @@ const translations = {
 
         backHome: "Kembali ke halaman utama",
 
-        loginEyebrow: "RUANG PERIBADI",
+        loginEyebrow: "RUANG PERIBADI ANDA",
         loginTitle: "Selamat kembali<span>.</span>",
         loginDescription: "Log masuk untuk membaca doa yang dikirimkan khas buat anda.",
         loginAs: "Log masuk sebagai",
@@ -82,7 +85,7 @@ const translations = {
         logout: "Log keluar",
 
         prayerCollection: "KOLEKSI DOA ANDA",
-        dashboardDescription: "Doa-doa yang dititipkan untuk dibacakan di Tanah Suci.",
+        dashboardDescription: "Doa yang telah dikirimkan khas buat anda.",
         prayersReceived: "Doa diterima",
 
         yourCollection: "KOLEKSI ANDA",
@@ -146,19 +149,41 @@ const translations = {
         themeDark: "Gelap",
         themeLight: "Cerah",
 
-        hi: "Salam"
+        hi: "Salam",
+
+        capacityLabel: "KAPASITI KOLEKSI",
+        collectionFull: "Koleksi penuh",
+        remainingSlots: "Baki slot",
+        slotsUsed: "slot digunakan",
+        capacitySaving: "Sedang mengemas kini kapasiti...",
+        capacitySaved: "Kapasiti berjaya dikemas kini.",
+        capacityError: "Kapasiti tidak dapat dikemas kini.",
+        capacityMinimum: "Kapasiti tidak boleh kurang daripada jumlah Doa yang diterima.",
+        capacityFull: "Penerima ini telah mencapai kapasiti maksimum semasa.",
+        recipientFull: "Koleksi penuh",
+        recipientAvailable: "Masih menerima Doa",
+        recipientLoading: "Memuatkan kapasiti...",
+        noCapacityData: "Maklumat kapasiti tidak tersedia.",
+        decreaseDisabled: "Tidak boleh mengurangkan kapasiti lagi.",
+
+        successTitle: "Doa anda telah dihantar.",
+        successDescription: "Alhamdulillah, doa anda telah diterima dengan penuh kasih.",
+        successClosing: "Semoga Allah menerima doa anda dan mengurniakan yang terbaik. Amin.",
+        successButton: "Selesai",
+
+        capacityLoadError: "Maklumat kapasiti tidak dapat dimuatkan."
     },
 
     en: {
         mySpace: "My space",
 
-        heroLabel: "A DUA', A JOURNEY OF FAITH",
-        heroTitle: "Dua' Request<br><span>to Haramain.</span>",
-        heroDescription: "Write your Dua' here. InSya-Allah, your Dua' will be carried to Haramain.",
+        heroLabel: "A JOURNEY OF FAITH",
+        heroTitle: "Dua' Requests<br><span>to Makkah.</span>",
+        heroDescription: "Leave your Dua' here. InSya-Allah, it will be carried to the Holy Land.",
 
-        sendEyebrow: "YOUR DUA'",
-        sendTitle: "Send a prayer<span>.</span>",
-        sendDescription: "Write a Dua' you would like to be carried and recited in Haramain.",
+        sendEyebrow: "YOUR MESSAGE",
+        sendTitle: "Send a Dua'<span>.</span>",
+        sendDescription: "Write a Dua' you would like to be carried and recited in the Holy Land.",
 
         yourName: "Your name",
         sendTo: "Send to",
@@ -187,7 +212,7 @@ const translations = {
         logout: "Log out",
 
         prayerCollection: "YOUR DUA' COLLECTION",
-        dashboardDescription: "Dua' entrusted to us to be recited in the Haramain",
+        dashboardDescription: "Dua' sent especially for you.",
         prayersReceived: "Dua' received",
 
         yourCollection: "YOUR COLLECTION",
@@ -234,7 +259,7 @@ const translations = {
         tryAgain: "Try again",
         alreadyRead: "Already read",
         markRead: "Mark as read",
-        backPrayers: "Back to Dua'",
+        backPrayers: "Back to collection",
 
         dateUnavailable: "Date unavailable",
         readLabel: "Read",
@@ -251,14 +276,38 @@ const translations = {
         themeDark: "Dark",
         themeLight: "Light",
 
-        hi: "Hi"
+        hi: "Hi",
+
+        capacityLabel: "COLLECTION CAPACITY",
+        collectionFull: "Collection full",
+        remainingSlots: "Slots remaining",
+        slotsUsed: "slots used",
+        capacitySaving: "Updating capacity...",
+        capacitySaved: "Capacity updated successfully.",
+        capacityError: "Couldn't update capacity.",
+        capacityMinimum: "Capacity cannot be lower than the number of Dua' received.",
+        capacityFull: "This recipient has reached the current collection limit.",
+        recipientFull: "Collection full",
+        recipientAvailable: "Accepting Dua'",
+        recipientLoading: "Loading capacity...",
+        noCapacityData: "Capacity information is unavailable.",
+        decreaseDisabled: "Capacity cannot be reduced further.",
+
+        successTitle: "Your Dua' has been sent.",
+        successDescription: "Alhamdulillah, your Dua' has been received with love and care.",
+        successClosing: "May Allah accept your Dua' and grant what is best for you. Ameen.",
+        successButton: "Done",
+
+        capacityLoadError: "Couldn't load capacity information."
     }
 };
+
 
 const t = (key) =>
     translations[language][key] ||
     translations.en[key] ||
     key;
+
 
 // ==========================================
 // 4. HELPER FUNCTIONS
@@ -273,6 +322,7 @@ function status(id, message, isError = false) {
     node.classList.toggle("error", isError);
 }
 
+
 function safeText(tag, cls, value) {
     const node = document.createElement(tag);
 
@@ -282,6 +332,7 @@ function safeText(tag, cls, value) {
 
     return node;
 }
+
 
 function formatDate(value) {
     if (!value) return t("dateUnavailable");
@@ -304,11 +355,13 @@ function formatDate(value) {
     );
 }
 
+
 function setBusy(form, busy) {
     const button = form.querySelector('button[type="submit"]');
 
     if (button) button.disabled = busy;
 }
+
 
 function showSection(id) {
     [
@@ -330,6 +383,7 @@ function showSection(id) {
     });
 }
 
+
 // ==========================================
 // 5. LANGUAGE
 // ==========================================
@@ -337,17 +391,16 @@ function showSection(id) {
 function applyLanguage() {
     document.documentElement.lang = language;
 
+    const htmlKeys = [
+        "heroTitle",
+        "sendTitle",
+        "statusTitle",
+        "loginTitle",
+        "allPrayers"
+    ];
+
     document.querySelectorAll("[data-i18n]").forEach(element => {
         const key = element.dataset.i18n;
-
-        // These translation values contain intentional HTML
-        const htmlKeys = [
-            "heroTitle",
-            "sendTitle",
-            "statusTitle",
-            "loginTitle",
-            "allPrayers"
-        ];
 
         if (htmlKeys.includes(key)) {
             element.innerHTML = t(key);
@@ -371,10 +424,11 @@ function applyLanguage() {
     $("prayer").placeholder = t("writePrayer");
     $("password").placeholder = t("enterPassword");
 
+    $("theme-icon").textContent = theme === "light" ? "☾" : "☀";
+
     refreshRecipientOptions();
     refreshLoginOptions();
-
-    $("theme-icon").textContent = theme === "light" ? "☾" : "☀";
+    renderRecipientCapacities();
 
     if (publicStatusLoaded) {
         renderPublicStatus();
@@ -386,8 +440,20 @@ function applyLanguage() {
 
     if (!$("dashboard-section").classList.contains("hidden")) {
         $("dashboard-subtitle").textContent = t("dashboardDescription");
+        renderCapacity();
     }
+
+    updateSuccessPopupLanguage();
 }
+
+
+function updateSuccessPopupLanguage() {
+    $("success-title").textContent = t("successTitle");
+    $("success-description").textContent = t("successDescription");
+    $("success-closing").textContent = t("successClosing");
+    $("success-close").textContent = t("successButton");
+}
+
 
 // ==========================================
 // 6. THEME
@@ -402,6 +468,7 @@ function applyTheme() {
         theme === "light" ? "☾" : "☀";
 }
 
+
 // ==========================================
 // 7. RECIPIENT DROPDOWNS
 // ==========================================
@@ -415,15 +482,29 @@ function refreshRecipientOptions() {
     );
 
     recipients.forEach(recipient => {
-        select.add(
-            new Option(recipient.display_name, recipient.id)
+        const option = new Option(
+            recipient.display_name,
+            recipient.id
         );
+
+        const capacity = recipientCapacities.find(
+            item => String(item.recipient_id) === String(recipient.id)
+        );
+
+        if (capacity?.is_full) {
+            option.disabled = true;
+            option.textContent =
+                `${recipient.display_name} (${t("recipientFull")})`;
+        }
+
+        select.add(option);
     });
 
     if (recipients.some(r => String(r.id) === oldValue)) {
         select.value = oldValue;
     }
 }
+
 
 function refreshLoginOptions() {
     const select = $("login-recipient");
@@ -443,6 +524,7 @@ function refreshLoginOptions() {
         select.value = oldValue;
     }
 }
+
 
 async function loadRecipients() {
     const sendSelect = $("recipient");
@@ -468,6 +550,8 @@ async function loadRecipients() {
 
         refreshRecipientOptions();
         refreshLoginOptions();
+
+        await loadRecipientCapacities();
 
         console.log("Recipients loaded:", recipients);
 
@@ -504,8 +588,228 @@ async function loadRecipients() {
     }
 }
 
+
 // ==========================================
-// 8. NAVIGATION
+// 8. RECIPIENT CAPACITY
+// ==========================================
+
+async function loadRecipientCapacities() {
+    try {
+        const { data, error } = await supabase.rpc(
+            "get_public_recipient_capacity"
+        );
+
+        if (error) throw error;
+
+        recipientCapacities = data || [];
+
+        refreshRecipientOptions();
+        renderRecipientCapacities();
+
+        return recipientCapacities;
+
+    } catch (error) {
+        console.error("Load recipient capacities:", error);
+
+        recipientCapacities = [];
+
+        $("recipient-capacity-list").replaceChildren();
+
+        return [];
+    }
+}
+
+
+function renderRecipientCapacities() {
+    const container = $("recipient-capacity-list");
+
+    if (!container) return;
+
+    container.replaceChildren();
+
+    if (!recipientCapacities.length) {
+        return;
+    }
+
+    recipients.forEach(recipient => {
+        const capacity = recipientCapacities.find(
+            item => String(item.recipient_id) === String(recipient.id)
+        );
+
+        if (!capacity) return;
+
+        const total = Number(capacity.total_count || 0);
+        const limit = Number(capacity.prayer_limit || 50);
+        const remaining = Math.max(0, limit - total);
+        const percentage = limit > 0
+            ? Math.min(100, (total / limit) * 100)
+            : 100;
+
+        const full = total >= limit;
+
+        const card = document.createElement("div");
+
+        card.className =
+            "recipient-capacity-item" + (full ? " is-full" : "");
+
+        const top = document.createElement("div");
+        top.className = "recipient-capacity-top";
+
+        top.append(
+            safeText(
+                "span",
+                "recipient-capacity-name",
+                recipient.display_name
+            ),
+            safeText(
+                "span",
+                "recipient-capacity-count",
+                `${total} / ${limit}`
+            )
+        );
+
+        const progress = document.createElement("div");
+        progress.className = "recipient-capacity-progress";
+
+        const fill = document.createElement("div");
+        fill.className = "recipient-capacity-fill";
+        fill.style.width = `${percentage}%`;
+
+        progress.append(fill);
+
+        const message = safeText(
+            "span",
+            "recipient-capacity-status",
+            full
+                ? t("recipientFull")
+                : `${remaining} ${t("remainingSlots")}`
+        );
+
+        card.append(top, progress, message);
+        container.append(card);
+    });
+}
+
+
+function getCurrentCapacity() {
+    return recipientCapacities.find(
+        item => String(item.recipient_id) === String(currentRecipientId)
+    );
+}
+
+
+function renderCapacity() {
+    const capacity = getCurrentCapacity();
+
+    if (!capacity) {
+        $("capacity-count").textContent = "—";
+        $("capacity-description").textContent = t("noCapacityData");
+        $("capacity-progress-bar").style.width = "0%";
+
+        $("increase-capacity").disabled = true;
+        $("decrease-capacity").disabled = true;
+
+        return;
+    }
+
+    const total = Number(capacity.total_count || 0);
+    const limit = Number(capacity.prayer_limit || 50);
+    const remaining = Math.max(0, limit - total);
+
+    const percentage = limit > 0
+        ? Math.min(100, (total / limit) * 100)
+        : 100;
+
+    const full = total >= limit;
+
+    $("capacity-count").textContent = `${total} / ${limit}`;
+
+    $("capacity-description").textContent =
+        `${t("remainingSlots")}: ${remaining}`;
+
+    $("capacity-progress-bar").style.width = `${percentage}%`;
+
+    $("capacity-full-label").classList.toggle("hidden", !full);
+
+    $("decrease-capacity").disabled = limit - 5 < total;
+    $("increase-capacity").disabled = false;
+}
+
+
+async function changeCapacity(amount) {
+    const capacity = getCurrentCapacity();
+
+    if (!capacity) {
+        status("capacity-status", t("capacityError"), true);
+        return;
+    }
+
+    const currentLimit = Number(capacity.prayer_limit || 50);
+    const total = Number(capacity.total_count || 0);
+    const newLimit = currentLimit + amount;
+
+    if (newLimit < total) {
+        status("capacity-status", t("capacityMinimum"), true);
+        return;
+    }
+
+    const increaseButton = $("increase-capacity");
+    const decreaseButton = $("decrease-capacity");
+
+    increaseButton.disabled = true;
+    decreaseButton.disabled = true;
+
+    status("capacity-status", t("capacitySaving"));
+
+    try {
+        const { error } = await supabase.rpc(
+            "update_my_prayer_limit",
+            {
+                new_limit: newLimit
+            }
+        );
+
+        if (error) throw error;
+
+        await loadRecipientCapacities();
+
+        renderCapacity();
+
+        status("capacity-status", t("capacitySaved"));
+
+    } catch (error) {
+        console.error("Update capacity:", error);
+
+        status(
+            "capacity-status",
+            error.message?.includes("CAPACITY_BELOW_RECEIVED")
+                ? t("capacityMinimum")
+                : t("capacityError"),
+            true
+        );
+
+        renderCapacity();
+
+    } finally {
+        increaseButton.disabled = false;
+        decreaseButton.disabled = false;
+        renderCapacity();
+    }
+}
+
+
+$("increase-capacity").addEventListener("click", () => {
+    changeCapacity(5);
+});
+
+
+$("decrease-capacity").addEventListener("click", () => {
+    changeCapacity(-5);
+});
+
+
+// ==========================================
+// 9. NAVIGATION
 // ==========================================
 
 $("nav-login").addEventListener("click", () => {
@@ -513,12 +817,14 @@ $("nav-login").addEventListener("click", () => {
     showSection("login-section");
 });
 
+
 $("back-to-form").addEventListener("click", () => {
     showSection("send-section");
 });
 
+
 // ==========================================
-// 9. LANGUAGE BUTTONS
+// 10. LANGUAGE BUTTONS
 // ==========================================
 
 document.querySelectorAll("[data-language]").forEach(button => {
@@ -531,8 +837,9 @@ document.querySelectorAll("[data-language]").forEach(button => {
     });
 });
 
+
 // ==========================================
-// 10. THEME BUTTON
+// 11. THEME BUTTON
 // ==========================================
 
 $("theme-toggle").addEventListener("click", () => {
@@ -541,8 +848,47 @@ $("theme-toggle").addEventListener("click", () => {
     applyTheme();
 });
 
+
 // ==========================================
-// 11. SEND PRAYER
+// 12. SUCCESS POPUP
+// ==========================================
+
+function showSuccessPopup() {
+    updateSuccessPopupLanguage();
+
+    $("success-modal").classList.remove("hidden");
+
+    $("success-close").focus();
+}
+
+
+function closeSuccessPopup() {
+    $("success-modal").classList.add("hidden");
+}
+
+
+$("success-close").addEventListener("click", closeSuccessPopup);
+
+
+$("success-modal").addEventListener("click", event => {
+    if (event.target === $("success-modal")) {
+        closeSuccessPopup();
+    }
+});
+
+
+document.addEventListener("keydown", event => {
+    if (
+        event.key === "Escape" &&
+        !$("success-modal").classList.contains("hidden")
+    ) {
+        closeSuccessPopup();
+    }
+});
+
+
+// ==========================================
+// 13. SEND PRAYER
 // ==========================================
 
 $("prayer-form").addEventListener("submit", async event => {
@@ -559,6 +905,16 @@ $("prayer-form").addEventListener("submit", async event => {
         return;
     }
 
+    const selectedCapacity = recipientCapacities.find(
+        item => String(item.recipient_id) === String(recipient_id)
+    );
+
+    if (selectedCapacity?.is_full) {
+        status("send-status", t("capacityFull"), true);
+        await loadRecipientCapacities();
+        return;
+    }
+
     setBusy(form, true);
     status("send-status", t("sending"));
 
@@ -571,27 +927,47 @@ $("prayer-form").addEventListener("submit", async event => {
                 recipient_id
             });
 
-        if (error) throw error;
+        if (error) {
+            if (
+                error.message?.includes("PRAYER_COLLECTION_FULL") ||
+                error.message?.includes("COLLECTION_FULL")
+            ) {
+                throw new Error("COLLECTION_FULL");
+            }
+
+            throw error;
+        }
 
         form.reset();
 
-        status("send-status", t("sent"));
+        status("send-status", "");
+
+        await loadRecipientCapacities();
 
         if (publicStatusLoaded) {
             await loadPublicStatus();
         }
 
+        showSuccessPopup();
+
     } catch (error) {
         console.error("Send prayer:", error);
-        status("send-status", t("sendError"), true);
+
+        if (error.message === "COLLECTION_FULL") {
+            status("send-status", t("capacityFull"), true);
+            await loadRecipientCapacities();
+        } else {
+            status("send-status", t("sendError"), true);
+        }
 
     } finally {
         setBusy(form, false);
     }
 });
 
+
 // ==========================================
-// 12. LOGIN
+// 14. LOGIN
 // ==========================================
 
 $("login-form").addEventListener("submit", async event => {
@@ -638,8 +1014,9 @@ $("login-form").addEventListener("submit", async event => {
     }
 });
 
+
 // ==========================================
-// 13. LOGOUT
+// 15. LOGOUT
 // ==========================================
 
 $("logout-button").addEventListener("click", async () => {
@@ -654,6 +1031,7 @@ $("logout-button").addEventListener("click", async () => {
 
         currentPrayers = [];
         currentFilter = "all";
+        currentRecipientId = null;
 
         showSection("send-section");
 
@@ -666,8 +1044,9 @@ $("logout-button").addEventListener("click", async () => {
     }
 });
 
+
 // ==========================================
-// 14. PRAYER FILTERS
+// 16. PRAYER FILTERS
 // ==========================================
 
 $("prayer-tabs").addEventListener("click", event => {
@@ -687,6 +1066,7 @@ $("prayer-tabs").addEventListener("click", event => {
     renderPrayerList();
 });
 
+
 function getFilteredPrayers() {
     if (currentFilter === "unread") {
         return currentPrayers.filter(prayer => !prayer.is_read);
@@ -699,8 +1079,9 @@ function getFilteredPrayers() {
     return currentPrayers;
 }
 
+
 // ==========================================
-// 15. PRAYER LIST
+// 17. PRAYER LIST
 // ==========================================
 
 function renderPrayerList() {
@@ -766,8 +1147,9 @@ function renderPrayerList() {
     });
 }
 
+
 // ==========================================
-// 16. PRAYER DETAILS
+// 18. PRAYER DETAILS
 // ==========================================
 
 function openPrayer(prayer) {
@@ -883,8 +1265,9 @@ function openPrayer(prayer) {
     list.append(back, card);
 }
 
+
 // ==========================================
-// 17. DASHBOARD
+// 19. DASHBOARD
 // ==========================================
 
 async function renderDashboard() {
@@ -912,6 +1295,8 @@ async function renderDashboard() {
         showSection("login-section");
         return;
     }
+
+    currentRecipientId = account.recipient_id;
 
     $("welcome-title").textContent =
         `${t("hi")}, ${account.recipients?.display_name ?? ""}`;
@@ -951,16 +1336,22 @@ async function renderDashboard() {
         tab.setAttribute("aria-pressed", String(active));
     });
 
+    await loadRecipientCapacities();
+
+    renderCapacity();
+
     status("dashboard-status", "");
 
     renderPrayerList();
 }
 
+
 // ==========================================
-// 18. PUBLIC PRAYER STATUS
+// 20. PUBLIC PRAYER STATUS
 // ==========================================
 
 $("load-public-status").addEventListener("click", loadPublicStatus);
+
 
 async function loadPublicStatus() {
     const button = $("load-public-status");
@@ -996,6 +1387,7 @@ async function loadPublicStatus() {
         button.disabled = false;
     }
 }
+
 
 function renderPublicStatus() {
     const list = $("public-status-list");
@@ -1076,8 +1468,9 @@ function renderPublicStatus() {
     });
 }
 
+
 // ==========================================
-// 19. SEARCH PUBLIC STATUS
+// 21. SEARCH PUBLIC STATUS
 // ==========================================
 
 $("public-status-search").addEventListener("input", () => {
@@ -1086,8 +1479,9 @@ $("public-status-search").addEventListener("input", () => {
     }
 });
 
+
 // ==========================================
-// 20. INITIALIZE
+// 22. INITIALIZE
 // ==========================================
 
 async function init() {
@@ -1114,9 +1508,12 @@ async function init() {
     supabase.auth.onAuthStateChange((event, session) => {
         if (event === "SIGNED_OUT") {
             currentPrayers = [];
+            currentRecipientId = null;
+
             showSection("send-section");
         }
     });
 }
+
 
 init();
