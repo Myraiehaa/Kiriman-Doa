@@ -34,7 +34,7 @@ let theme = localStorage.getItem("kd-theme") || "light";
 
 const recipientEmails = {
     "1": "aini_noni94@yahoo.com.my",
-    "2": "noratikahhasnun24@gmail.com",
+    "2": "noratikahasnun24@gmail.com",
     "3": "amierulamri99@gmail.com",
     "4": "amyratulj@gmail.com"
 };
