@@ -1,15 +1,14 @@
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-/* =========================
-   1. SUPABASE CONNECTION
-========================= */
-
 const SUPABASE_URL = "https://nxpfaispvioujkfhewas.supabase.co";
-
-const SUPABASE_KEY =
+const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_N-P-wI7MaTwLUJRbzf_C7Q_Nea2I6QZ";
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 const $ = (id) => document.getElementById(id);
 
@@ -17,259 +16,222 @@ let currentPrayers = [];
 let currentFilter = "all";
 let publicStatusCache = [];
 let publicStatusLoaded = false;
-let currentLanguage = localStorage.getItem("kd-language") || "ms";
+let recipientsCache = [];
 
-/* =========================
-   2. LANGUAGE TRANSLATIONS
-========================= */
+/* RECIPIENT EMAILS
+   Emails are used internally for Supabase login.
+   Users only select their name on the website.
+*/
+
+const recipientEmails = {
+  1: "aini_noni94@yahoo.com.my",
+  2: "noratikahhasnun88@gmail.com",
+  3: "amierulamri99@gmail.com",
+  4: "amyratulj@gmail.com"
+};
+
+/* LANGUAGE */
+
+let currentLanguage =
+  localStorage.getItem("language") || "malay";
 
 const translations = {
-  ms: {
-    mySpace: "My space",
-    heroLabel: "KIRIMAN DOA, SEBUAH PERJALANAN IMAN",
-    heroTitle: 'Kiriman Doa<br><span>ke Tanah Suci.</span>',
-    heroDescription: "Titipkan doa anda di sini. Insya-Allah, doa ini akan dibawa ke Tanah Suci.",
-    sendEyebrow: "KIRIMAN ANDA",
-    sendTitle: 'Kirimkan doa<span>.</span>',
-    sendDescription: "Tuliskan doa yang ingin dititipkan untuk dibacakan di Tanah Suci.",
-    yourName: "Nama anda",
-    sendTo: "Kirim kepada",
-    yourPrayer: "Doa anda",
-    prayerNote: "Ambil masa anda. Tuliskan dengan ikhlas.",
-    sendButton: "Hantar doa",
-    statusEyebrow: "KEMAS KINI DOA",
-    statusTitle: 'Status doa<span>.</span>',
-    statusDescription: "Semak sama ada doa anda telah dibaca.",
-    searchPlaceholder: "Cari nama pengirim atau penerima...",
-    checkStatus: "Semak status",
-    privacyNote: "Kandungan doa hanya boleh dibaca oleh penerima yang dituju.",
-    backHome: "Kembali ke halaman utama",
-    loginEyebrow: "RUANG PERIBADI ANDA",
-    loginTitle: 'Selamat kembali<span>.</span>',
-    loginDescription: "Log masuk untuk membaca doa yang dikirimkan khas buat anda.",
-    loginAs: "Log masuk sebagai",
-    password: "Kata laluan",
-    loginButton: "Log masuk",
-    personalSpace: "RUANG PERIBADI",
-    logout: "Log keluar",
-    prayerCollection: "KOLEKSI DOA ANDA",
-    dashboardDescription: "Doa yang telah dikirimkan khas buat anda.",
-    prayersReceived: "Doa diterima",
-    yourCollection: "KOLEKSI ANDA",
-    allPrayers: 'Semua doa<span>.</span>',
-    all: "Semua",
-    unread: "Belum dibaca",
-    read: "Sudah dibaca",
-    footerText: "Semoga setiap doa disampaikan dengan penuh keikhlasan.",
-    chooseName: "Pilih nama",
-    loadingNames: "Sedang memuatkan nama...",
-    sendSuccess: "Doa anda berjaya dihantar.",
-    sending: "Sedang menghantar doa...",
-    fillFields: "Sila lengkapkan semua ruangan.",
+  malay: {
+    loading: "Memuatkan...",
+    login: "Log Masuk",
+    logout: "Log Keluar",
+    sending: "Menghantar doa...",
+    sent: "Doa anda berjaya dihantar.",
     sendError: "Doa tidak berjaya dihantar. Sila cuba lagi.",
-    loading: "Sedang memuatkan...",
-    loginError: "Nama atau kata laluan tidak tepat.",
-    loggingIn: "Sedang log masuk...",
-    accountError: "Akaun ini belum dipautkan kepada penerima.",
-    loadingPrayers: "Sedang memuatkan doa...",
-    loadError: "Doa tidak berjaya dimuatkan. Sila refresh.",
-    noPrayers: "Belum ada doa diterima.",
-    noUnread: "Tiada doa yang belum dibaca.",
-    noRead: "Tiada doa yang telah dibaca.",
-    newPrayers: "Doa baharu akan dipaparkan di sini.",
-    prayerRead: "Sudah dibaca",
-    prayerUnread: "Belum dibaca",
-    markRead: "Tandakan sudah dibaca",
-    alreadyRead: "Sudah dibaca",
-    saving: "Sedang menyimpan...",
-    saveError: "Tidak berjaya mengemas kini status doa.",
-    saved: "Status doa berjaya dikemas kini.",
-    backPrayers: "Kembali ke senarai doa",
-    noResults: "Tiada nama yang sepadan.",
-    noPublicPrayers: "Belum ada doa untuk dipaparkan.",
-    publicStatusReady: "Tekan semak status untuk melihat perkembangan doa.",
-    publicStatusError: "Status tidak berjaya dimuatkan.",
+    loginLoading: "Sedang log masuk...",
+    loginError: "Nama atau password tidak betul.",
+    chooseName: "Pilih nama",
+    all: "Semua Doa",
+    unread: "Belum Dibaca",
+    read: "Sudah Dibaca",
+    markRead: "Tandakan Sudah Dibaca",
+    alreadyRead: "Sudah Dibaca",
+    tryAgain: "Cuba Lagi",
+    noPrayers: "Belum ada doa.",
+    noUnread: "Semua doa telah dibaca.",
+    noRead: "Belum ada doa yang dibaca.",
+    newPrayers: "Doa yang diterima akan dipaparkan di sini.",
+    readStatus: "Sudah dibaca",
+    unreadStatus: "Belum dibaca",
     dateUnavailable: "Tarikh tidak tersedia",
-    forRecipient: "Untuk",
-    readOn: "Dibaca pada"
+    back: "Kembali ke senarai doa",
+    loadError: "Tidak dapat memuatkan doa. Sila refresh.",
+    accountError: "Akaun ini belum dipautkan kepada penerima.",
+    markedRead: "Doa ditandakan sebagai sudah dibaca.",
+    statusError: "Tidak dapat mengemaskini status.",
+    publicLoading: "Memuatkan status...",
+    noResults: "Tiada nama yang sepadan dijumpai.",
+    noPublicPrayers: "Belum ada doa untuk dipaparkan.",
+    publicError: "Tidak dapat memuatkan status. Sila cuba lagi.",
+    for: "Untuk",
+    readOn: "Dibaca pada",
+    incorrectFields: "Sila lengkapkan semua ruangan."
   },
 
-  en: {
-    mySpace: "My space",
-    heroLabel: "A LITTLE PRAYER, A JOURNEY OF FAITH",
-    heroTitle: 'Prayer Requests<br><span>to the Holy Land.</span>',
-    heroDescription: "Leave your prayers here. Insya-Allah, they will be carried to the Holy Land.",
-    sendEyebrow: "YOUR MESSAGE",
-    sendTitle: 'Send a prayer<span>.</span>',
-    sendDescription: "Write a prayer to be recited in the blessed land.",
-    yourName: "Your name",
-    sendTo: "Send to",
-    yourPrayer: "Your prayer",
-    prayerNote: "Take your time. Write with sincerity.",
-    sendButton: "Send prayer",
-    statusEyebrow: "PRAYER UPDATES",
-    statusTitle: 'Prayer status<span>.</span>',
-    statusDescription: "Check whether your prayer has been read.",
-    searchPlaceholder: "Search sender or recipient...",
-    checkStatus: "Check status",
-    privacyNote: "Prayer content can only be read by its intended recipient.",
-    backHome: "Back to home",
-    loginEyebrow: "YOUR PERSONAL SPACE",
-    loginTitle: 'Welcome back<span>.</span>',
-    loginDescription: "Log in to read the prayers sent just for you.",
-    loginAs: "Log in as",
-    password: "Password",
-    loginButton: "Log in",
-    personalSpace: "YOUR PERSONAL SPACE",
-    logout: "Log out",
-    prayerCollection: "YOUR PRAYER COLLECTION",
-    dashboardDescription: "Prayers sent just for you.",
-    prayersReceived: "Prayers received",
-    yourCollection: "YOUR COLLECTION",
-    allPrayers: 'All prayers<span>.</span>',
-    all: "All",
+  english: {
+    loading: "Loading...",
+    login: "Login",
+    logout: "Logout",
+    sending: "Sending your prayer...",
+    sent: "Your prayer has been sent.",
+    sendError: "Couldn't send your prayer. Please try again.",
+    loginLoading: "Logging in...",
+    loginError: "Incorrect name or password.",
+    chooseName: "Choose a name",
+    all: "All Prayers",
     unread: "Unread",
     read: "Read",
-    footerText: "May every prayer be delivered with sincerity.",
-    chooseName: "Choose your name",
-    loadingNames: "Loading names...",
-    sendSuccess: "Your prayer has been sent successfully.",
-    sending: "Sending your prayer...",
-    fillFields: "Please complete all fields.",
-    sendError: "Couldn't send your prayer. Please try again.",
-    loading: "Loading...",
-    loginError: "Incorrect name or password.",
-    loggingIn: "Logging in...",
-    accountError: "This account isn't linked to a recipient.",
-    loadingPrayers: "Loading prayers...",
-    loadError: "Couldn't load prayers. Please refresh.",
-    noPrayers: "No prayers received yet.",
-    noUnread: "No unread prayers.",
-    noRead: "No read prayers.",
-    newPrayers: "New prayers will appear here.",
-    prayerRead: "Read",
-    prayerUnread: "Unread",
     markRead: "Mark as read",
     alreadyRead: "Already read",
-    saving: "Saving...",
-    saveError: "Couldn't update prayer status.",
-    saved: "Prayer status updated successfully.",
-    backPrayers: "Back to prayers",
+    tryAgain: "Try again",
+    noPrayers: "No prayers yet.",
+    noUnread: "You're all caught up.",
+    noRead: "No read prayers yet.",
+    newPrayers: "New prayers will show up here.",
+    readStatus: "Read",
+    unreadStatus: "Unread",
+    dateUnavailable: "Date unavailable",
+    back: "Back to prayers",
+    loadError: "Couldn't load prayers. Please refresh.",
+    accountError: "This account isn't linked to a recipient yet.",
+    markedRead: "Marked as read.",
+    statusError: "Couldn't update status.",
+    publicLoading: "Loading status...",
     noResults: "No matching names found.",
     noPublicPrayers: "No prayers to show yet.",
-    publicStatusReady: "Check the latest prayer status here.",
-    publicStatusError: "Couldn't load prayer status.",
-    dateUnavailable: "Date unavailable",
-    forRecipient: "For",
-    readOn: "Read on"
+    publicError: "Couldn't load status. Please try again.",
+    for: "For",
+    readOn: "Read on",
+    incorrectFields: "Please fill in every field."
   }
 };
 
 function t(key) {
-  return translations[currentLanguage][key] || key;
+  return translations[currentLanguage]?.[key] ??
+    translations.malay[key] ??
+    key;
 }
 
-/* =========================
-   3. LANGUAGE SWITCH
-========================= */
+function applyLanguage(language) {
+  currentLanguage = language;
+  localStorage.setItem("language", language);
 
-function applyLanguage() {
-  document.documentElement.lang = currentLanguage;
-
-  document.querySelectorAll("[data-i18n]").forEach((element) => {
-    const key = element.dataset.i18n;
-
-    if (translations[currentLanguage][key]) {
-      element.innerHTML = translations[currentLanguage][key];
-    }
-  });
-
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
-    const key = element.dataset.i18nPlaceholder;
-
-    if (translations[currentLanguage][key]) {
-      element.placeholder = translations[currentLanguage][key];
-    }
-  });
+  document.documentElement.lang =
+    language === "malay" ? "ms" : "en";
 
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.classList.toggle(
       "active",
-      button.dataset.language === currentLanguage
+      button.dataset.language === language
     );
   });
 
-  updateRecipientOptions();
-  renderPrayerList();
-
-  if (publicStatusLoaded) {
-    renderPublicStatus();
-  }
+  document.querySelectorAll("[data-ms][data-en]").forEach((element) => {
+    element.textContent =
+      language === "malay"
+        ? element.dataset.ms
+        : element.dataset.en;
+  });
 }
 
 document.querySelectorAll("[data-language]").forEach((button) => {
   button.addEventListener("click", () => {
-    currentLanguage = button.dataset.language;
-    localStorage.setItem("kd-language", currentLanguage);
-    applyLanguage();
+    const language = button.dataset.language;
+
+    if (language === "malay" || language === "english") {
+      applyLanguage(language);
+    }
   });
 });
 
-/* =========================
-   4. LIGHT / DARK THEME
-========================= */
+/* THEME */
 
 function applyTheme(theme) {
   document.body.dataset.theme = theme;
+  localStorage.setItem("theme", theme);
 
-  $("theme-icon").textContent =
-    theme === "dark" ? "☀" : "☾";
+  const icon = $("theme-icon");
 
-  localStorage.setItem("kd-theme", theme);
+  if (icon) {
+    icon.textContent = theme === "dark" ? "☀" : "☾";
+  }
+
+  const button = $("theme-toggle");
+
+  if (button) {
+    button.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
 }
 
-const savedTheme = localStorage.getItem("kd-theme") || "light";
+const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
-$("theme-toggle").addEventListener("click", () => {
-  const newTheme =
-    document.body.dataset.theme === "light" ? "dark" : "light";
+if ($("theme-toggle")) {
+  $("theme-toggle").addEventListener("click", () => {
+    const nextTheme =
+      document.body.dataset.theme === "dark" ? "light" : "dark";
 
-  applyTheme(newTheme);
-});
-
-/* =========================
-   5. COMMON FUNCTIONS
-========================= */
-
-function showSection(id) {
-  ["send-section", "login-section", "dashboard-section"].forEach((sectionId) => {
-    $(sectionId).classList.toggle("hidden", sectionId !== id);
+    applyTheme(nextTheme);
   });
-
-  $("site-header").classList.toggle(
-    "hidden",
-    id === "dashboard-section"
-  );
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+/* NAVIGATION */
+
+function showSection(id) {
+  ["send-section", "login-section", "dashboard-section"].forEach(
+    (sectionId) => {
+      const section = $(sectionId);
+
+      if (section) {
+        section.classList.toggle("hidden", sectionId !== id);
+      }
+    }
+  );
+
+  const header = $("site-header");
+
+  if (header) {
+    header.classList.toggle(
+      "hidden",
+      id === "dashboard-section"
+    );
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+/* STATUS MESSAGE */
+
 function status(id, message, isError = false) {
-  const element = $(id);
-  element.textContent = message;
-  element.classList.toggle("error", isError);
+  const node = $(id);
+
+  if (!node) return;
+
+  node.textContent = message;
+  node.classList.toggle("error", isError);
 }
 
 function safeText(tag, className, value) {
-  const element = document.createElement(tag);
+  const node = document.createElement(tag);
 
   if (className) {
-    element.className = className;
+    node.className = className;
   }
 
-  element.textContent = value ?? "";
-  return element;
+  node.textContent = value ?? "";
+
+  return node;
 }
 
 function formatDate(value) {
@@ -282,7 +244,7 @@ function formatDate(value) {
   }
 
   return date.toLocaleString(
-    currentLanguage === "ms" ? "ms-MY" : "en-MY",
+    currentLanguage === "malay" ? "ms-MY" : "en-MY",
     {
       day: "numeric",
       month: "short",
@@ -296,16 +258,15 @@ function formatDate(value) {
 function setBusy(form, busy) {
   const button = form.querySelector('button[type="submit"]');
 
-  if (button) button.disabled = busy;
+  if (button) {
+    button.disabled = busy;
+  }
 }
 
-/* =========================
-   6. NAVIGATION
-========================= */
+/* HEADER NAVIGATION */
 
 $("nav-login").addEventListener("click", () => {
   status("login-status", "");
-  $("login-form").reset();
   showSection("login-section");
 });
 
@@ -313,13 +274,12 @@ $("back-to-form").addEventListener("click", () => {
   showSection("send-section");
 });
 
-/* =========================
-   7. LOAD RECIPIENTS
-========================= */
-
-let recipients = [];
+/* LOAD RECIPIENTS */
 
 async function loadRecipients() {
+  const sendSelect = $("recipient");
+  const loginSelect = $("login-recipient");
+
   const { data, error } = await supabase
     .from("recipients")
     .select("id, display_name")
@@ -327,46 +287,44 @@ async function loadRecipients() {
 
   if (error) {
     console.error("Load recipients:", error);
-    status("send-status", t("loadError"), true);
+
+    status(
+      "send-status",
+      "Couldn't load names. Please refresh.",
+      true
+    );
+
     return;
   }
 
-  recipients = data || [];
-  updateRecipientOptions();
-}
+  recipientsCache = data ?? [];
 
-function updateRecipientOptions() {
-  const sendSelect = $("recipient");
-  const loginSelect = $("login-recipient");
-
-  const selectedSend = sendSelect.value;
-  const selectedLogin = loginSelect.value;
-
-  sendSelect.replaceChildren(
-    new Option(t("chooseName"), "")
-  );
-
-  loginSelect.replaceChildren(
-    new Option(t("chooseName"), "")
-  );
-
-  recipients.forEach((person) => {
-    sendSelect.add(
-      new Option(person.display_name, person.id)
+  if (sendSelect) {
+    sendSelect.replaceChildren(
+      new Option(t("chooseName"), "")
     );
 
-    loginSelect.add(
-      new Option(person.display_name, person.id)
-    );
-  });
+    recipientsCache.forEach((recipient) => {
+      sendSelect.add(
+        new Option(recipient.display_name, recipient.id)
+      );
+    });
+  }
 
-  sendSelect.value = selectedSend;
-  loginSelect.value = selectedLogin;
+  if (loginSelect) {
+    loginSelect.replaceChildren(
+      new Option(t("chooseName"), "")
+    );
+
+    recipientsCache.forEach((recipient) => {
+      loginSelect.add(
+        new Option(recipient.display_name, recipient.id)
+      );
+    });
+  }
 }
 
-/* =========================
-   8. SEND PRAYER
-========================= */
+/* SEND PRAYER */
 
 $("prayer-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -378,12 +336,7 @@ $("prayer-form").addEventListener("submit", async (event) => {
   const recipient_id = $("recipient").value;
 
   if (!sender_name || !prayer || !recipient_id) {
-    status("send-status", t("fillFields"), true);
-    return;
-  }
-
-  if (sender_name.length > 80 || prayer.length > 3000) {
-    status("send-status", t("fillFields"), true);
+    status("send-status", t("incorrectFields"), true);
     return;
   }
 
@@ -403,7 +356,7 @@ $("prayer-form").addEventListener("submit", async (event) => {
 
     form.reset();
 
-    status("send-status", t("sendSuccess"));
+    status("send-status", t("sent"));
 
     if (publicStatusLoaded) {
       await loadPublicStatus();
@@ -411,27 +364,19 @@ $("prayer-form").addEventListener("submit", async (event) => {
 
   } catch (error) {
     console.error("Send prayer:", error);
-    status("send-status", t("sendError"), true);
+
+    status(
+      "send-status",
+      t("sendError"),
+      true
+    );
 
   } finally {
     setBusy(form, false);
   }
 });
 
-/* =========================
-   9. LOGIN
-========================= */
-
-/*
-  The selected recipient ID is converted into an
-  internal email address for Supabase authentication.
-
-  Users only see the recipient dropdown and password.
-*/
-
-function internalLoginEmail(recipientId) {
-  return `recipient-${recipientId}@login.kiriman-doa.app`;
-}
+/* LOGIN - NAME + PASSWORD */
 
 $("login-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -442,16 +387,23 @@ $("login-form").addEventListener("submit", async (event) => {
   const password = $("password").value;
 
   if (!recipientId || !password) {
-    status("login-status", t("fillFields"), true);
+    status("login-status", t("incorrectFields"), true);
+    return;
+  }
+
+  const email = recipientEmails[recipientId];
+
+  if (!email) {
+    status("login-status", t("loginError"), true);
     return;
   }
 
   setBusy(form, true);
-  status("login-status", t("loggingIn"));
+  status("login-status", t("loginLoading"));
 
   try {
     const { error } = await supabase.auth.signInWithPassword({
-      email: internalLoginEmail(recipientId),
+      email,
       password
     });
 
@@ -459,21 +411,27 @@ $("login-form").addEventListener("submit", async (event) => {
 
     status("login-status", "");
 
+    await renderDashboard();
+
   } catch (error) {
     console.error("Login:", error);
-    status("login-status", t("loginError"), true);
+
+    status(
+      "login-status",
+      t("loginError"),
+      true
+    );
 
   } finally {
     setBusy(form, false);
   }
 });
 
-/* =========================
-   10. LOG OUT
-========================= */
+/* LOG OUT */
 
 $("logout-button").addEventListener("click", async () => {
   const button = $("logout-button");
+
   button.disabled = true;
 
   try {
@@ -487,17 +445,20 @@ $("logout-button").addEventListener("click", async () => {
     showSection("send-section");
 
   } catch (error) {
-    console.error("Logout:", error);
-    status("dashboard-status", t("saveError"), true);
+    console.error("Log out:", error);
+
+    status(
+      "dashboard-status",
+      "Couldn't log out. Please try again.",
+      true
+    );
 
   } finally {
     button.disabled = false;
   }
 });
 
-/* =========================
-   11. FILTER PRAYERS
-========================= */
+/* FILTER TABS */
 
 $("prayer-tabs").addEventListener("click", (event) => {
   const tab = event.target.closest("[data-filter]");
@@ -506,12 +467,18 @@ $("prayer-tabs").addEventListener("click", (event) => {
 
   currentFilter = tab.dataset.filter;
 
-  document.querySelectorAll("[data-filter]").forEach((button) => {
-    const active = button === tab;
+  $("prayer-tabs")
+    .querySelectorAll("[data-filter]")
+    .forEach((button) => {
+      const active = button === tab;
 
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
+      button.classList.toggle("active", active);
+
+      button.setAttribute(
+        "aria-pressed",
+        String(active)
+      );
+    });
 
   renderPrayerList();
 });
@@ -528,32 +495,26 @@ function getFilteredPrayers() {
   return currentPrayers;
 }
 
-/* =========================
-   12. DISPLAY PRAYER LIST
-========================= */
+/* PRAYER LIST */
 
 function renderPrayerList() {
   const list = $("prayer-list");
-
-  if (!list) return;
 
   list.replaceChildren();
 
   const prayers = getFilteredPrayers();
 
   if (!prayers.length) {
-    let message = t("noPrayers");
-
-    if (currentFilter === "unread") {
-      message = t("noUnread");
-    }
-
-    if (currentFilter === "read") {
-      message = t("noRead");
-    }
-
     const empty = document.createElement("div");
+
     empty.className = "empty-state";
+
+    const message =
+      currentFilter === "unread"
+        ? t("noUnread")
+        : currentFilter === "read"
+          ? t("noRead")
+          : t("noPrayers");
 
     empty.append(
       safeText("strong", "", message),
@@ -561,34 +522,39 @@ function renderPrayerList() {
     );
 
     list.append(empty);
+
     return;
   }
 
-  prayers.forEach((prayer) => {
+  for (const prayer of prayers) {
     const button = document.createElement("button");
 
     button.type = "button";
     button.className = "sender-row";
 
     const info = document.createElement("span");
+
     info.className = "sender-info";
 
-    const readLabel = prayer.is_read
-      ? t("prayerRead")
-      : t("prayerUnread");
-
     info.append(
-      safeText("strong", "sender-name", prayer.sender_name),
+      safeText(
+        "strong",
+        "sender-name",
+        prayer.sender_name
+      ),
+
       safeText(
         "small",
         "sender-hint",
-        `${formatDate(prayer.created_at)} · ${readLabel}`
+        `${formatDate(prayer.created_at)} · ${
+          prayer.is_read ? t("readStatus") : t("unreadStatus")
+        }`
       )
     );
 
     button.append(
       info,
-      safeText("span", "sender-arrow", "›")
+      safeText("span", "sender-arrow", "→")
     );
 
     button.addEventListener("click", () => {
@@ -596,25 +562,26 @@ function renderPrayerList() {
     });
 
     list.append(button);
-  });
+  }
 }
 
-/* =========================
-   13. PRAYER DETAILS
-========================= */
+/* PRAYER DETAILS */
 
 function openPrayer(prayer) {
   const list = $("prayer-list");
+
   list.replaceChildren();
 
   const back = document.createElement("button");
+
   back.type = "button";
   back.className = "prayer-back";
-  back.textContent = t("backPrayers");
+  back.textContent = `← ${t("back")}`;
 
   back.addEventListener("click", renderPrayerList);
 
   const card = document.createElement("article");
+
   card.className = "prayer-card prayer-detail";
 
   const sender = safeText(
@@ -632,18 +599,23 @@ function openPrayer(prayer) {
   const readStatus = safeText(
     "p",
     "detail-read-status",
-    prayer.is_read ? t("prayerRead") : t("prayerUnread")
+    prayer.is_read
+      ? `${t("readStatus")}${
+          prayer.read_at ? ` · ${formatDate(prayer.read_at)}` : ""
+        }`
+      : t("unreadStatus")
   );
 
   const divider = document.createElement("hr");
 
-  const prayerText = safeText(
+  const text = safeText(
     "p",
     "prayer-text",
     prayer.prayer
   );
 
   const readButton = document.createElement("button");
+
   readButton.type = "button";
   readButton.className = "primary-button";
   readButton.textContent = prayer.is_read
@@ -654,7 +626,7 @@ function openPrayer(prayer) {
 
   readButton.addEventListener("click", async () => {
     readButton.disabled = true;
-    readButton.textContent = t("saving");
+    readButton.textContent = t("loading");
 
     const { data, error } = await supabase
       .from("prayers")
@@ -671,9 +643,14 @@ function openPrayer(prayer) {
       console.error("Update read status:", error);
 
       readButton.disabled = false;
-      readButton.textContent = t("markRead");
+      readButton.textContent = t("tryAgain");
 
-      status("dashboard-status", t("saveError"), true);
+      status(
+        "dashboard-status",
+        t("statusError"),
+        true
+      );
+
       return;
     }
 
@@ -684,17 +661,17 @@ function openPrayer(prayer) {
     if (saved) {
       saved.is_read = true;
       saved.read_at = data[0].read_at;
+
+      prayer.is_read = true;
+      prayer.read_at = data[0].read_at;
     }
 
-    status("dashboard-status", t("saved"));
+    status(
+      "dashboard-status",
+      t("markedRead")
+    );
 
-    if (publicStatusLoaded) {
-      await loadPublicStatus();
-    }
-
-    if (saved) {
-      openPrayer(saved);
-    }
+    openPrayer(saved || prayer);
   });
 
   card.append(
@@ -702,16 +679,14 @@ function openPrayer(prayer) {
     date,
     readStatus,
     divider,
-    prayerText,
+    text,
     readButton
   );
 
   list.append(back, card);
 }
 
-/* =========================
-   14. RECIPIENT DASHBOARD
-========================= */
+/* RECIPIENT DASHBOARD */
 
 async function renderDashboard() {
   const {
@@ -733,25 +708,30 @@ async function renderDashboard() {
   if (accountError || !account) {
     console.error("Recipient account:", accountError);
 
-    status("login-status", t("accountError"), true);
+    status(
+      "login-status",
+      t("accountError"),
+      true
+    );
+
     showSection("login-section");
+
+    await supabase.auth.signOut();
+
     return;
   }
 
-  const recipientName =
-    account.recipients?.display_name || "";
-
   $("welcome-title").textContent =
-    currentLanguage === "ms"
-      ? `Hai, ${recipientName}.`
-      : `Hello, ${recipientName}.`;
+    `Hi, ${account.recipients?.display_name ?? "there"}`;
 
   $("dashboard-subtitle").textContent =
-    t("dashboardDescription");
+    currentLanguage === "malay"
+      ? "Doa-doa yang dikirimkan khas untuk anda."
+      : "Prayers sent just for you.";
 
   showSection("dashboard-section");
 
-  status("dashboard-status", t("loadingPrayers"));
+  status("dashboard-status", t("loading"));
 
   const { data, error } = await supabase
     .from("prayers")
@@ -765,30 +745,41 @@ async function renderDashboard() {
     console.error("Load prayers:", error);
 
     $("prayer-count").textContent = "—";
-    status("dashboard-status", t("loadError"), true);
+
+    status(
+      "dashboard-status",
+      t("loadError"),
+      true
+    );
+
     return;
   }
 
-  currentPrayers = data || [];
+  currentPrayers = data ?? [];
   currentFilter = "all";
 
   $("prayer-count").textContent =
     String(currentPrayers.length);
 
-  document.querySelectorAll("[data-filter]").forEach((tab) => {
-    const active = tab.dataset.filter === "all";
+  $("prayer-tabs")
+    .querySelectorAll("[data-filter]")
+    .forEach((tab) => {
+      const active = tab.dataset.filter === "all";
 
-    tab.classList.toggle("active", active);
-    tab.setAttribute("aria-pressed", String(active));
-  });
+      tab.classList.toggle("active", active);
+
+      tab.setAttribute(
+        "aria-pressed",
+        String(active)
+      );
+    });
 
   status("dashboard-status", "");
+
   renderPrayerList();
 }
 
-/* =========================
-   15. PUBLIC PRAYER STATUS
-========================= */
+/* PUBLIC PRAYER STATUS */
 
 $("load-public-status").addEventListener(
   "click",
@@ -799,7 +790,11 @@ async function loadPublicStatus() {
   const button = $("load-public-status");
 
   button.disabled = true;
-  status("public-status-message", t("loading"));
+
+  status(
+    "public-status-message",
+    t("publicLoading")
+  );
 
   try {
     const { data, error } = await supabase.rpc(
@@ -808,7 +803,7 @@ async function loadPublicStatus() {
 
     if (error) throw error;
 
-    publicStatusCache = data || [];
+    publicStatusCache = data ?? [];
     publicStatusLoaded = true;
 
     renderPublicStatus();
@@ -820,7 +815,7 @@ async function loadPublicStatus() {
 
     status(
       "public-status-message",
-      t("publicStatusError"),
+      t("publicError"),
       true
     );
 
@@ -833,31 +828,38 @@ function renderPublicStatus() {
   const list = $("public-status-list");
 
   const query = $("public-status-search")
-    .value.trim().toLocaleLowerCase(
-      currentLanguage === "ms" ? "ms-MY" : "en-MY"
-    );
+    .value.trim()
+    .toLocaleLowerCase("en-MY");
 
   list.replaceChildren();
 
   const results = publicStatusCache.filter((item) => {
-    const sender = (item.sender_name || "").toLocaleLowerCase();
-    const recipient = (item.recipient_name || "").toLocaleLowerCase();
+    const sender = (item.sender_name ?? "")
+      .toLocaleLowerCase("en-MY");
 
-    return sender.includes(query) || recipient.includes(query);
+    const recipient = (item.recipient_name ?? "")
+      .toLocaleLowerCase("en-MY");
+
+    return sender.includes(query) ||
+      recipient.includes(query);
   });
 
   if (!results.length) {
     status(
       "public-status-message",
-      query ? t("noResults") : t("noPublicPrayers")
+      query
+        ? t("noResults")
+        : t("noPublicPrayers")
     );
+
     return;
   }
 
   status("public-status-message", "");
 
-  results.forEach((item) => {
+  for (const item of results) {
     const card = document.createElement("article");
+
     card.className = "public-status-card";
 
     card.append(
@@ -870,7 +872,7 @@ function renderPublicStatus() {
       safeText(
         "p",
         "public-status-recipient",
-        `${t("forRecipient")} ${item.recipient_name}`
+        `${t("for")} ${item.recipient_name}`
       ),
 
       safeText(
@@ -885,8 +887,8 @@ function renderPublicStatus() {
           ? "public-read-badge"
           : "public-unread-badge",
         item.is_read
-          ? t("prayerRead")
-          : t("prayerUnread")
+          ? t("readStatus")
+          : t("unreadStatus")
       )
     );
 
@@ -901,8 +903,10 @@ function renderPublicStatus() {
     }
 
     list.append(card);
-  });
+  }
 }
+
+/* PUBLIC STATUS SEARCH */
 
 $("public-status-search").addEventListener("input", () => {
   if (publicStatusLoaded) {
@@ -910,12 +914,10 @@ $("public-status-search").addEventListener("input", () => {
   }
 });
 
-/* =========================
-   16. INITIALISE WEBSITE
-========================= */
+/* INITIALISE */
 
 async function init() {
-  applyLanguage();
+  applyLanguage(currentLanguage);
 
   await loadRecipients();
 
@@ -925,7 +927,7 @@ async function init() {
   } = await supabase.auth.getSession();
 
   if (error) {
-    console.error("Session:", error);
+    console.error("Get session:", error);
   }
 
   if (session) {
@@ -934,11 +936,7 @@ async function init() {
     showSection("send-section");
   }
 
-  supabase.auth.onAuthStateChange((event, session) => {
-    if (event === "SIGNED_IN" && session) {
-      renderDashboard();
-    }
-
+  supabase.auth.onAuthStateChange((event) => {
     if (event === "SIGNED_OUT") {
       currentPrayers = [];
       currentFilter = "all";
