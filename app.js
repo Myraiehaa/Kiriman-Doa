@@ -82,7 +82,7 @@ const translations = {
         logout: "Log keluar",
 
         prayerCollection: "KOLEKSI DOA ANDA",
-        dashboardDescription: "Doa yang telah dikirimkan khas buat anda.",
+        dashboardDescription: "Doa-doa yang dititipkan untuk dibacakan di Tanah Suci.",
         prayersReceived: "Doa diterima",
 
         yourCollection: "KOLEKSI ANDA",
@@ -187,7 +187,7 @@ const translations = {
         logout: "Log out",
 
         prayerCollection: "YOUR PRAYER COLLECTION",
-        dashboardDescription: "Prayers sent especially for you.",
+        dashboardDescription: "Prayers entrusted to us to be recited in the Makkah",
         prayersReceived: "Prayers received",
 
         yourCollection: "YOUR COLLECTION",
