@@ -154,7 +154,7 @@ const translations = {
 
         heroLabel: "A PRAYER, A JOURNEY OF FAITH",
         heroTitle: "Prayer Requests<br><span>to Makkah.</span>",
-        heroDescription: "Leave your prayers here. InSya-ALlah, your prayers will be carried to Makkah.",
+        heroDescription: "Leave your prayers here. InSya-Allah, your prayers will be carried to Makkah.",
 
         sendEyebrow: "YOUR PRAYER",
         sendTitle: "Send a prayer<span>.</span>",
