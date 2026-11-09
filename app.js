@@ -168,7 +168,7 @@ const translations = {
 
         successTitle: "Doa anda telah dihantar.",
         successDescription: "Alhamdulillah, doa anda telah diterima dengan penuh kasih.",
-        successClosing: "Semoga Allah menerima doa anda dan mengurniakan yang terbaik. Amin.",
+        successClosing: "Semoga Allah menerima doa anda dan mengurniakan yang terbaik. Aamiin.",
         successButton: "Selesai",
 
         capacityLoadError: "Maklumat kapasiti tidak dapat dimuatkan."
@@ -295,7 +295,7 @@ const translations = {
 
         successTitle: "Your Dua' has been sent.",
         successDescription: "Alhamdulillah, your Dua' has been received with love and care.",
-        successClosing: "May Allah accept your Dua' and grant what is best for you. Ameen.",
+        successClosing: "May Allah accept your Dua' and grant what is best for you. Aamiin.",
         successButton: "Done",
 
         capacityLoadError: "Couldn't load capacity information."
